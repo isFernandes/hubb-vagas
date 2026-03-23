@@ -1,98 +1,74 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Documentação do Usuário - Hubb Vagas (Projeto de estudo)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Bem-vindo ao **Hubb Vagas**, a sua plataforma centralizada para publicação de oportunidades de emprego e conexão com os melhores talentos.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este guia foi elaborado para ajudar você a entender e utilizar todas as funcionalidades do sistema, seja você uma **Empresa** buscando profissionais ou um **Candidato** em busca da sua próxima oportunidade.
 
-## Description
+## 1. Visão Geral
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+O Hubb Vagas conecta empresas e profissionais de forma rápida e segura. A plataforma possui dois perfis principais de acesso:
 
-## Project setup
+- **Empresa (Company):** Para organizações que desejam publicar vagas, gerenciar processos seletivos e contratar candidatos.
+- **Candidato (User):** Para profissionais que desejam pesquisar vagas disponíveis e enviar suas candidaturas.
 
-```bash
-$ yarn install
-```
+---
 
-## Compile and run the project
+## 2. Para Empresas (Recrutadores)
 
-```bash
-# development
-$ yarn run start
+Como empresa, você tem controle total sobre o ciclo de vida das suas vagas.
 
-# watch mode
-$ yarn run start:dev
+### 2.1. Criando e Publicando Vagas
 
-# production mode
-$ yarn run start:prod
-```
+- **Rascunho:** Você pode criar uma vaga e salvá-la como rascunho (`DRAFT`) para terminar de editar depois. Apenas a sua empresa pode ver essa vaga.
+- **Publicação:** Quando a vaga estiver pronta, basta publicá-la (`PUBLISHED`). A partir desse momento, ela ficará visível para todos os candidatos na plataforma e aparecerá nas buscas.
+- **Informações da Vaga:** Ao criar uma vaga, você poderá definir título, descrição, requisitos mínimos, localidade, tipo de contrato e uma data de expiração (prazo máximo para receber currículos).
 
-## Run tests
+### 2.2. Gerenciando Candidaturas
 
-```bash
-# unit tests
-$ yarn run test
+- Todas as candidaturas recebidas para as suas vagas ficarão disponíveis em um painel exclusivo.
+- Você poderá acessar o perfil dos candidatos que aplicaram e acompanhar o processo seletivo de forma organizada.
 
-# e2e tests
-$ yarn run test:e2e
+### 2.3. Fechamento de Vagas
 
-# test coverage
-$ yarn run test:cov
-```
+O sistema gerencia o encerramento das vagas de forma inteligente e automatizada:
 
-## Deployment
+- **Fechamento Automático por Expiração:** Se a vaga atingir a data limite configurada no momento da criação, ela será fechada automaticamente pelo sistema (`CLOSED_EXPIRED`) e não receberá mais candidaturas.
+- **Fechamento por Contratação:** Assim que você aprovar definitivamente um candidato para a vaga, o sistema cuidará de fechá-la automaticamente com o status de contratação concluída (`CLOSED_HIRED`). O sistema possui travas de segurança rigorosas para garantir que uma vaga não seja preenchida duas vezes por engano.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 2.4. Notificações
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Você poderá receber notificações sobre eventos importantes, como quando novas candidaturas chegam ou quando uma vaga é automaticamente encerrada pelo sistema.
 
-```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 3. Para Candidatos
 
-## Resources
+Se você está em busca de uma nova oportunidade, o Hubb Vagas oferece uma experiência simples, rápida e direta.
 
-Check out a few resources that may come in handy when working with NestJS:
+### 3.1. Pesquisando Vagas
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- Na página principal, você terá acesso a todas as vagas que estão ativas e publicadas no momento.
+- Você pode utilizar **filtros** (como localidade, tipo de contrato, nível de senioridade, etc.) para encontrar exatamente as oportunidades que mais combinam com o seu perfil. As buscas são processadas em alta velocidade para otimizar o seu tempo.
 
-## Support
+### 3.2. Candidatando-se
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Ao encontrar uma vaga do seu interesse, clique nela para ver todos os detalhes fornecidos pela empresa.
+- Para participar do processo, basta clicar no botão de candidatura. Seu perfil e interesse serão registrados e enviados diretamente para o painel de avaliação da empresa.
 
-## Stay in touch
+### 3.3. Acompanhamento e Notificações
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Assim que sua candidatura for registrada com sucesso, o sistema enviará um e-mail de confirmação para você.
+- Fique de olho em sua caixa de entrada para futuras notificações da plataforma sobre o andamento dos processos seletivos.
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 4. Segurança, Privacidade e Estabilidade
+
+O Hubb Vagas foi desenhado com tecnologia de ponta para garantir uma experiência premium:
+
+- **Privacidade de Acesso:** Seus dados e ações estão protegidos. Candidatos não veem informações internas de empresas, e empresas só acessam dados de candidatos que aplicaram para suas vagas.
+- **Alta Disponibilidade:** A plataforma utiliza servidores em nuvem modernos, garantindo que o site esteja sempre rápido e não saia do ar, mesmo quando muitas pessoas estão procurando vagas ou enviando currículos ao mesmo tempo.
+
+---
+
+_Em caso de dúvidas técnicas ou problemas ao utilizar a plataforma, entre em contato com o suporte ou o administrador do sistema._
