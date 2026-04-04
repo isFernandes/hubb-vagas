@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../infra/prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -15,7 +15,7 @@ export class AuthService {
   async login(authDto: AuthDto) {
     const { email, password } = authDto;
 
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.account.findUnique({
       where: { email },
     });
 

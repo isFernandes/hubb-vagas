@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
+import { JobsRepository } from '../repositories/jobs.repository';
 
 @Injectable()
 export class JobsService {
-  create(createJobDto: CreateJobDto) {
-    return 'This action adds a new job';
+  constructor(private readonly jobsRepository: JobsRepository) {}
+
+  async create(data: any) {
+    return this.jobsRepository.create(data);
   }
 
-  findAll() {
-    return `This action returns all jobs`;
+  async findAll() {
+    return this.jobsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} job`;
+  async findOne(id: string) {
+    return this.jobsRepository.findById(id);
   }
 
-  update(id: number, updateJobDto: UpdateJobDto) {
-    return `This action updates a #${id} job`;
+  async update(id: string, data: any) {
+    return this.jobsRepository.update(id, data);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} job`;
+  async remove(id: string) {
+    return this.jobsRepository.remove(id);
   }
 }

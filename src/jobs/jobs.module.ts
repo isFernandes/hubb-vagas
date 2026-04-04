@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { JobsController } from './jobs.controller';
+import { JobsRepository } from 'src/repositories/jobs.repository';
+import { PrismaJobsRepository } from '../infra/prisma/prisma-repository/prisma-jobs.repository';
 
 @Module({
-  controllers: [JobsController],
-  providers: [JobsService],
+  imports: [],
+  providers: [
+    JobsService,
+    { provide: JobsRepository, useClass: PrismaJobsRepository },
+  ],
+  exports: [JobsService],
 })
 export class JobsModule {}
