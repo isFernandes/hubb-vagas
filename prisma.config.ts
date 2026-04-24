@@ -9,6 +9,6 @@ export default defineConfig({
     path: "src/infra/prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: process.env.DATABASE_URL ?? "postgresql://postgres:$root@localhost:5432/$hubb_vagas?schema=public",
   },
 });

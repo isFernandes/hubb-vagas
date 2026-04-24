@@ -8,24 +8,20 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './infra/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { AccountsModule } from './accounts/accounts.module';
-import { UsersController } from './users/users.controller';
-import { JobsController } from './jobs/jobs.controller';
-import { CompaniesController } from './companies/companies.controller';
-import { AccountsController } from './accounts/accounts.controller';
 
 @Module({
   imports: [
-    CompaniesModule,
-    UsersModule,
-    JobsModule,
-    AuthModule,
-    PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    PrismaModule,
+    AuthModule,
     AccountsModule,
+    CompaniesModule,
+    UsersModule,
+    JobsModule,
   ],
-  controllers: [AppController, UsersController, JobsController, CompaniesController, AccountsController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

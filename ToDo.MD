@@ -16,8 +16,8 @@
 ## 3. Persistência em Postgres
 
 - [x] 3.1 Configurar conexão com Postgres (local e/ou via RDS em dev/stage).
-- [ ] 3.2 Criar migrações para tabelas principais (accounts, companies, users, jobs, applications, job_status_history).
-- [ ] 3.3 Implementar repositórios/ORM para operações de leitura/escrita.
+- [x] 3.2 Criar migrações para tabelas principais (accounts, companies, users, jobs, applications, job_status_history).
+- [x] 3.3 Implementar repositórios/ORM para operações de leitura/escrita.
 
 ## 4. Redis: cache e lock distribuído
 
@@ -29,14 +29,16 @@
 
 ## 5. RabbitMQ e processamento assíncrono
 
-- [ ] 5.1 Provisionar/Configurar RabbitMQ (localmente e, opcionalmente, em AWS via EC2/ECS ou serviço gerenciado).
-- [ ] 5.2 Criar publishers na API para eventos de domínio:
-  - [ ] 5.2.1 ApplicationCreated (quando candidato aplica à vaga).
-  - [ ] 5.2.2 ApplicationApproved (quando candidato é aprovado).
-  - [ ] 5.2.3 JobClosed (quando vaga é fechada por expiração ou contratação).
+- [x] 5.1 Provisionar/Configurar RabbitMQ (localmente e, opcionalmente, em AWS via EC2/ECS ou serviço gerenciado).
+- [x] 5.2 Criar publishers na API para eventos de domínio:
+  - [x] 5.2.1 AccountCreated (criação assíncrona de perfis).
+  - [ ] 5.2.2 ApplicationCreated (quando candidato aplica à vaga).
+  - [ ] 5.2.3 ApplicationApproved (quando candidato é aprovado).
+  - [ ] 5.2.4 JobClosed (quando vaga é fechada por expiração ou contratação).
 - [ ] 5.3 Implementar Job Workers que consomem filas/exchanges:
-  - [ ] 5.3.1 Worker de notificações (e-mail, webhooks) para ApplicationCreated e JobClosed.
-  - [ ] 5.3.2 Worker de fechamento de vaga para ApplicationApproved, usando lock em Redis e atualizando Postgres.
+  - [x] 5.3.1 Worker de perfis (AccountsConsumer) usando Strategy Pattern.
+  - [ ] 5.3.2 Worker de notificações (e-mail, webhooks) para ApplicationCreated e JobClosed.
+  - [ ] 5.3.3 Worker de fechamento de vaga para ApplicationApproved, usando lock em Redis e atualizando Postgres.
 
 ## 6. Infraestrutura AWS (foco em estudo)
 
