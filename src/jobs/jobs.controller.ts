@@ -11,8 +11,8 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { CreateJobDto, createJobSchema } from './dto/create-job.dto';
-import { UpdateJobDto, updateJobSchema } from './dto/update-job.dto';
+import { type CreateJobDto, createJobSchema } from './dto/create-job.dto';
+import { type UpdateJobDto, updateJobSchema } from './dto/update-job.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';

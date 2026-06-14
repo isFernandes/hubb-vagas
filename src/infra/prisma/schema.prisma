@@ -1,6 +1,5 @@
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -10,14 +9,15 @@ generator client {
 }
 
 model Account {
-  id         String    @id @default(uuid())
-  email      String    @unique
-  password   String
-  role       Role
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now()) @updatedAt
-  users      User[]
-  companies  Company[]
+  id                 String             @id @default(uuid())
+  email              String             @unique
+  password           String
+  role               Role
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @default(now()) @updatedAt
+  user               User?
+  company            Company?
+  jobStatusHistories JobStatusHistory[]
 
   @@map("accounts")
 }
@@ -26,7 +26,7 @@ model User {
   id               String             @id @default(uuid())
   name             String
   bio              String?
-  account_id       String
+  account_id       String             @unique
   account          Account            @relation(fields: [account_id], references: [id])
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
@@ -41,7 +41,7 @@ model Company {
   name       String
   cnpj       String   @unique
   contact    String
-  account_id String
+  account_id String   @unique
   account    Account  @relation(fields: [account_id], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -51,19 +51,20 @@ model Company {
 }
 
 model Job {
-  id           String        @id @default(uuid())
-  title        String
-  description  String
-  requirements String
-  companyId    String
-  company      Company       @relation(fields: [companyId], references: [id])
-  location     String
-  contractType String
-  expiresAt    DateTime
-  status       JobStatus     @default(DRAFT)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  applications Application[]
+  id            String             @id @default(uuid())
+  title         String
+  description   String
+  requirements  String
+  companyId     String
+  company       Company            @relation(fields: [companyId], references: [id])
+  location      String
+  contractType  String
+  expiresAt     DateTime
+  status        JobStatus          @default(DRAFT)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  applications  Application[]
+  statusHistory JobStatusHistory[]
 
   @@map("jobs")
 }
@@ -110,4 +111,17 @@ enum ApplicationStatus {
   SCREENING
   APPROVED
   REJECTED
+}
+
+model JobStatusHistory {
+  id           String    @id @default(uuid())
+  jobId        String
+  job          Job       @relation(fields: [jobId], references: [id])
+  status       JobStatus
+  changedById  String
+  changedBy    Account   @relation(fields: [changedById], references: [id])
+  reason       String?
+  createdAt    DateTime  @default(now())
+
+  @@map("job_status_history")
 }

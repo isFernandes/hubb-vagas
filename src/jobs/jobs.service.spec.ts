@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JobsService } from './jobs.service';
 import { JobsRepository } from '../repositories/jobs.repository';
-import { JobStatus } from '@prisma/client';
+import { JobStatus } from '../infra/prisma/generated/client';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 describe('JobsService', () => {

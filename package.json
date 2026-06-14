@@ -41,7 +41,7 @@
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
     "pnpm": "^10.32.1",
-    "prisma": "^6.19.3",
+    "prisma": "^7.8.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "zod": "^4.3.6"
@@ -73,6 +73,9 @@
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",

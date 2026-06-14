@@ -4,7 +4,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { JobsRepository } from '../repositories/jobs.repository';
-import { JobStatus } from '@prisma/client';
+import { JobStatus } from '../infra/prisma/generated/client';
 
 @Injectable()
 export class JobsService {
