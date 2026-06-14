@@ -26,13 +26,11 @@ export class AccountsService {
 
     const account = await this.accountsRepository.create(accountToCreate);
 
-
     this.client.emit('account_created', {
       role,
       account_id: account.id,
       profileData: { name, bio, cnpj, contact },
     });
-    
 
     return account;
   }

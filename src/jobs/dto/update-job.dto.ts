@@ -1,4 +1,9 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateJobDto } from './create-job.dto';
+import { z } from 'zod';
+import { createJobSchema } from './create-job.dto';
+import { JobStatus } from '@prisma/client';
 
-export class UpdateJobDto extends PartialType(CreateJobDto) {}
+export const updateJobSchema = createJobSchema.partial().extend({
+  status: z.nativeEnum(JobStatus).optional(),
+});
+
+export type UpdateJobDto = z.infer<typeof updateJobSchema>;

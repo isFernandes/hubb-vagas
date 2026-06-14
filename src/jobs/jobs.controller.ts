@@ -1,21 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  UsePipes,
+} from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
+import { CreateJobDto, createJobSchema } from './dto/create-job.dto';
+import { UpdateJobDto, updateJobSchema } from './dto/update-job.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../decorators/role.enum';
+import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
 
 @Controller('jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
   @Post()
-  @Roles(Role.Company, Role.Admin)
+  @Roles(Role.Company)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createJobDto: CreateJobDto) {
-    return this.jobsService.create(createJobDto);
+  @UsePipes(new ZodValidationPipe(createJobSchema))
+  create(@Body() createJobDto: CreateJobDto, @Request() req) {
+    // Usando req.user.profileId assumindo que o payload contenha este dado associado à conta.
+    return this.jobsService.create(createJobDto, req.user.profileId);
   }
 
   @Get()
@@ -29,16 +43,21 @@ export class JobsController {
   }
 
   @Patch(':id')
-  @Roles(Role.Company, Role.Admin)
+  @Roles(Role.Company)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(id, updateJobDto);
+  @UsePipes(new ZodValidationPipe(updateJobSchema))
+  update(
+    @Param('id') id: string,
+    @Body() updateJobDto: UpdateJobDto,
+    @Request() req,
+  ) {
+    return this.jobsService.update(id, updateJobDto, req.user.profileId);
   }
 
   @Delete(':id')
-  @Roles(Role.Company, Role.Admin)
+  @Roles(Role.Company)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  remove(@Param('id') id: string) {
-    return this.jobsService.remove(id);
+  remove(@Param('id') id: string, @Request() req) {
+    return this.jobsService.remove(id, req.user.profileId);
   }
 }

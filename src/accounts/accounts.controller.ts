@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import {type CreateAccountDto } from './dto/create-account.dto';
-import {type UpdateAccountDto } from './dto/update-account.dto';
+import { type CreateAccountDto } from './dto/create-account.dto';
+import { type UpdateAccountDto } from './dto/update-account.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';

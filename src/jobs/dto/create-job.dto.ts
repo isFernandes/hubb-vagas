@@ -1,1 +1,12 @@
-export class CreateJobDto {}
+import { z } from 'zod';
+
+export const createJobSchema = z.object({
+  title: z.string().min(3),
+  description: z.string().min(10),
+  requirements: z.string().min(10),
+  location: z.string().min(2),
+  contractType: z.string(),
+  expiresAt: z.string().datetime(), // ISO 8601
+});
+
+export type CreateJobDto = z.infer<typeof createJobSchema>;

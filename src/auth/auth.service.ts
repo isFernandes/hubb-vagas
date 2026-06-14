@@ -35,8 +35,8 @@ export class AuthService {
     };
   }
 
-   passwordEncripty(password:string){
-    const passwordEncripted = bcrypt.hashSync(password, 10) 
-    return passwordEncripted
+  passwordEncripty(password: string) {
+    const passwordEncripted = bcrypt.hashSync(password, 10);
+    return passwordEncripted;
   }
 }

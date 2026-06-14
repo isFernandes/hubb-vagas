@@ -8,7 +8,7 @@
 
 ## 2. Funcionalidades principais de vagas
 
-- [ ] 2.1 CRUD de vagas para empresa (criação, edição, publicação, mudança de status).
+- [x] 2.1 CRUD de vagas para empresa (criação, edição, publicação, mudança de status).
 - [ ] 2.2 Listagem de vagas para usuários user com filtros básicos.
 - [ ] 2.3 Fluxo de candidatura (criação de applications).
 - [ ] 2.4 Histórico de status de vaga (job_status_history).
@@ -60,3 +60,9 @@
 - [x] 8.2 Garantir autorização por role em endpoints sensíveis.
 - [ ] 8.3 Configurar logs estruturados na API e nos workers.
 - [ ] 8.4 Definir métricas e alarmes principais (latência API, tamanho de filas RabbitMQ, erros em workers).
+
+## Improvements
+
+- [ ] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
+
+gemini --resume "1ab74ac0-48cc-4ed7-b40f-a753b1a2bea6"
