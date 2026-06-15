@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { type CreateJobDto, createJobSchema } from './dto/create-job.dto';
@@ -17,6 +18,7 @@ import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../decorators/role.enum';
 import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
+import { JobStatus } from '../infra/prisma/generated/client';
 
 @Controller('jobs')
 export class JobsController {
@@ -29,13 +31,49 @@ export class JobsController {
     @Body(new ZodValidationPipe(createJobSchema)) createJobDto: CreateJobDto,
     @Request() req,
   ) {
-    // Usando req.user.profileId assumindo que o payload contenha este dado associado à conta.
-    return this.jobsService.create(createJobDto, req.user.profileId);
+    return this.jobsService.create(
+      createJobDto,
+      req.user.profileId,
+      req.user.id,
+    );
   }
 
   @Get()
-  findAll() {
-    return this.jobsService.findAll();
+  async findAll(
+    @Query('location') location?: string,
+    @Query('contractType') contractType?: string,
+    @Query('companyId') companyId?: string,
+    @Query('search') search?: string,
+    @Request() req?,
+  ) {
+    let status: JobStatus | undefined = JobStatus.PUBLISHED; // default for Candidates / User
+
+    const authHeader = req?.headers?.authorization;
+    if (authHeader) {
+      try {
+        const token = authHeader.split(' ')[1];
+        if (token) {
+          const payloadBase64 = token.split('.')[1];
+          const payloadJson = Buffer.from(payloadBase64, 'base64').toString(
+            'ascii',
+          );
+          const payload = JSON.parse(payloadJson);
+          if (payload.role === 'Company' || payload.role === 'Admin') {
+            status = undefined; // Do not force PUBLISHED status for company/admin
+          }
+        }
+      } catch {
+        // ignore decoding errors
+      }
+    }
+
+    return this.jobsService.findAll({
+      location,
+      contractType,
+      companyId,
+      search,
+      status,
+    });
   }
 
   @Get(':id')
@@ -51,7 +89,12 @@ export class JobsController {
     @Body(new ZodValidationPipe(updateJobSchema)) updateJobDto: UpdateJobDto,
     @Request() req,
   ) {
-    return this.jobsService.update(id, updateJobDto, req.user.profileId);
+    return this.jobsService.update(
+      id,
+      updateJobDto,
+      req.user.profileId,
+      req.user.id,
+    );
   }
 
   @Delete(':id')

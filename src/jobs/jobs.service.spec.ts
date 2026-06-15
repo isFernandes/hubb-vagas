@@ -1,12 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JobsService } from './jobs.service';
 import { JobsRepository } from '../repositories/jobs.repository';
+import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { JobStatus } from '../infra/prisma/generated/client';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 describe('JobsService', () => {
   let service: JobsService;
   let repository: jest.Mocked<JobsRepository>;
+  let statusHistoryRepository: jest.Mocked<JobStatusHistoryRepository>;
 
   const mockJob = {
     id: 'job-1',
@@ -36,15 +38,23 @@ describe('JobsService', () => {
             remove: jest.fn(),
           },
         },
+        {
+          provide: JobStatusHistoryRepository,
+          useValue: {
+            create: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     service = module.get<JobsService>(JobsService);
     repository = module.get(JobsRepository);
+    statusHistoryRepository = module.get(JobStatusHistoryRepository);
   });
 
-  it('should create a job with DRAFT status', async () => {
+  it('should create a job with DRAFT status and log status history', async () => {
     repository.create.mockResolvedValue(mockJob);
+    statusHistoryRepository.create.mockResolvedValue(null as any);
     const data = {
       title: 'Test Job',
       description: 'Description',
@@ -54,7 +64,7 @@ describe('JobsService', () => {
       expiresAt: new Date().toISOString(),
     };
 
-    await service.create(data, 'company-1');
+    await service.create(data, 'company-1', 'account-1');
 
     expect(repository.create).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -63,20 +73,26 @@ describe('JobsService', () => {
         status: JobStatus.DRAFT,
       }),
     );
+    expect(statusHistoryRepository.create).toHaveBeenCalledWith({
+      jobId: 'job-1',
+      status: JobStatus.DRAFT,
+      changedById: 'account-1',
+      reason: 'Status inicial como DRAFT',
+    });
   });
 
   it('should throw NotFoundException if job not found on update', async () => {
     repository.findById.mockResolvedValue(null);
-    await expect(service.update('job-1', {}, 'company-1')).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(
+      service.update('job-1', {}, 'company-1', 'account-1'),
+    ).rejects.toThrow(NotFoundException);
   });
 
   it('should throw ForbiddenException if company does not own the job on update', async () => {
     repository.findById.mockResolvedValue(mockJob);
-    await expect(service.update('job-1', {}, 'company-2')).rejects.toThrow(
-      ForbiddenException,
-    );
+    await expect(
+      service.update('job-1', {}, 'company-2', 'account-1'),
+    ).rejects.toThrow(ForbiddenException);
   });
 
   it('should update job if company owns it', async () => {
@@ -87,11 +103,35 @@ describe('JobsService', () => {
       'job-1',
       { title: 'Updated' },
       'company-1',
+      'account-1',
     );
     expect(repository.update).toHaveBeenCalledWith('job-1', {
       title: 'Updated',
     });
     expect(result.title).toBe('Updated');
+  });
+
+  it('should log status transition if status changes on update', async () => {
+    repository.findById.mockResolvedValue(mockJob);
+    repository.update.mockResolvedValue({
+      ...mockJob,
+      status: JobStatus.PUBLISHED,
+    });
+    statusHistoryRepository.create.mockResolvedValue(null as any);
+
+    await service.update(
+      'job-1',
+      { status: JobStatus.PUBLISHED },
+      'company-1',
+      'account-1',
+    );
+
+    expect(statusHistoryRepository.create).toHaveBeenCalledWith({
+      jobId: 'job-1',
+      status: JobStatus.PUBLISHED,
+      changedById: 'account-1',
+      reason: 'Alteração de status via PATCH',
+    });
   });
 
   it('should throw ForbiddenException if company does not own the job on remove', async () => {
