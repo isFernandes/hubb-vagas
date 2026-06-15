@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   Request,
-  UsePipes,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { type CreateJobDto, createJobSchema } from './dto/create-job.dto';
@@ -26,8 +25,10 @@ export class JobsController {
   @Post()
   @Roles(Role.Company)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @UsePipes(new ZodValidationPipe(createJobSchema))
-  create(@Body() createJobDto: CreateJobDto, @Request() req) {
+  create(
+    @Body(new ZodValidationPipe(createJobSchema)) createJobDto: CreateJobDto,
+    @Request() req,
+  ) {
     // Usando req.user.profileId assumindo que o payload contenha este dado associado à conta.
     return this.jobsService.create(createJobDto, req.user.profileId);
   }
@@ -45,10 +46,9 @@ export class JobsController {
   @Patch(':id')
   @Roles(Role.Company)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @UsePipes(new ZodValidationPipe(updateJobSchema))
   update(
     @Param('id') id: string,
-    @Body() updateJobDto: UpdateJobDto,
+    @Body(new ZodValidationPipe(updateJobSchema)) updateJobDto: UpdateJobDto,
     @Request() req,
   ) {
     return this.jobsService.update(id, updateJobDto, req.user.profileId);

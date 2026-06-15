@@ -12,6 +12,7 @@ export default tseslint.config(
       'node_modules/**',
       'coverage/**',
       'src/infra/prisma/generated/**',
+      'test-api-lifecycle.js',
     ],
   },
   eslint.configs.recommended,
