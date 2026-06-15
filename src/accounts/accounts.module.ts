@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { AccountsController } from './accounts.controller';
 import { AccountsRepository } from '../repositories/accounts.repository';
-import { PrismaAccountsRepository } from '../infra/prisma/prisma-repository/prisma-accounts.repository';
+import { PrismaAccountsRepository } from '../infra/prisma/prisma-repository/prismaAccounts.repository';
 import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/users/users.module';
 import { CompaniesModule } from 'src/companies/companies.module';

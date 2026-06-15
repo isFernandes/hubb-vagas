@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { JobsRepository } from 'src/repositories/jobs.repository';
-import { PrismaJobsRepository } from '../infra/prisma/prisma-repository/prisma-jobs.repository';
+import { PrismaJobsRepository } from '../infra/prisma/prisma-repository/prismaJobs.repository';
 
 @Module({
   imports: [],
