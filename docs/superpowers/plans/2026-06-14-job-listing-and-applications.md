@@ -13,11 +13,12 @@
 ### Task 1: Modificações no Banco de Dados (Schema Prisma e Migrations)
 
 **Files:**
+
 - Modify: `src/infra/prisma/schema.prisma`
 
 - [ ] **Step 1.1: Atualizar o arquivo schema.prisma**
-  Modificar o arquivo `src/infra/prisma/schema.prisma` para incluir a tabela `JobStatusHistory` e as devidas relações.
-  
+      Modificar o arquivo `src/infra/prisma/schema.prisma` para incluir a tabela `JobStatusHistory` e as devidas relações.
+
   ```prisma
   // Modificações a fazer em src/infra/prisma/schema.prisma:
   // 1. Adicionar o modelo JobStatusHistory:
@@ -39,27 +40,28 @@
   ```
 
 - [ ] **Step 1.2: Rodar as migrações locais**
-  Executar o comando de migração do Prisma para aplicar as alterações no banco de dados local.
-  Run: `rtk npx prisma migrate dev --name add_job_status_history`
-  Expected: Migração gerada com sucesso e cliente Prisma atualizado.
+      Executar o comando de migração do Prisma para aplicar as alterações no banco de dados local.
+      Run: `rtk npx prisma migrate dev --name add_job_status_history`
+      Expected: Migração gerada com sucesso e cliente Prisma atualizado.
 
 - [ ] **Step 1.3: Commit (Aguardar OK expresso do usuário)**
-  Aguardar autorização expressa do usuário.
-  Run: `git add src/infra/prisma/schema.prisma src/infra/prisma/migrations/`
-  Run: `git commit -m "db: adiciona modelo JobStatusHistory ao schema e cria migracao"`
+      Aguardar autorização expressa do usuário.
+      Run: `git add src/infra/prisma/schema.prisma src/infra/prisma/migrations/`
+      Run: `git commit -m "db: adiciona modelo JobStatusHistory ao schema e cria migracao"`
 
 ---
 
 ### Task 2: Repositório de Histórico de Status de Vagas
 
 **Files:**
+
 - Create: `src/repositories/job-status-history.repository.ts`
 - Create: `src/infra/prisma/prisma-repository/prisma-job-status-history.repository.ts`
 - Modify: `src/infra/prisma/prisma.module.ts`
 
 - [ ] **Step 2.1: Criar a interface abstrata do repositório**
-  Criar o arquivo `src/repositories/job-status-history.repository.ts`:
-  
+      Criar o arquivo `src/repositories/job-status-history.repository.ts`:
+
   ```typescript
   import { JobStatus, JobStatusHistory } from '@prisma/client';
 
@@ -74,8 +76,8 @@
   ```
 
 - [ ] **Step 2.2: Implementar o repositório Prisma**
-  Criar o arquivo `src/infra/prisma/prisma-repository/prisma-job-status-history.repository.ts`:
-  
+      Criar o arquivo `src/infra/prisma/prisma-repository/prisma-job-status-history.repository.ts`:
+
   ```typescript
   import { Injectable } from '@nestjs/common';
   import { JobStatusHistoryRepository } from 'src/repositories/job-status-history.repository';
@@ -105,8 +107,8 @@
   ```
 
 - [ ] **Step 2.3: Registrar o repositório no PrismaModule**
-  Modificar o arquivo `src/infra/prisma/prisma.module.ts` para prover e exportar o novo repositório.
-  
+      Modificar o arquivo `src/infra/prisma/prisma.module.ts` para prover e exportar o novo repositório.
+
   ```typescript
   // Adicionar nos providers e exports:
   {
@@ -116,22 +118,23 @@
   ```
 
 - [ ] **Step 2.4: Commit (Aguardar OK expresso do usuário)**
-  Aguardar autorização expressa do usuário.
-  Run: `git add src/repositories/job-status-history.repository.ts src/infra/prisma/prisma-repository/prisma-job-status-history.repository.ts src/infra/prisma/prisma.module.ts`
-  Run: `git commit -m "feat: implementa e registra repositorio de historico de status"`
+      Aguardar autorização expressa do usuário.
+      Run: `git add src/repositories/job-status-history.repository.ts src/infra/prisma/prisma-repository/prisma-job-status-history.repository.ts src/infra/prisma/prisma.module.ts`
+      Run: `git commit -m "feat: implementa e registra repositorio de historico de status"`
 
 ---
 
 ### Task 3: Atualização do JobsService e JobsRepository para Listagem com Filtros e Histórico
 
 **Files:**
+
 - Modify: `src/repositories/jobs.repository.ts`
 - Modify: `src/infra/prisma/prisma-repository/prisma-jobs.repository.ts`
 - Modify: `src/jobs/jobs.service.ts`
 
 - [ ] **Step 3.1: Adicionar filtros e paginação no JobsRepository**
-  Modificar `src/repositories/jobs.repository.ts` para que `findAll` aceite um objeto de filtros opcional:
-  
+      Modificar `src/repositories/jobs.repository.ts` para que `findAll` aceite um objeto de filtros opcional:
+
   ```typescript
   export abstract class JobsRepository {
     abstract create(data: any): Promise<any>;
@@ -149,8 +152,8 @@
   ```
 
 - [ ] **Step 3.2: Implementar filtros no PrismaJobsRepository**
-  Modificar `src/infra/prisma/prisma-repository/prisma-jobs.repository.ts` para aplicar os filtros no query do Prisma:
-  
+      Modificar `src/infra/prisma/prisma-repository/prisma-jobs.repository.ts` para aplicar os filtros no query do Prisma:
+
   ```typescript
   async findAll(filters?: {
     location?: string;
@@ -187,8 +190,8 @@
   ```
 
 - [ ] **Step 3.3: Atualizar JobsService para usar filtros e gravar Histórico de Status**
-  Modificar `src/jobs/jobs.service.ts` para injetar `JobStatusHistoryRepository`. Gravar histórico inicial em `create()` e transições de status em `update()`:
-  
+      Modificar `src/jobs/jobs.service.ts` para injetar `JobStatusHistoryRepository`. Gravar histórico inicial em `create()` e transições de status em `update()`:
+
   ```typescript
   // Injetar JobStatusHistoryRepository no construtor
   constructor(
@@ -236,21 +239,22 @@
   }
   ```
 
-  *Nota*: Ajustar o `JobsController` e os testes unitários existentes para passar o `accountId` que vem de `req.user.id` no payload JWT.
+  _Nota_: Ajustar o `JobsController` e os testes unitários existentes para passar o `accountId` que vem de `req.user.id` no payload JWT.
 
 - [ ] **Step 3.4: Ajustar o JobsController para passar os parâmetros e query filters**
-  Modificar `src/jobs/jobs.controller.ts` para repassar o filtro do candidato (apenas `PUBLISHED` por padrão se a role for `User` ou anônimo).
+      Modificar `src/jobs/jobs.controller.ts` para repassar o filtro do candidato (apenas `PUBLISHED` por padrão se a role for `User` ou anônimo).
 
 - [ ] **Step 3.5: Commit (Aguardar OK expresso do usuário)**
-  Aguardar autorização expressa do usuário.
-  Run: `git add src/repositories/jobs.repository.ts src/infra/prisma/prisma-repository/prisma-jobs.repository.ts src/jobs/jobs.service.ts src/jobs/jobs.controller.ts`
-  Run: `git commit -m "feat: adiciona suporte a filtros e gravacao de historico de status de vagas"`
+      Aguardar autorização expressa do usuário.
+      Run: `git add src/repositories/jobs.repository.ts src/infra/prisma/prisma-repository/prisma-jobs.repository.ts src/jobs/jobs.service.ts src/jobs/jobs.controller.ts`
+      Run: `git commit -m "feat: adiciona suporte a filtros e gravacao de historico de status de vagas"`
 
 ---
 
 ### Task 4: Módulo de Candidatura (Applications)
 
 **Files:**
+
 - Create: `src/repositories/applications.repository.ts`
 - Create: `src/infra/prisma/prisma-repository/prisma-applications.repository.ts`
 - Create: `src/applications/dto/create-application.dto.ts`
@@ -261,8 +265,8 @@
 - Modify: `src/infra/prisma/prisma.module.ts`
 
 - [ ] **Step 4.1: Criar a interface abstrata do repositório**
-  Criar o arquivo `src/repositories/applications.repository.ts`:
-  
+      Criar o arquivo `src/repositories/applications.repository.ts`:
+
   ```typescript
   export abstract class ApplicationsRepository {
     abstract create(data: { userId: string; jobId: string }): Promise<any>;
@@ -271,8 +275,8 @@
   ```
 
 - [ ] **Step 4.2: Implementar o repositório Prisma**
-  Criar o arquivo `src/infra/prisma/prisma-repository/prisma-applications.repository.ts`:
-  
+      Criar o arquivo `src/infra/prisma/prisma-repository/prisma-applications.repository.ts`:
+
   ```typescript
   import { Injectable } from '@nestjs/common';
   import { ApplicationsRepository } from 'src/repositories/applications.repository';
@@ -303,11 +307,11 @@
   ```
 
 - [ ] **Step 4.3: Registrar no PrismaModule**
-  Modificar `src/infra/prisma/prisma.module.ts` para prover e exportar o `ApplicationsRepository`.
+      Modificar `src/infra/prisma/prisma.module.ts` para prover e exportar o `ApplicationsRepository`.
 
 - [ ] **Step 4.4: Criar o DTO de Candidatura**
-  Criar o arquivo `src/applications/dto/create-application.dto.ts`:
-  
+      Criar o arquivo `src/applications/dto/create-application.dto.ts`:
+
   ```typescript
   import { z } from 'zod';
 
@@ -319,10 +323,14 @@
   ```
 
 - [ ] **Step 4.5: Criar o ApplicationsService**
-  Criar o arquivo `src/applications/applications.service.ts` aplicando as validações necessárias:
-  
+      Criar o arquivo `src/applications/applications.service.ts` aplicando as validações necessárias:
+
   ```typescript
-  import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+  import {
+    Injectable,
+    NotFoundException,
+    BadRequestException,
+  } from '@nestjs/common';
   import { ApplicationsRepository } from '../repositories/applications.repository';
   import { JobsRepository } from '../repositories/jobs.repository';
   import { UsersRepository } from '../repositories/users.repository';
@@ -343,17 +351,22 @@
       }
 
       if (job.status !== JobStatus.PUBLISHED) {
-        throw new BadRequestException('Não é possível candidatar-se a uma vaga que não está publicada');
+        throw new BadRequestException(
+          'Não é possível candidatar-se a uma vaga que não está publicada',
+        );
       }
 
       // Buscar o perfil do User a partir da accountId
       // Obs: dependendo de como as tabelas foram modeladas, precisamos obter o userId associado ao accountId
       const user = await this.usersRepository.findByAccountId(accountId); // Ajustar método caso necessário
       if (!user) {
-        throw new BadRequestException('Usuário não possui perfil de candidato ativo');
+        throw new BadRequestException(
+          'Usuário não possui perfil de candidato ativo',
+        );
       }
 
-      const existingApplication = await this.applicationsRepository.findByUserAndJob(user.id, jobId);
+      const existingApplication =
+        await this.applicationsRepository.findByUserAndJob(user.id, jobId);
       if (existingApplication) {
         throw new BadRequestException('Você já se candidatou a esta vaga');
       }
@@ -367,17 +380,27 @@
   ```
 
 - [ ] **Step 4.6: Criar o ApplicationsController**
-  Criar o arquivo `src/applications/applications.controller.ts` protegendo o endpoint com `JwtAuthGuard` e `RolesGuard` (apenas `User`):
-  
+      Criar o arquivo `src/applications/applications.controller.ts` protegendo o endpoint com `JwtAuthGuard` e `RolesGuard` (apenas `User`):
+
   ```typescript
-  import { Controller, Post, Body, UseGuards, Request, UsePipes } from '@nestjs/common';
+  import {
+    Controller,
+    Post,
+    Body,
+    UseGuards,
+    Request,
+    UsePipes,
+  } from '@nestjs/common';
   import { JwtAuthGuard } from '../guards/jwt-auth.guard';
   import { RolesGuard } from '../guards/roles.guard';
   import { Roles } from '../decorators/roles.decorator';
   import { Role } from '../decorators/role.enum';
   import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
   import { ApplicationsService } from './applications.service';
-  import { CreateApplicationDto, createApplicationSchema } from './dto/create-application.dto';
+  import {
+    CreateApplicationDto,
+    createApplicationSchema,
+  } from './dto/create-application.dto';
 
   @Controller('applications')
   export class ApplicationsController {
@@ -394,40 +417,41 @@
   ```
 
 - [ ] **Step 4.7: Criar e registrar o ApplicationsModule**
-  Criar o arquivo `src/applications/applications.module.ts` e importá-lo no `src/app.module.ts`.
+      Criar o arquivo `src/applications/applications.module.ts` e importá-lo no `src/app.module.ts`.
 
 - [ ] **Step 4.8: Commit (Aguardar OK expresso do usuário)**
-  Aguardar autorização expressa do usuário.
-  Run: `git add src/applications/ src/repositories/applications.repository.ts src/infra/prisma/prisma-repository/prisma-applications.repository.ts src/app.module.ts`
-  Run: `git commit -m "feat: implementa modulo de candidatura com validacoes e autorizacao"`
+      Aguardar autorização expressa do usuário.
+      Run: `git add src/applications/ src/repositories/applications.repository.ts src/infra/prisma/prisma-repository/prisma-applications.repository.ts src/app.module.ts`
+      Run: `git commit -m "feat: implementa modulo de candidatura com validacoes e autorizacao"`
 
 ---
 
 ### Task 5: Testes Unitários e Validação Geral
 
 **Files:**
+
 - Modify: `src/jobs/jobs.service.spec.ts`
 - Create: `src/applications/applications.service.spec.ts`
 
 - [ ] **Step 5.1: Escrever testes unitários para a candidatura**
-  Criar o arquivo `src/applications/applications.service.spec.ts` cobrindo os cenários de erro e sucesso no fluxo de candidatura.
+      Criar o arquivo `src/applications/applications.service.spec.ts` cobrindo os cenários de erro e sucesso no fluxo de candidatura.
 
 - [ ] **Step 5.2: Ajustar/Criar testes para a listagem de vagas com filtros e histórico de status**
-  Atualizar os testes unitários do `JobsService` em `src/jobs/jobs.service.spec.ts`.
+      Atualizar os testes unitários do `JobsService` em `src/jobs/jobs.service.spec.ts`.
 
 - [ ] **Step 5.3: Executar a suite de testes**
-  Run: `rtk npm run test`
-  Expected: Todos os testes passando com sucesso.
+      Run: `rtk npm run test`
+      Expected: Todos os testes passando com sucesso.
 
 - [ ] **Step 5.4: Rodar o linter**
-  Run: `rtk npm run lint`
-  Expected: Nenhum erro de linter no código.
+      Run: `rtk npm run lint`
+      Expected: Nenhum erro de linter no código.
 
 - [ ] **Step 5.5: Rodar a compilação (build)**
-  Run: `rtk npm run build`
-  Expected: Build compilado com sucesso sem erros.
+      Run: `rtk npm run build`
+      Expected: Build compilado com sucesso sem erros.
 
 - [ ] **Step 5.6: Commit Final (Aguardar OK expresso do usuário)**
-  Aguardar autorização expressa do usuário.
-  Run: `git add src/jobs/jobs.service.spec.ts src/applications/applications.service.spec.ts`
-  Run: `git commit -m "test: adiciona testes unitarios para candidaturas e listagem de vagas"`
+      Aguardar autorização expressa do usuário.
+      Run: `git add src/jobs/jobs.service.spec.ts src/applications/applications.service.spec.ts`
+      Run: `git commit -m "test: adiciona testes unitarios para candidaturas e listagem de vagas"`

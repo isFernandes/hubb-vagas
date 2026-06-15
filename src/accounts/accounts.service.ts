@@ -1,9 +1,8 @@
-import { Injectable, BadRequestException, Inject } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountsRepository } from '../repositories/accounts.repository';
 import { AuthService } from 'src/auth/auth.service';
-import { Role } from '../decorators/role.enum';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()

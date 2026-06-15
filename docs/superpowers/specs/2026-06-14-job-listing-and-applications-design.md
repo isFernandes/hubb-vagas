@@ -22,6 +22,7 @@ model JobStatusHistory {
 ```
 
 Atualizações nos modelos existentes:
+
 - `Job`: adicionará a relação `statusHistory JobStatusHistory[]`.
 - `Account`: adicionará a relação `jobStatusHistories JobStatusHistory[]`.
 
@@ -30,6 +31,7 @@ Atualizações nos modelos existentes:
 ## 2. Endpoints e Fluxos de Dados
 
 ### 2.1 Listagem de Vagas (`GET /jobs`)
+
 - **Acesso**: Público.
 - **Filtros (Query Params)**:
   - `location` (opcional): Filtro case-insensitive parcial.
@@ -41,6 +43,7 @@ Atualizações nos modelos existentes:
   - Para fins de administração ou proprietários, pode-se futuramente expor outras vagas (neste momento, o padrão do endpoint `/jobs` para candidatos listará apenas as `PUBLISHED`).
 
 ### 2.2 Candidatura a Vaga (`POST /applications`)
+
 - **Acesso**: Autenticado (apenas role `User`).
 - **DTO de entrada**: `{ "jobId": string }`
 - **Fluxo**:
@@ -55,14 +58,18 @@ Atualizações nos modelos existentes:
 ## 3. Repositórios e Módulos
 
 ### 3.1 Módulo de Candidatura (`ApplicationsModule`)
+
 Criaremos o módulo em `src/applications/` contendo:
+
 - `applications.controller.ts`: Endpoint `POST /applications`.
 - `applications.service.ts`: Lógica de validação e criação.
 - `applications.repository.ts` (Interface abstrata) em `src/repositories/`.
 - `prisma-applications.repository.ts` (Implementação Prisma) em `src/infra/prisma/prisma-repository/`.
 
 ### 3.2 Histórico de Status da Vaga (`JobStatusHistory`)
+
 Criaremos em `src/repositories/` e `src/infra/prisma/prisma-repository/`:
+
 - `job-status-history.repository.ts` (Interface abstrata).
 - `prisma-job-status-history.repository.ts` (Implementação Prisma).
 - Integração no `JobsService`:

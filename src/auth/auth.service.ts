@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
