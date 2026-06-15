@@ -11,6 +11,6 @@ import { PrismaJobsRepository } from '../infra/prisma/prisma-repository/prismaJo
     JobsService,
     { provide: JobsRepository, useClass: PrismaJobsRepository },
   ],
-  exports: [JobsService],
+  exports: [JobsService, JobsRepository],
 })
 export class JobsModule {}
