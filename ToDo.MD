@@ -9,9 +9,9 @@
 ## 2. Funcionalidades principais de vagas
 
 - [x] 2.1 CRUD de vagas para empresa (criação, edição, publicação, mudança de status).
-- [ ] 2.2 Listagem de vagas para usuários user com filtros básicos.
-- [ ] 2.3 Fluxo de candidatura (criação de applications).
-- [ ] 2.4 Histórico de status de vaga (job_status_history).
+- [x] 2.2 Listagem de vagas para usuários user com filtros básicos.
+- [x] 2.3 Fluxo de candidatura (criação de applications).
+- [x] 2.4 Histórico de status de vaga (job_status_history).
 
 ## 3. Persistência em Postgres
 
