@@ -9,9 +9,11 @@ import { PrismaModule } from './infra/prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { AccountsModule } from './accounts/accounts.module';
 import { ApplicationsModule } from './applications/applications.module';
+import { RedisModule } from './infra/redis/redis.module';
 
 @Module({
   imports: [
+    RedisModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
