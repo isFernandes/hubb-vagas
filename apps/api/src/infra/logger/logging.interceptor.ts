@@ -42,7 +42,7 @@ export class LoggingInterceptor implements NestInterceptor {
               latencyMs: delay,
               error: error.message,
             });
-          }
+          },
         }),
       );
     }

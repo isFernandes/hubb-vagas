@@ -44,16 +44,16 @@ export class PrismaJobsRepository implements JobsRepository {
   }
 
   async findById(id: string): Promise<any> {
-    return this.prisma.job.findUnique({ 
+    return this.prisma.job.findUnique({
       where: { id },
       include: {
         applications: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
-        company: true
-      }
+        company: true,
+      },
     });
   }
 

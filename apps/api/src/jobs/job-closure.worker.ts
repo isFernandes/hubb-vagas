@@ -19,13 +19,17 @@ export class JobClosureWorker {
   ) {}
 
   @EventPattern('application_approved')
-  async handleApplicationApproved(@Payload() data: { jobId: string; appId: string; companyId: string }) {
+  async handleApplicationApproved(
+    @Payload() data: { jobId: string; appId: string; companyId: string },
+  ) {
     const { jobId, appId } = data;
     const lockKey = `job-lock:${jobId}`;
 
     const acquired = await this.lockService.acquireLock(lockKey, 30);
     if (!acquired) {
-      console.log(`[JobClosureWorker] Job ${jobId} is already locked. Skipping.`);
+      console.log(
+        `[JobClosureWorker] Job ${jobId} is already locked. Skipping.`,
+      );
       return;
     }
 
@@ -33,17 +37,24 @@ export class JobClosureWorker {
       const job = await this.jobsRepository.findById(jobId);
       if (job && job.status === JobStatus.PUBLISHED) {
         // Update Job Status
-        await this.jobsRepository.update(jobId, { status: JobStatus.CLOSED_HIRED });
-        
+        await this.jobsRepository.update(jobId, {
+          status: JobStatus.CLOSED_HIRED,
+        });
+
         // Update Applications (APPROVE the selected one, REJECT others)
-        await this.prisma.application.update({ where: { id: appId }, data: { status: 'APPROVED' } });
+        await this.prisma.application.update({
+          where: { id: appId },
+          data: { status: 'APPROVED' },
+        });
         await this.prisma.application.updateMany({
           where: { jobId, id: { not: appId } },
           data: { status: 'REJECTED' },
         });
 
         // Record history
-        const account = await this.prisma.company.findUnique({ where: { id: data.companyId } });
+        const account = await this.prisma.company.findUnique({
+          where: { id: data.companyId },
+        });
         if (account) {
           await this.statusHistoryRepository.create({
             jobId,
@@ -55,12 +66,15 @@ export class JobClosureWorker {
 
         // Emit final event
         this.client.emit('job_closed', { jobId, hiredAppId: appId });
-        
+
         // Invalidate detail cache
         try {
           await this.redis.del(`job:detail:${jobId}`);
         } catch (e) {
-          console.error(`[Redis Error] Failed to invalidate cache for job:detail:${jobId}`, e);
+          console.error(
+            `[Redis Error] Failed to invalidate cache for job:detail:${jobId}`,
+            e,
+          );
         }
 
         console.log(`[JobClosureWorker] Job ${jobId} successfully closed.`);

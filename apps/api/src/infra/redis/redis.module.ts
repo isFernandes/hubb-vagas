@@ -9,7 +9,9 @@ import { LockService } from './lock.service';
     {
       provide: 'REDIS_CLIENT',
       useFactory: (configService: ConfigService) => {
-        return new Redis(configService.get<string>('REDIS_URL') || 'redis://localhost:6379');
+        return new Redis(
+          configService.get<string>('REDIS_URL') || 'redis://localhost:6379',
+        );
       },
       inject: [ConfigService],
     },

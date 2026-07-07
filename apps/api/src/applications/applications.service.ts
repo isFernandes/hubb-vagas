@@ -41,9 +41,16 @@ export class ApplicationsService {
       throw new BadRequestException('Você já se candidatou a esta vaga');
     }
 
-    const application = await this.applicationsRepository.create({ userId, jobId });
-    
-    this.client.emit('application_created', { applicationId: application.id, jobId, userId });
+    const application = await this.applicationsRepository.create({
+      userId,
+      jobId,
+    });
+
+    this.client.emit('application_created', {
+      applicationId: application.id,
+      jobId,
+      userId,
+    });
 
     return application;
   }
