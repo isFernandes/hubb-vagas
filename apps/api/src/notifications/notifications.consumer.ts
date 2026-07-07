@@ -49,4 +49,21 @@ export class NotificationsConsumer {
       );
     }
   }
+
+  @EventPattern('application_rejected')
+  async handleApplicationRejected(
+    @Payload() data: { email: string; jobTitle: string; companyName: string },
+  ) {
+    console.log(`[E-MAIL INFO] Sending rejection email to ${data.email} for job ${data.jobTitle}`);
+    try {
+      await this.mailerService.sendMail({
+        to: data.email,
+        subject: `Atualização sobre sua candidatura: ${data.jobTitle}`,
+        text: `Olá! Infelizmente a vaga "${data.jobTitle}" da empresa ${data.companyName} foi preenchida por outro candidato. Não desanime, novas vagas surgem todos os dias!`,
+      });
+      console.log(`[E-MAIL SENT] Rejection email sent to ${data.email}`);
+    } catch (e) {
+      console.error(`[E-MAIL ERROR] Failed to send rejection email to ${data.email}:`, e);
+    }
+  }
 }

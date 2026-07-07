@@ -51,6 +51,29 @@ export class JobClosureWorker {
           data: { status: 'REJECTED' },
         });
 
+        // Fetch rejected applications to emit events
+        const rejectedApps = await this.prisma.application.findMany({
+          where: { jobId, status: 'REJECTED' },
+          include: { user: { include: { account: true } } },
+        });
+
+        // The job object from jobsRepository doesn't have company relation joined here,
+        // so let's fetch it from Prisma to get the company name for the email.
+        const jobWithCompany = await this.prisma.job.findUnique({
+          where: { id: jobId },
+          include: { company: true },
+        });
+
+        if (jobWithCompany) {
+          for (const app of rejectedApps) {
+            this.client.emit('application_rejected', {
+              email: app.user.account.email,
+              jobTitle: jobWithCompany.title,
+              companyName: jobWithCompany.company.name,
+            });
+          }
+        }
+
         // Record history
         const account = await this.prisma.company.findUnique({
           where: { id: data.companyId },
