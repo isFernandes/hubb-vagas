@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  BadRequestException,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { type CreateAccountDto } from './dto/create-account.dto';
@@ -21,7 +22,19 @@ export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
   @Post()
-  create(@Body() createAccountDto: CreateAccountDto) {
+  async create(@Body() createAccountDto: CreateAccountDto) {
+    if (createAccountDto.role === 'Company' && createAccountDto.cnpj) {
+      const cleanCnpj = createAccountDto.cnpj.replace(/[\.\-\/]/g, '');
+      try {
+        const res = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cleanCnpj}`);
+        if (!res.ok) {
+          throw new BadRequestException('CNPJ inválido ou inexistente na Receita Federal');
+        }
+      } catch (error) {
+        if (error instanceof BadRequestException) throw error;
+        throw new BadRequestException('Falha ao consultar CNPJ. Tente novamente mais tarde.');
+      }
+    }
     return this.accountsService.create(createAccountDto);
   }
 
