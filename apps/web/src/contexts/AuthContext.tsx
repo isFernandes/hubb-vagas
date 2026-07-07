@@ -25,8 +25,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedToken = localStorage.getItem('@HubbVagas:token');
     const storedUser = localStorage.getItem('@HubbVagas:user');
 
-    if (storedToken && storedUser) {
-      setUser(JSON.parse(storedUser));
+    if (storedToken && storedUser && storedUser !== 'undefined') {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error('Failed to parse stored user, clearing storage.', e);
+        localStorage.removeItem('@HubbVagas:token');
+        localStorage.removeItem('@HubbVagas:user');
+      }
     }
   }, []);
 
