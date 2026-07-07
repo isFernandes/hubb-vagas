@@ -25,6 +25,7 @@ model Account {
 model User {
   id               String             @id @default(uuid())
   name             String
+  cpf              String?            @unique
   bio              String?
   account_id       String             @unique
   account          Account            @relation(fields: [account_id], references: [id])
@@ -51,17 +52,18 @@ model Company {
 }
 
 model Job {
-  id            String             @id @default(uuid())
-  title         String
-  description   String
-  requirements  String
-  companyId     String
-  company       Company            @relation(fields: [companyId], references: [id])
-  location      String
-  contractType  String
-  expiresAt     DateTime
-  status        JobStatus          @default(DRAFT)
-  createdAt     DateTime           @default(now())
+  id                 String             @id @default(uuid())
+  title              String
+  description        String
+  requirements       String
+  companyId          String
+  company            Company            @relation(fields: [companyId], references: [id])
+  location           String
+  contractType       String
+  expiresAt          DateTime
+  paymentAmountCents Int                @default(0)
+  status             JobStatus          @default(DRAFT)
+  createdAt          DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
   applications  Application[]
   statusHistory JobStatusHistory[]
