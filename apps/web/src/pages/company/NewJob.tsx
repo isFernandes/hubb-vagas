@@ -39,7 +39,7 @@ export default function NewJob() {
       requirements,
       location,
       contractType,
-      expirationDate: new Date(expirationDate).toISOString()
+      expiresAt: new Date(expirationDate).toISOString()
     });
   };
 
