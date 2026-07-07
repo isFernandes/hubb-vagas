@@ -14,6 +14,8 @@ import JobDetails from './pages/company/JobDetails';
 import JobsList from './pages/candidate/JobsList';
 import JobDetailsCandidate from './pages/candidate/JobDetailsCandidate';
 
+import { Toaster } from '@/components/ui/sonner';
+
 const queryClient = new QueryClient();
 
 function PrivateRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
@@ -52,6 +54,7 @@ function App() {
           <AppRoutes />
         </AuthProvider>
       </BrowserRouter>
+      <Toaster theme="dark" position="bottom-right" />
     </QueryClientProvider>
   );
 }

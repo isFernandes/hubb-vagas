@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react';
 
+import { toast } from 'sonner';
+
 export default function NewJob() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
@@ -23,12 +25,19 @@ export default function NewJob() {
       return data;
     },
     onSuccess: () => {
+      toast.success('Vaga publicada com sucesso!');
       navigate('/dashboard');
     },
     onError: (err: any) => {
       console.error(err);
-      const message = err?.response?.data?.message || 'Erro ao criar a vaga.';
-      alert(typeof message === 'object' ? JSON.stringify(message) : message);
+      const message = err?.response?.data?.message;
+      
+      if (Array.isArray(message)) {
+        // Zod validation errors usually come as an array
+        message.forEach((msg: string) => toast.error(msg));
+      } else {
+        toast.error(message || 'Erro inesperado ao criar a vaga.');
+      }
     }
   });
 
