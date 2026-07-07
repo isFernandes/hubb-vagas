@@ -19,7 +19,7 @@ const queryClient = new QueryClient();
 function PrivateRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
   const { isAuthenticated, user } = useAuth();
   if (!isAuthenticated) return <Navigate to="/login" />;
-  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+  if (allowedRoles && user && !allowedRoles.includes(user.role.toUpperCase())) {
     return <Navigate to="/" />;
   }
   return <>{children}</>;
