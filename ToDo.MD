@@ -95,10 +95,12 @@
 
 ## 13. Administração e Governança (A Fazer)
 
-- [ ] 13.1 Painel de controle Web para usuários com role Admin.
-- [ ] 13.2 Listagem geral de usuários (Candidatos e Empresas) com paginação e busca.
-- [ ] 13.3 Funcionalidade de banimento/suspensão de usuários.
-- [ ] 13.4 Sistema de moderação/denúncia de vagas (relacionado ao banimento).
+- [ ] 13.1 Painel de controle Web exclusivo para usuários com role Admin (Dashboard de Métricas).
+- [ ] 13.2 Listagem geral de usuários (Candidatos e Empresas) com paginação, busca e histórico.
+- [ ] 13.3 Funcionalidade de banimento/suspensão de usuários com Log de Auditoria (quem baniu, quando e motivo).
+- [ ] 13.4 Sistema de moderação de denúncias (Vagas falsas, no-show, assédio).
+- [ ] 13.5 Gestão Financeira e Disputas (Acompanhar fluxo de caixa, taxas retidas e resolução de conflitos de pagamento).
+- [ ] 13.6 Configurações Globais do Sistema (Ajustar taxa da plataforma %, valor mínimo de vaga, etc., sem hardcode).
 
 ## Improvements (Melhorias Contínuas)
 
