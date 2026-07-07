@@ -92,6 +92,11 @@
 - [ ] 12.4 Suporte a avatar/foto de perfil (salvando buffer em base64 inicialmente no DB).
 - [ ] 12.5 Busca de vagas por geolocalização com raio de atuação definido pelo candidato (usando APIs gratuitas).
 - [ ] 12.6 Refinar entidade Job com horários de prestação do serviço e criar validador de conflito (mínimo de 1h entre bicos).
+- [ ] 12.7 Sistema de Reputação: Avaliação (1 a 5 estrelas) entre Empresa e Candidato após a prestação do serviço.
+- [ ] 12.8 Validação de CPF para Candidatos (Segurança contra perfis falsos).
+- [ ] 12.9 Vagas Múltiplas: Campo `positionsAvailable` para permitir aprovar X pessoas antes da vaga fechar.
+- [ ] 12.10 Política de Cancelamento (No-Show): Candidato pode cancelar a participação, resultando em perda de estrelas se for em cima da hora.
+- [ ] 12.11 Feedback de Fechamento: Notificar por e-mail os candidatos não selecionados quando a vaga for preenchida.
 
 ## 13. Administração e Governança (A Fazer)
 
@@ -101,6 +106,10 @@
 - [ ] 13.4 Sistema de moderação de denúncias (Vagas falsas, no-show, assédio).
 - [ ] 13.5 Gestão Financeira e Disputas (Acompanhar fluxo de caixa, taxas retidas e resolução de conflitos de pagamento).
 - [ ] 13.6 Configurações Globais do Sistema (Ajustar taxa da plataforma %, valor mínimo de vaga, etc., sem hardcode).
+
+## 14. Algoritmos Avançados de Alocação (A Fazer)
+
+- [ ] 14.1 Fila de Espera / Reservas: Permitir que candidatos fiquem como "standby" em vagas concorridas. Caso um aprovado desista (No-Show), o sistema automaticamente aciona o próximo da fila.
 
 ## Improvements (Melhorias Contínuas)
 
