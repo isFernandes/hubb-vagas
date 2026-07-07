@@ -25,9 +25,10 @@ export default function NewJob() {
     onSuccess: () => {
       navigate('/dashboard');
     },
-    onError: (err) => {
+    onError: (err: any) => {
       console.error(err);
-      alert('Erro ao criar a vaga.');
+      const message = err?.response?.data?.message || 'Erro ao criar a vaga.';
+      alert(typeof message === 'object' ? JSON.stringify(message) : message);
     }
   });
 
