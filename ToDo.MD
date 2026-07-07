@@ -93,6 +93,13 @@
 - [ ] 12.5 Busca de vagas por geolocalização com raio de atuação definido pelo candidato (usando APIs gratuitas).
 - [ ] 12.6 Refinar entidade Job com horários de prestação do serviço e criar validador de conflito (mínimo de 1h entre bicos).
 
+## 13. Administração e Governança (A Fazer)
+
+- [ ] 13.1 Painel de controle Web para usuários com role Admin.
+- [ ] 13.2 Listagem geral de usuários (Candidatos e Empresas) com paginação e busca.
+- [ ] 13.3 Funcionalidade de banimento/suspensão de usuários.
+- [ ] 13.4 Sistema de moderação/denúncia de vagas (relacionado ao banimento).
+
 ## Improvements (Melhorias Contínuas)
 
 - [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
