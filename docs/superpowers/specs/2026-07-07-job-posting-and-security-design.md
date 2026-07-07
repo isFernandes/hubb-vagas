@@ -21,7 +21,7 @@
 ## 3. Validação Real de CNPJ (Empresas)
 - **Backend (Accounts):**
   - O fluxo síncrono de criação de conta interceptará requisições onde a role seja `Company`.
-  - Será disparado um `GET` para a Brasil API: `https://brasilapi.com.br/api/cnpj/v1/{cnpj}`.
+  - Será disparado um `GET` para a Brasil API: `https://brasilapi.com.br/api/cnpj/v1/{cnpj}`. (O código de limpeza do CNPJ deve remover apenas pontos, barras e traços, suportando o novo formato **alfanumérico** brasileiro de CNPJ, preservando as letras).
   - Se a resposta for um `400`, `404` ou se o serviço estiver inoperante (timeout/500), a API lançará uma `BadRequestException`, bloqueando imediatamente a criação da conta.
 
 ## 4. E-mails de Rejeição (Fechamento da Vaga)
