@@ -7,14 +7,16 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto } from './dto/update-company.dto';
+import { UpdateCompanyDto, UpdateCompanyProfileDto, updateCompanyProfileSchema } from './dto/update-company.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../decorators/role.enum';
+import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
 
 @Controller('companies')
 export class CompaniesController {
@@ -36,6 +38,16 @@ export class CompaniesController {
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.companiesService.findOne(id);
+  }
+
+  @Patch('me')
+  @Roles(Role.Company)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  updateProfile(
+    @Request() req,
+    @Body(new ZodValidationPipe(updateCompanyProfileSchema)) updateDto: UpdateCompanyProfileDto
+  ) {
+    return this.companiesService.update(req.user.profileId, updateDto);
   }
 
   @Patch(':id')
