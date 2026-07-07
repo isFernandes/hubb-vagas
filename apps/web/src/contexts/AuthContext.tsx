@@ -18,23 +18,22 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const [user, setUser] = useState<User | null>(() => {
     const storedToken = localStorage.getItem('@HubbVagas:token');
     const storedUser = localStorage.getItem('@HubbVagas:user');
 
     if (storedToken && storedUser && storedUser !== 'undefined') {
       try {
-        setUser(JSON.parse(storedUser));
+        return JSON.parse(storedUser);
       } catch (e) {
         console.error('Failed to parse stored user, clearing storage.', e);
         localStorage.removeItem('@HubbVagas:token');
         localStorage.removeItem('@HubbVagas:user');
       }
     }
-  }, []);
+    return null;
+  });
+  const navigate = useNavigate();
 
   const login = (token: string, loggedUser: User) => {
     localStorage.setItem('@HubbVagas:token', token);
