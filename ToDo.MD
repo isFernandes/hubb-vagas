@@ -62,19 +62,6 @@
 - [x] 8.3 Configurar logs estruturados na API e nos workers.
 - [x] 8.4 Definir métricas e alarmes principais (latência API, tamanho de filas RabbitMQ, erros em workers).
 
-## Improvements
-
-- [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
-
-### Fase 9 - Validação e Estabilidade (Feito)
-- [x] Garantir testes end-to-end do fluxo
-- [x] Correção de bugs finais de rotas e validações Zod.
-
-### Fase 10 - Monetização e Pagamentos (A Fazer)
-- [ ] Integrar gateway de pagamento (ex: Mercado Pago / Stripe) para transações na plataforma.
-- [ ] Suportar métodos: Cartão de Crédito, Cartão de Débito e PIX.
-- [ ] Construir interface de checkout para as empresas ou freelancers (dependendo do modelo de negócio). (Concluído)
-
 ## 9. Testes Automatizados e Validação (Concluído)
 
 - [x] 9.1 Set up Jest for backend unit/integration tests
@@ -84,3 +71,19 @@
 - [x] 9.5 Verify `npm run dev` starts correctly across the monorepo
 - [x] 9.6 Verify `turbo run build` builds smoothly
 - [x] 9.7 Verify `turbo run lint` executes successfully
+
+## 10. Validação e Estabilidade (Concluído)
+
+- [x] 10.1 Garantir testes end-to-end do fluxo (robô HTTP testou de ponta a ponta).
+- [x] 10.2 Correção de bugs finais de rotas e validações Zod.
+- [x] 10.3 Ajustes de UX (Toasts nativos do Sonner para validações falhas).
+
+## 11. Monetização e Pagamentos (A Fazer)
+
+- [ ] 11.1 Integrar gateway de pagamento (ex: Mercado Pago / Stripe) para transações na plataforma.
+- [ ] 11.2 Suportar métodos: Cartão de Crédito, Cartão de Débito e PIX.
+- [ ] 11.3 Construir interface de checkout para as empresas ou freelancers.
+
+## Improvements (Melhorias Contínuas)
+
+- [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
