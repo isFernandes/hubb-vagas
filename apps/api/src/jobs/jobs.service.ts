@@ -69,7 +69,7 @@ export class JobsService {
 
   async findOne(id: string) {
     const cacheKey = `job:detail:${id}`;
-    
+
     try {
       const cached = await this.redis.get(cacheKey);
       if (cached) {
@@ -93,10 +93,16 @@ export class JobsService {
     return job;
   }
 
-  async update(id: string, data: any, companyId: string, accountId: string) {
+  async update(
+    id: string,
+    data: any,
+    companyId: string,
+    accountId: string,
+    isAdmin = false,
+  ) {
     const job = await this.findOne(id);
 
-    if (job.companyId !== companyId) {
+    if (job.companyId !== companyId && !isAdmin) {
       throw new ForbiddenException(
         'Você não tem permissão para alterar esta vaga',
       );
@@ -117,16 +123,19 @@ export class JobsService {
     try {
       await this.redis.del(`job:detail:${id}`);
     } catch (e) {
-      console.error(`[Redis Error] Failed to invalidate cache for job:detail:${id}`, e);
+      console.error(
+        `[Redis Error] Failed to invalidate cache for job:detail:${id}`,
+        e,
+      );
     }
 
     return updatedJob;
   }
 
-  async remove(id: string, companyId: string) {
+  async remove(id: string, companyId: string, isAdmin = false) {
     const job = await this.findOne(id);
 
-    if (job.companyId !== companyId) {
+    if (job.companyId !== companyId && !isAdmin) {
       throw new ForbiddenException(
         'Você não tem permissão para excluir esta vaga',
       );
@@ -138,7 +147,10 @@ export class JobsService {
     try {
       await this.redis.del(`job:detail:${id}`);
     } catch (e) {
-      console.error(`[Redis Error] Failed to invalidate cache for job:detail:${id}`, e);
+      console.error(
+        `[Redis Error] Failed to invalidate cache for job:detail:${id}`,
+        e,
+      );
     }
 
     return result;
@@ -147,10 +159,14 @@ export class JobsService {
   async approveApplication(jobId: string, appId: string, companyId: string) {
     const job = await this.findOne(jobId);
     if (job.companyId !== companyId) {
-      throw new ForbiddenException('Você não tem permissão para alterar esta vaga');
+      throw new ForbiddenException(
+        'Você não tem permissão para alterar esta vaga',
+      );
     }
-    
+
     this.client.emit('application_approved', { jobId, appId, companyId });
-    return { message: 'Application approved successfully, processing job closure.' };
+    return {
+      message: 'Application approved successfully, processing job closure.',
+    };
   }
 }

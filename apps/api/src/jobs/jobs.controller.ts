@@ -82,7 +82,7 @@ export class JobsController {
   }
 
   @Patch(':id')
-  @Roles(Role.Company)
+  @Roles(Role.Company, Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   update(
     @Param('id') id: string,
@@ -94,6 +94,7 @@ export class JobsController {
       updateJobDto,
       req.user.profileId,
       req.user.id,
+      req.user.role === Role.Admin,
     );
   }
 
@@ -105,13 +106,21 @@ export class JobsController {
     @Param('appId') appId: string,
     @Request() req,
   ) {
-    return this.jobsService.approveApplication(jobId, appId, req.user.profileId);
+    return this.jobsService.approveApplication(
+      jobId,
+      appId,
+      req.user.profileId,
+    );
   }
 
   @Delete(':id')
-  @Roles(Role.Company)
+  @Roles(Role.Company, Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   remove(@Param('id') id: string, @Request() req) {
-    return this.jobsService.remove(id, req.user.profileId);
+    return this.jobsService.remove(
+      id,
+      req.user.profileId,
+      req.user.role === Role.Admin,
+    );
   }
 }
