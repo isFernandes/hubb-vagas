@@ -19,6 +19,17 @@ export class JobsService {
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
   ) {}
 
+  private async invalidateListCaches() {
+    try {
+      const keys = await this.redis.keys('job:list:*');
+      if (keys.length > 0) {
+        await this.redis.del(...keys);
+      }
+    } catch (e) {
+      console.error('[Redis Error] Failed to invalidate job lists cache', e);
+    }
+  }
+
   async create(data: any, companyId: string, accountId: string) {
     const job = await this.jobsRepository.create({
       ...data,
@@ -32,6 +43,8 @@ export class JobsService {
       changedById: accountId,
       reason: 'Status inicial como PUBLISHED (Criação direta)',
     });
+
+    await this.invalidateListCaches();
 
     return job;
   }
@@ -119,9 +132,10 @@ export class JobsService {
       });
     }
 
-    // Invalidate Detail Cache
+    // Invalidate Caches
     try {
       await this.redis.del(`job:detail:${id}`);
+      await this.invalidateListCaches();
     } catch (e) {
       console.error(
         `[Redis Error] Failed to invalidate cache for job:detail:${id}`,
@@ -143,9 +157,10 @@ export class JobsService {
 
     const result = await this.jobsRepository.remove(id);
 
-    // Invalidate Detail Cache
+    // Invalidate Caches
     try {
       await this.redis.del(`job:detail:${id}`);
+      await this.invalidateListCaches();
     } catch (e) {
       console.error(
         `[Redis Error] Failed to invalidate cache for job:detail:${id}`,
