@@ -97,6 +97,17 @@ export class JobsController {
     );
   }
 
+  @Patch(':jobId/applications/:appId/approve')
+  @Roles(Role.Company)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  approveApplication(
+    @Param('jobId') jobId: string,
+    @Param('appId') appId: string,
+    @Request() req,
+  ) {
+    return this.jobsService.approveApplication(jobId, appId, req.user.profileId);
+  }
+
   @Delete(':id')
   @Roles(Role.Company)
   @UseGuards(JwtAuthGuard, RolesGuard)

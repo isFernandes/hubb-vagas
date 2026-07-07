@@ -3,9 +3,10 @@ import { JobsService } from './jobs.service';
 import { JobsController } from './jobs.controller';
 import { JobsRepository } from 'src/repositories/jobs.repository';
 import { PrismaJobsRepository } from '../infra/prisma/prisma-repository/prismaJobs.repository';
+import { MessagingModule } from '../infra/messaging/messaging.module';
 
 @Module({
-  imports: [],
+  imports: [MessagingModule],
   controllers: [JobsController],
   providers: [
     JobsService,
