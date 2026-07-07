@@ -44,7 +44,17 @@ export class PrismaJobsRepository implements JobsRepository {
   }
 
   async findById(id: string): Promise<any> {
-    return this.prisma.job.findUnique({ where: { id } });
+    return this.prisma.job.findUnique({ 
+      where: { id },
+      include: {
+        applications: {
+          include: {
+            user: true
+          }
+        },
+        company: true
+      }
+    });
   }
 
   async update(id: string, data: any): Promise<any> {
