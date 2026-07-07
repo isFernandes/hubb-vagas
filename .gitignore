@@ -2,6 +2,11 @@
 /dist
 /node_modules
 /build
+/apps/api/node_modules
+/apps/web/node_modules
+.turbo/cache
+apps/api/dist
+
 
 # Logs
 logs
