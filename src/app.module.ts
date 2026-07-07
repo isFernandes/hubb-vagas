@@ -10,9 +10,11 @@ import { ConfigModule } from '@nestjs/config';
 import { AccountsModule } from './accounts/accounts.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { RedisModule } from './infra/redis/redis.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
+    NotificationsModule,
     RedisModule,
     ConfigModule.forRoot({
       isGlobal: true,
