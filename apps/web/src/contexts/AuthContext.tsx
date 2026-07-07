@@ -34,7 +34,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('@HubbVagas:token', token);
     localStorage.setItem('@HubbVagas:user', JSON.stringify(loggedUser));
     setUser(loggedUser);
-    navigate(loggedUser.role === 'COMPANY' ? '/dashboard' : '/jobs');
+    
+    // Ensure case-insensitivity since Prisma returns 'Company' while TS type is 'COMPANY'
+    const userRole = String(loggedUser.role).toUpperCase();
+    navigate(userRole === 'COMPANY' ? '/dashboard' : '/jobs');
   };
 
   const logout = () => {

@@ -18,6 +18,10 @@ export class PrismaAccountsRepository implements AccountsRepository {
     return this.prisma.account.findUnique({ where: { id } });
   }
 
+  async findByEmail(email: string): Promise<any> {
+    return this.prisma.account.findUnique({ where: { email } });
+  }
+
   async update(id: string, data: any): Promise<any> {
     return this.prisma.account.update({ where: { id }, data });
   }

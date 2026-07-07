@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, ConflictException } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountsRepository } from '../repositories/accounts.repository';
@@ -16,6 +16,11 @@ export class AccountsService {
   async create(createAccountDto: CreateAccountDto) {
     const { email, password, role, name, bio, cnpj, contact } =
       createAccountDto;
+
+    const existingAccount = await this.accountsRepository.findByEmail(email);
+    if (existingAccount) {
+      throw new ConflictException('Este e-mail já está em uso.');
+    }
 
     const accountToCreate = {
       email,

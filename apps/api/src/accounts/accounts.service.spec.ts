@@ -10,6 +10,7 @@ describe('AccountsService', () => {
     create: jest.fn(),
     findAll: jest.fn(),
     findById: jest.fn(),
+    findByEmail: jest.fn(),
     update: jest.fn(),
     remove: jest.fn(),
   };
