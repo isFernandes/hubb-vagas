@@ -50,7 +50,7 @@
 
 ## 7. Frontend
 
-- [ ] 7.1 Setup do frontend (framework SPA) com autenticação básica.
+- [x] 7.1 Setup do frontend (framework SPA) com autenticação básica.
 - [ ] 7.2 Telas para empresa (publicar/gerenciar vagas, ver candidaturas).
 - [ ] 7.3 Telas para usuário user (listagem de vagas, detalhe, candidatura).
 
