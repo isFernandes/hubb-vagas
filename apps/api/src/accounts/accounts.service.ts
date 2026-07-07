@@ -51,6 +51,23 @@ export class AccountsService {
     return this.accountsRepository.update(id, updateAccountDto);
   }
 
+  async updatePassword(id: string, updatePasswordDto: any) {
+    const { currentPassword, newPassword } = updatePasswordDto;
+    const account = await this.accountsRepository.findById(id);
+    if (!account) {
+      throw new ConflictException('Conta não encontrada');
+    }
+
+    const bcrypt = require('bcrypt');
+    const isPasswordValid = await bcrypt.compare(currentPassword, account.password);
+    if (!isPasswordValid) {
+      throw new ConflictException('Senha atual incorreta');
+    }
+
+    const hashedNewPassword = this.authService.passwordEncripty(newPassword);
+    return this.accountsRepository.update(id, { password: hashedNewPassword });
+  }
+
   async remove(id: string) {
     return this.accountsRepository.remove(id);
   }
