@@ -11,8 +11,8 @@ export default function Home() {
           Hubb <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Vagas</span>
         </h1>
         <p className="text-lg md:text-xl text-slate-400 mb-8 leading-relaxed">
-          A plataforma premium que conecta talentos às melhores empresas de tecnologia. 
-          Encontre seu próximo desafio ou divulgue sua vaga com estilo.
+          A plataforma ágil que conecta você a oportunidades flexíveis. 
+          Encontre bicos, diárias e trabalhos freelancer ou anuncie sua vaga rápida sem burocracia.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

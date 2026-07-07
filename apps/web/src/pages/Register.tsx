@@ -94,8 +94,8 @@ export default function Register() {
                   <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} className="bg-slate-950/50 border-slate-700 text-slate-100 focus-visible:ring-indigo-500" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="resumeUrl" className="text-slate-200">URL do Currículo/LinkedIn</Label>
-                  <Input id="resumeUrl" value={resumeUrl} onChange={(e) => setResumeUrl(e.target.value)} className="bg-slate-950/50 border-slate-700 text-slate-100 focus-visible:ring-indigo-500" />
+                  <Label htmlFor="resumeUrl" className="text-slate-200">Resumo ou Links (Opcional)</Label>
+                  <Input id="resumeUrl" value={resumeUrl} onChange={(e) => setResumeUrl(e.target.value)} className="bg-slate-950/50 border-slate-700 text-slate-100 focus-visible:ring-indigo-500" placeholder="Ex: Trabalhei 2 anos como garçom..." />
                 </div>
               </>
             )}

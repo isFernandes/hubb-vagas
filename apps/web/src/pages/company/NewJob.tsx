@@ -14,7 +14,7 @@ export default function NewJob() {
   const [description, setDescription] = useState('');
   const [requirements, setRequirements] = useState('');
   const [location, setLocation] = useState('');
-  const [contractType, setContractType] = useState('CLT');
+  const [contractType, setContractType] = useState('Diária');
   const [expirationDate, setExpirationDate] = useState('');
 
   const createJobMutation = useMutation({
@@ -58,7 +58,7 @@ export default function NewJob() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="title" className="text-slate-300">Título da Vaga</Label>
-                <Input id="title" required value={title} onChange={(e) => setTitle(e.target.value)} className="bg-slate-950/50 border-slate-700 text-white" placeholder="Ex: Desenvolvedor Front-end Senior" />
+                <Input id="title" required value={title} onChange={(e) => setTitle(e.target.value)} className="bg-slate-950/50 border-slate-700 text-white" placeholder="Ex: Motoboy para fim de semana, Auxiliar de Cozinha" />
               </div>
               
               <div className="space-y-2">
@@ -81,7 +81,7 @@ export default function NewJob() {
                   value={requirements} 
                   onChange={(e) => setRequirements(e.target.value)} 
                   className="w-full min-h-[100px] p-3 rounded-md bg-slate-950/50 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Ex: React, TypeScript, 5 anos de experiência..."
+                  placeholder="Ex: CNH A em dia, experiência prévia, disponibilidade imediata..."
                 />
               </div>
 
@@ -98,9 +98,10 @@ export default function NewJob() {
                     onChange={(e) => setContractType(e.target.value)}
                     className="w-full p-2.5 rounded-md bg-slate-950/50 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    <option value="CLT">CLT</option>
-                    <option value="PJ">PJ</option>
-                    <option value="FREELANCE">Freelance</option>
+                    <option value="Diária">Diária</option>
+                    <option value="Fim de Semana">Fim de Semana</option>
+                    <option value="Freelance">Freelance</option>
+                    <option value="Temporário">Temporário</option>
                   </select>
                 </div>
               </div>
