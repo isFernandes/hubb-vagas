@@ -66,6 +66,15 @@
 
 - [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
 
+### Fase 9 - Validação e Estabilidade (Feito)
+- [x] Garantir testes end-to-end do fluxo
+- [x] Correção de bugs finais de rotas e validações Zod.
+
+### Fase 10 - Monetização e Pagamentos (A Fazer)
+- [ ] Integrar gateway de pagamento (ex: Mercado Pago / Stripe) para transações na plataforma.
+- [ ] Suportar métodos: Cartão de Crédito, Cartão de Débito e PIX.
+- [ ] Construir interface de checkout para as empresas ou freelancers (dependendo do modelo de negócio). (Concluído)
+
 ## 9. Testes Automatizados e Validação (Concluído)
 
 - [x] 9.1 Set up Jest for backend unit/integration tests
