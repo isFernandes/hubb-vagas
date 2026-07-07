@@ -21,24 +21,24 @@
 
 ## 4. Redis: cache e lock distribuído
 
-- [ ] 4.1 Configurar acesso ao Redis/ElastiCache no projeto.
-- [ ] 4.2 Implementar cache de listagem de vagas publicadas (chaves `job:list:{filtersHash}` com TTL).
-- [ ] 4.3 Implementar cache de detalhe de vaga (`job:detail:{jobId}`).
-- [ ] 4.4 Implementar componente de lock distribuído baseado em SETNX + TTL com chave `job-lock:{jobId}`.
-- [ ] 4.5 Integrar o lock no fluxo de fechamento por contratação (uso pelos workers que processam ApplicationApproved).
+- [x] 4.1 Configurar acesso ao Redis/ElastiCache no projeto.
+- [x] 4.2 Implementar cache de listagem de vagas publicadas (chaves `job:list:{filtersHash}` com TTL).
+- [x] 4.3 Implementar cache de detalhe de vaga (`job:detail:{jobId}`).
+- [x] 4.4 Implementar componente de lock distribuído baseado em SETNX + TTL com chave `job-lock:{jobId}`.
+- [x] 4.5 Integrar o lock no fluxo de fechamento por contratação (uso pelos workers que processam ApplicationApproved).
 
 ## 5. RabbitMQ e processamento assíncrono
 
 - [x] 5.1 Provisionar/Configurar RabbitMQ (localmente e, opcionalmente, em AWS via EC2/ECS ou serviço gerenciado).
 - [x] 5.2 Criar publishers na API para eventos de domínio:
   - [x] 5.2.1 AccountCreated (criação assíncrona de perfis).
-  - [ ] 5.2.2 ApplicationCreated (quando candidato aplica à vaga).
-  - [ ] 5.2.3 ApplicationApproved (quando candidato é aprovado).
-  - [ ] 5.2.4 JobClosed (quando vaga é fechada por expiração ou contratação).
-- [ ] 5.3 Implementar Job Workers que consomem filas/exchanges:
+  - [x] 5.2.2 ApplicationCreated (quando candidato aplica à vaga).
+  - [x] 5.2.3 ApplicationApproved (quando candidato é aprovado).
+  - [x] 5.2.4 JobClosed (quando vaga é fechada por expiração ou contratação).
+- [x] 5.3 Implementar Job Workers que consomem filas/exchanges:
   - [x] 5.3.1 Worker de perfis (AccountsConsumer) usando Strategy Pattern.
-  - [ ] 5.3.2 Worker de notificações (e-mail, webhooks) para ApplicationCreated e JobClosed.
-  - [ ] 5.3.3 Worker de fechamento de vaga para ApplicationApproved, usando lock em Redis e atualizando Postgres.
+  - [x] 5.3.2 Worker de notificações (e-mail, webhooks) para ApplicationCreated e JobClosed.
+  - [x] 5.3.3 Worker de fechamento de vaga para ApplicationApproved, usando lock em Redis e atualizando Postgres.
 
 ## 6. Infraestrutura AWS (foco em estudo)
 

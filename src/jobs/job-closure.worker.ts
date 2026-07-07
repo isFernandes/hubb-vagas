@@ -5,6 +5,7 @@ import { JobsRepository } from '../repositories/jobs.repository';
 import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { JobStatus } from '../infra/prisma/generated/client';
+import { Redis } from 'ioredis';
 
 @Controller()
 export class JobClosureWorker {
@@ -14,6 +15,7 @@ export class JobClosureWorker {
     private readonly statusHistoryRepository: JobStatusHistoryRepository,
     private readonly prisma: PrismaService,
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
+    @Inject('REDIS_CLIENT') private readonly redis: Redis,
   ) {}
 
   @EventPattern('application_approved')
@@ -53,6 +55,14 @@ export class JobClosureWorker {
 
         // Emit final event
         this.client.emit('job_closed', { jobId, hiredAppId: appId });
+        
+        // Invalidate detail cache
+        try {
+          await this.redis.del(`job:detail:${jobId}`);
+        } catch (e) {
+          console.error(`[Redis Error] Failed to invalidate cache for job:detail:${jobId}`, e);
+        }
+
         console.log(`[JobClosureWorker] Job ${jobId} successfully closed.`);
       }
     } catch (e) {

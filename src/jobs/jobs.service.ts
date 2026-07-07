@@ -8,6 +8,7 @@ import { JobsRepository } from '../repositories/jobs.repository';
 import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { JobStatus } from '../infra/prisma/generated/client';
 import { ClientProxy } from '@nestjs/microservices';
+import { Redis } from 'ioredis';
 
 @Injectable()
 export class JobsService {
@@ -15,6 +16,7 @@ export class JobsService {
     private readonly jobsRepository: JobsRepository,
     private readonly statusHistoryRepository: JobStatusHistoryRepository,
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
+    @Inject('REDIS_CLIENT') private readonly redis: Redis,
   ) {}
 
   async create(data: any, companyId: string, accountId: string) {
@@ -41,14 +43,53 @@ export class JobsService {
     search?: string;
     status?: any;
   }) {
-    return this.jobsRepository.findAll(filters);
+    const filterString = filters ? JSON.stringify(filters) : '{}';
+    const filtersHash = Buffer.from(filterString).toString('base64');
+    const cacheKey = `job:list:${filtersHash}`;
+
+    try {
+      const cached = await this.redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (e) {
+      console.error(`[Redis Error] Failed to get cache for ${cacheKey}`, e);
+    }
+
+    const data = await this.jobsRepository.findAll(filters);
+
+    try {
+      await this.redis.setex(cacheKey, 180, JSON.stringify(data)); // 3 minutes TTL
+    } catch (e) {
+      console.error(`[Redis Error] Failed to set cache for ${cacheKey}`, e);
+    }
+
+    return data;
   }
 
   async findOne(id: string) {
+    const cacheKey = `job:detail:${id}`;
+    
+    try {
+      const cached = await this.redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (e) {
+      console.error(`[Redis Error] Failed to get cache for ${cacheKey}`, e);
+    }
+
     const job = await this.jobsRepository.findById(id);
     if (!job) {
       throw new NotFoundException('Vaga não encontrada');
     }
+
+    try {
+      await this.redis.setex(cacheKey, 3600, JSON.stringify(job)); // 1 hour TTL
+    } catch (e) {
+      console.error(`[Redis Error] Failed to set cache for ${cacheKey}`, e);
+    }
+
     return job;
   }
 
@@ -72,6 +113,13 @@ export class JobsService {
       });
     }
 
+    // Invalidate Detail Cache
+    try {
+      await this.redis.del(`job:detail:${id}`);
+    } catch (e) {
+      console.error(`[Redis Error] Failed to invalidate cache for job:detail:${id}`, e);
+    }
+
     return updatedJob;
   }
 
@@ -84,7 +132,16 @@ export class JobsService {
       );
     }
 
-    return this.jobsRepository.remove(id);
+    const result = await this.jobsRepository.remove(id);
+
+    // Invalidate Detail Cache
+    try {
+      await this.redis.del(`job:detail:${id}`);
+    } catch (e) {
+      console.error(`[Redis Error] Failed to invalidate cache for job:detail:${id}`, e);
+    }
+
+    return result;
   }
 
   async approveApplication(jobId: string, appId: string, companyId: string) {
