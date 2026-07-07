@@ -23,14 +23,14 @@ export class JobsService {
     const job = await this.jobsRepository.create({
       ...data,
       companyId,
-      status: JobStatus.DRAFT,
+      status: JobStatus.PUBLISHED,
     });
 
     await this.statusHistoryRepository.create({
       jobId: job.id,
-      status: JobStatus.DRAFT,
+      status: JobStatus.PUBLISHED,
       changedById: accountId,
-      reason: 'Status inicial como DRAFT',
+      reason: 'Status inicial como PUBLISHED (Criação direta)',
     });
 
     return job;
