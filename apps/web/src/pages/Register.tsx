@@ -29,7 +29,7 @@ export default function Register() {
         email,
         password,
         role: role === 'USER' ? 'User' : 'Company',
-        ...(role === 'USER' ? { name, resumeUrl, contact: '' } : { name: companyName, cnpj, contact: '' })
+        ...(role === 'USER' ? { name, bio: resumeUrl, contact: '' } : { name: companyName, cnpj, contact: '' })
       };
       const { data } = await api.post('/accounts', payload);
       return data;
