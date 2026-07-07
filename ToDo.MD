@@ -86,17 +86,17 @@
 
 ## 12. Segurança, UX e Refinamentos de Domínio (A Fazer)
 
-- [ ] 12.1 Incluir remuneração/valor (`paymentAmount`) nas vagas.
-- [ ] 12.2 Painel de configurações (Settings) para usuários editarem perfil, senha, bio, área de atuação.
-- [ ] 12.3 Validação primária de CNPJ usando Brasil API no momento do cadastro.
-- [ ] 12.4 Suporte a avatar/foto de perfil (salvando buffer em base64 inicialmente no DB).
-- [ ] 12.5 Busca de vagas por geolocalização com raio de atuação definido pelo candidato (usando APIs gratuitas).
-- [ ] 12.6 Refinar entidade Job com horários de prestação do serviço e criar validador de conflito (mínimo de 1h entre bicos).
-- [ ] 12.7 Sistema de Reputação: Avaliação (1 a 5 estrelas) entre Empresa e Candidato após a prestação do serviço.
-- [ ] 12.8 Validação de CPF para Candidatos (Segurança contra perfis falsos).
-- [ ] 12.9 Vagas Múltiplas: Campo `positionsAvailable` para permitir aprovar X pessoas antes da vaga fechar.
-- [ ] 12.10 Política de Cancelamento (No-Show): Candidato pode cancelar a participação, resultando em perda de estrelas se for em cima da hora.
-- [ ] 12.11 Feedback de Fechamento: Notificar por e-mail os candidatos não selecionados quando a vaga for preenchida.
+- [ ] 12.1 Incluir remuneração/valor (`paymentAmount`) nas vagas. (Muito Fácil - Apenas adicionar coluna e input)
+- [ ] 12.2 Validação de CPF para Candidatos. (Muito Fácil - Validação matemática no cadastro)
+- [ ] 12.3 Validação de CNPJ usando Brasil API. (Fácil - Chamada HTTP externa no backend)
+- [ ] 12.4 Feedback de Fechamento: E-mail para os não selecionados. (Fácil - Disparar evento no RabbitMQ)
+- [ ] 12.5 Painel de configurações (Settings) para edição de perfil, senha e bio. (Fácil/Médio - Nova tela e endpoint de PATCH)
+- [ ] 12.6 Suporte a avatar/foto de perfil em base64. (Médio - Ajuste no Prisma e componente de upload no Front)
+- [ ] 12.7 Vagas Múltiplas: Campo `positionsAvailable`. (Médio - Ajustar a lógica de fechamento da vaga por contagem)
+- [ ] 12.8 Sistema de Reputação: Avaliações (1 a 5 estrelas). (Médio - Criação de novas tabelas e rotas pós-serviço)
+- [ ] 12.9 Política de Cancelamento (No-Show) com punição. (Médio/Complexo - Lógica de desconto de estrelas baseado no tempo)
+- [ ] 12.10 Validador de conflito de agenda (mín. 1h entre bicos). (Complexo - Checagem de cruzamento de horários em aplicações ativas)
+- [ ] 12.11 Busca por geolocalização (Raio de atuação). (Muito Complexo - Conversão de endereço em Lat/Lng e buscas por distância - PostGIS/Haversine)
 
 ## 13. Administração e Governança (A Fazer)
 
