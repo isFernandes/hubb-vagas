@@ -7,6 +7,7 @@ export const createJobSchema = z.object({
   location: z.string().min(2),
   contractType: z.string(),
   expiresAt: z.string().datetime(), // ISO 8601
+  paymentAmountCents: z.number().int().positive(),
 });
 
 export type CreateJobDto = z.infer<typeof createJobSchema>;
