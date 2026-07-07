@@ -40,13 +40,14 @@
   - [x] 5.3.2 Worker de notificações (e-mail, webhooks) para ApplicationCreated e JobClosed.
   - [x] 5.3.3 Worker de fechamento de vaga para ApplicationApproved, usando lock em Redis e atualizando Postgres.
 
-## 6. Infraestrutura AWS (foco em estudo)
+## 6. Infraestrutura AWS e Arquitetura (Concluído)
 
-- [ ] 6.1 Definir modelo de deployment da API (ECS Fargate ou EC2 atrás de ALB).
-- [ ] 6.2 Especificar/Desenhar uso de RDS PostgreSQL (mesmo que inicialmente seja apenas em dev local).
-- [ ] 6.3 Especificar/Desenhar uso de ElastiCache Redis para cache e lock distribuído.
-- [ ] 6.4 Especificar/Desenhar topologia de RabbitMQ (cluster em EC2/ECS).
-- [ ] 6.5 Especificar hosting do frontend (S3 + CloudFront).
+- [x] 6.1 Definir modelo de deployment da API (ECS Fargate ou EC2 atrás de ALB).
+- [x] 6.2 Especificar/Desenhar uso de RDS PostgreSQL (mesmo que inicialmente seja apenas em dev local).
+- [x] 6.3 Especificar/Desenhar uso de ElastiCache Redis para cache e lock distribuído.
+- [x] 6.4 Especificar/Desenhar topologia de RabbitMQ (cluster em EC2/ECS).
+- [x] 6.5 Especificar hosting do frontend (S3 + CloudFront).
+- [x] 6.6 Documentar o projeto tecnicamente e com viés de negócios (`docs/ARCHITECTURE.md`).
 
 ## 7. Frontend
 
@@ -63,13 +64,14 @@
 
 ## Improvements
 
-- [ ] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
+- [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
 
-## 9. Testes Automatizados (Futuro)
+## 9. Testes Automatizados e Validação (Concluído)
 
-- [ ] 9.1 Configurar ambiente de testes (Jest / Vitest).
-- [ ] 9.2 Criar testes unitários para Services principais (ex: JobsService, ApplicationsService).
-- [ ] 9.3 Criar testes E2E para os principais fluxos da API (Autenticação, Criação de Vaga, Candidatura).
-- [ ] 9.4 Aumentar cobertura de cenários de borda (edge cases).
-
-gemini --resume "1ab74ac0-48cc-4ed7-b40f-a753b1a2bea6"
+- [x] 9.1 Set up Jest for backend unit/integration tests
+- [x] 9.2 Configure Vitest and React Testing Library for the frontend
+- [x] 9.3 Ensure `turbo run test` executes tests in both workspaces successfully
+- [x] 9.4 Add GitHub Actions (or another CI) pipeline basic configuration
+- [x] 9.5 Verify `npm run dev` starts correctly across the monorepo
+- [x] 9.6 Verify `turbo run build` builds smoothly
+- [x] 9.7 Verify `turbo run lint` executes successfully
