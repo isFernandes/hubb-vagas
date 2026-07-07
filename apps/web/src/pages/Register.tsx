@@ -15,6 +15,7 @@ export default function Register() {
   
   // Perfil User
   const [name, setName] = useState('');
+  const [cpf, setCpf] = useState('');
   const [resumeUrl, setResumeUrl] = useState('');
 
   // Perfil Company
@@ -23,13 +24,22 @@ export default function Register() {
   
   const [errorMsg, setErrorMsg] = useState('');
 
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length > 11) value = value.slice(0, 11);
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    setCpf(value);
+  };
+
   const registerMutation = useMutation({
     mutationFn: async () => {
       const payload = {
         email,
         password,
         role: role === 'USER' ? 'User' : 'Company',
-        ...(role === 'USER' ? { name, bio: resumeUrl, contact: '' } : { name: companyName, cnpj, contact: '' })
+        ...(role === 'USER' ? { name, cpf: cpf.replace(/\D/g, ''), bio: resumeUrl, contact: '' } : { name: companyName, cnpj, contact: '' })
       };
       const { data } = await api.post('/accounts', payload);
       return data;
@@ -92,6 +102,10 @@ export default function Register() {
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-slate-200">Nome Completo</Label>
                   <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} className="bg-slate-950/50 border-slate-700 text-slate-100 focus-visible:ring-indigo-500" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="cpf" className="text-slate-200">CPF</Label>
+                  <Input id="cpf" required type="text" placeholder="000.000.000-00" value={cpf} onChange={handleCpfChange} className="bg-slate-950/50 border-slate-700 text-slate-100 focus-visible:ring-indigo-500" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="resumeUrl" className="text-slate-200">Resumo ou Links (Opcional)</Label>
