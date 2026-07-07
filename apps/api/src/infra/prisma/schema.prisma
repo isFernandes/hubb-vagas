@@ -1,0 +1,127 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider        = "prisma-client"
+  output          = "./generated"
+  moduleFormat    = "cjs"
+}
+
+model Account {
+  id                 String             @id @default(uuid())
+  email              String             @unique
+  password           String
+  role               Role
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @default(now()) @updatedAt
+  user               User?
+  company            Company?
+  jobStatusHistories JobStatusHistory[]
+
+  @@map("accounts")
+}
+
+model User {
+  id               String             @id @default(uuid())
+  name             String
+  bio              String?
+  account_id       String             @unique
+  account          Account            @relation(fields: [account_id], references: [id])
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  applications     Application[]
+  userApplications UserApplications[]
+
+  @@map("users")
+}
+
+model Company {
+  id         String   @id @default(uuid())
+  name       String
+  cnpj       String   @unique
+  contact    String
+  account_id String   @unique
+  account    Account  @relation(fields: [account_id], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  jobs       Job[]
+
+  @@map("companies")
+}
+
+model Job {
+  id            String             @id @default(uuid())
+  title         String
+  description   String
+  requirements  String
+  companyId     String
+  company       Company            @relation(fields: [companyId], references: [id])
+  location      String
+  contractType  String
+  expiresAt     DateTime
+  status        JobStatus          @default(DRAFT)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  applications  Application[]
+  statusHistory JobStatusHistory[]
+
+  @@map("jobs")
+}
+
+model UserApplications {
+  id            String      @id @default(uuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id])
+
+  @@map("userApplications")
+}
+
+model Application {
+  id               String             @id @default(uuid())
+  userId           String
+  user             User               @relation(fields: [userId], references: [id])
+  jobId            String
+  job              Job                @relation(fields: [jobId], references: [id])
+  status           ApplicationStatus  @default(APPLIED)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  userApplications UserApplications[]
+
+  @@map("applications")
+}
+
+enum Role {
+  User
+  Admin
+  Company
+}
+
+enum JobStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED_EXPIRED
+  CLOSED_HIRED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  SCREENING
+  APPROVED
+  REJECTED
+}
+
+model JobStatusHistory {
+  id           String    @id @default(uuid())
+  jobId        String
+  job          Job       @relation(fields: [jobId], references: [id])
+  status       JobStatus
+  changedById  String
+  changedBy    Account   @relation(fields: [changedById], references: [id])
+  reason       String?
+  createdAt    DateTime  @default(now())
+
+  @@map("job_status_history")
+}

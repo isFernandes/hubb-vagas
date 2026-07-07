@@ -65,4 +65,11 @@
 
 - [ ] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
 
+## 9. Testes Automatizados (Futuro)
+
+- [ ] 9.1 Configurar ambiente de testes (Jest / Vitest).
+- [ ] 9.2 Criar testes unitários para Services principais (ex: JobsService, ApplicationsService).
+- [ ] 9.3 Criar testes E2E para os principais fluxos da API (Autenticação, Criação de Vaga, Candidatura).
+- [ ] 9.4 Aumentar cobertura de cenários de borda (edge cases).
+
 gemini --resume "1ab74ac0-48cc-4ed7-b40f-a753b1a2bea6"
