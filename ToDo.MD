@@ -58,8 +58,8 @@
 
 - [x] 8.1 Implementar autenticação JWT / integração com IdP (ex.: Cognito).
 - [x] 8.2 Garantir autorização por role em endpoints sensíveis.
-- [ ] 8.3 Configurar logs estruturados na API e nos workers.
-- [ ] 8.4 Definir métricas e alarmes principais (latência API, tamanho de filas RabbitMQ, erros em workers).
+- [x] 8.3 Configurar logs estruturados na API e nos workers.
+- [x] 8.4 Definir métricas e alarmes principais (latência API, tamanho de filas RabbitMQ, erros em workers).
 
 ## Improvements
 
