@@ -4,19 +4,26 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function JobDetailsCandidate() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [applied, setApplied] = useState(false);
 
+  const { user } = useAuth();
+
   const { data: job, isLoading } = useQuery({
     queryKey: ['job-details-public', id],
     queryFn: async () => {
       const { data } = await api.get(`/jobs/${id}`);
+      if (user && data.applications) {
+        const hasApplied = data.applications.some((app: any) => app.userId === user.profileId);
+        setApplied(hasApplied);
+      }
       return data;
     },
-    enabled: !!id
+    enabled: !!id && !!user
   });
 
   const applyMutation = useMutation({
