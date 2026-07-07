@@ -56,6 +56,7 @@ describe('JobsService', () => {
             get: jest.fn(),
             setex: jest.fn(),
             del: jest.fn(),
+            keys: jest.fn().mockResolvedValue([]),
           },
         },
       ],
@@ -66,7 +67,7 @@ describe('JobsService', () => {
     statusHistoryRepository = module.get(JobStatusHistoryRepository);
   });
 
-  it('should create a job with DRAFT status and log status history', async () => {
+  it('should create a job with PUBLISHED status and log status history', async () => {
     repository.create.mockResolvedValue(mockJob);
     statusHistoryRepository.create.mockResolvedValue(null as any);
     const data = {
@@ -84,14 +85,14 @@ describe('JobsService', () => {
       expect.objectContaining({
         ...data,
         companyId: 'company-1',
-        status: JobStatus.DRAFT,
+        status: JobStatus.PUBLISHED,
       }),
     );
     expect(statusHistoryRepository.create).toHaveBeenCalledWith({
       jobId: 'job-1',
-      status: JobStatus.DRAFT,
+      status: JobStatus.PUBLISHED,
       changedById: 'account-1',
-      reason: 'Status inicial como DRAFT',
+      reason: 'Status inicial como PUBLISHED (Criação direta)',
     });
   });
 
