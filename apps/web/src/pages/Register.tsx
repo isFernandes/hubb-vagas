@@ -28,10 +28,10 @@ export default function Register() {
       const payload = {
         email,
         password,
-        role,
-        ...(role === 'USER' ? { name, resumeUrl } : { name: companyName, cnpj })
+        role: role === 'USER' ? 'User' : 'Company',
+        ...(role === 'USER' ? { name, resumeUrl, contact: '' } : { name: companyName, cnpj, contact: '' })
       };
-      const { data } = await api.post('/auth/register', payload);
+      const { data } = await api.post('/accounts', payload);
       return data;
     },
     onSuccess: () => {
