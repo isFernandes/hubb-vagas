@@ -84,6 +84,16 @@
 - [ ] 11.2 Suportar métodos: Cartão de Crédito, Cartão de Débito e PIX.
 - [ ] 11.3 Construir interface de checkout para as empresas ou freelancers.
 
+## 12. Segurança, UX e Refinamentos de Domínio (A Fazer)
+
+- [ ] 12.1 Incluir remuneração/valor (`paymentAmount`) nas vagas.
+- [ ] 12.2 Painel de configurações (Settings) para usuários editarem perfil, senha, bio, área de atuação.
+- [ ] 12.3 Validação primária de CNPJ usando Brasil API no momento do cadastro.
+- [ ] 12.4 Suporte a avatar/foto de perfil (salvando buffer em base64 inicialmente no DB).
+- [ ] 12.5 Busca de vagas por geolocalização com raio de atuação definido pelo candidato (usando APIs gratuitas).
+- [ ] 12.6 Refinar entidade Job com horários de prestação do serviço e criar validador de conflito (mínimo de 1h entre bicos).
+
 ## Improvements (Melhorias Contínuas)
 
 - [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
+- [ ] Chat interno na plataforma para ocultar contatos diretos até aprovação final (Improvement Futuro).
