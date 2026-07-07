@@ -34,6 +34,12 @@ describe('ApplicationsService', () => {
           provide: JobsRepository,
           useValue: mockJobsRepository,
         },
+        {
+          provide: 'RMQ_CLIENT',
+          useValue: {
+            emit: jest.fn(),
+          },
+        },
       ],
     }).compile();
 

@@ -44,6 +44,20 @@ describe('JobsService', () => {
             create: jest.fn(),
           },
         },
+        {
+          provide: 'RMQ_CLIENT',
+          useValue: {
+            emit: jest.fn(),
+          },
+        },
+        {
+          provide: 'REDIS_CLIENT',
+          useValue: {
+            get: jest.fn(),
+            setex: jest.fn(),
+            del: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -88,11 +102,28 @@ describe('JobsService', () => {
     ).rejects.toThrow(NotFoundException);
   });
 
-  it('should throw ForbiddenException if company does not own the job on update', async () => {
+  it('should throw ForbiddenException if company does not own the job on update and not admin', async () => {
     repository.findById.mockResolvedValue(mockJob);
     await expect(
       service.update('job-1', {}, 'company-2', 'account-1'),
     ).rejects.toThrow(ForbiddenException);
+  });
+
+  it('should update job if user is admin even if not owner', async () => {
+    repository.findById.mockResolvedValue(mockJob);
+    repository.update.mockResolvedValue({ ...mockJob, title: 'Updated Admin' });
+
+    const result = await service.update(
+      'job-1',
+      { title: 'Updated Admin' },
+      'company-2', // not the owner
+      'account-1',
+      true, // isAdmin
+    );
+    expect(repository.update).toHaveBeenCalledWith('job-1', {
+      title: 'Updated Admin',
+    });
+    expect(result.title).toBe('Updated Admin');
   });
 
   it('should update job if company owns it', async () => {
@@ -134,11 +165,19 @@ describe('JobsService', () => {
     });
   });
 
-  it('should throw ForbiddenException if company does not own the job on remove', async () => {
+  it('should throw ForbiddenException if company does not own the job on remove and not admin', async () => {
     repository.findById.mockResolvedValue(mockJob);
     await expect(service.remove('job-1', 'company-2')).rejects.toThrow(
       ForbiddenException,
     );
+  });
+
+  it('should remove job if user is admin even if not owner', async () => {
+    repository.findById.mockResolvedValue(mockJob);
+    repository.remove.mockResolvedValue(undefined);
+
+    await service.remove('job-1', 'company-2', true);
+    expect(repository.remove).toHaveBeenCalledWith('job-1');
   });
 
   it('should remove job if company owns it', async () => {

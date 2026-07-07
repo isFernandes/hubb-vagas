@@ -23,7 +23,16 @@ describe('JobsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [JobsController],
       providers: [
-        JobsService,
+        {
+          provide: JobsService,
+          useValue: {
+            create: jest.fn(),
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            update: jest.fn(),
+            remove: jest.fn(),
+          },
+        },
         {
           provide: JobsRepository,
           useValue: mockJobsRepository,
