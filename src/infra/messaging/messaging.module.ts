@@ -23,6 +23,24 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           },
         }),
       },
+      {
+        name: 'RMQ_CLIENT',
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [
+              configService.get<string>('RABBITMQ_URL') ||
+                'amqp://guest:guest@localhost:5672',
+            ],
+            queue: 'hubb_events_queue',
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+      },
     ]),
   ],
   exports: [ClientsModule],

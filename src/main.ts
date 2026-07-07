@@ -22,6 +22,17 @@ async function bootstrap() {
     },
   });
 
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [rabbitmqUrl],
+      queue: 'hubb_events_queue',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
+
   await app.startAllMicroservices();
 
   const port = configService.get<string>('PORT') || '3000';
