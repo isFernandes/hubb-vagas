@@ -13,6 +13,8 @@ import JobDetails from './pages/company/JobDetails';
 
 import JobsList from './pages/candidate/JobsList';
 import JobDetailsCandidate from './pages/candidate/JobDetailsCandidate';
+import CandidateSettings from './pages/candidate/Settings';
+import CompanySettings from './pages/company/Settings';
 
 import { Toaster } from '@/components/ui/sonner';
 
@@ -37,11 +39,13 @@ export function AppRoutes() {
       {/* Rotas Candidato */}
       <Route path="/jobs" element={<PrivateRoute allowedRoles={['USER', 'ADMIN']}><JobsList /></PrivateRoute>} />
       <Route path="/jobs/:id" element={<PrivateRoute allowedRoles={['USER', 'ADMIN']}><JobDetailsCandidate /></PrivateRoute>} />
+      <Route path="/settings" element={<PrivateRoute allowedRoles={['USER']}><CandidateSettings /></PrivateRoute>} />
       
       {/* Rotas Empresa */}
       <Route path="/dashboard" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><Dashboard /></PrivateRoute>} />
       <Route path="/dashboard/jobs/new" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><NewJob /></PrivateRoute>} />
       <Route path="/dashboard/jobs/:id" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><JobDetails /></PrivateRoute>} />
+      <Route path="/dashboard/settings" element={<PrivateRoute allowedRoles={['COMPANY']}><CompanySettings /></PrivateRoute>} />
     </Routes>
   );
 }
