@@ -18,6 +18,7 @@ export default function NewJob() {
   const [location, setLocation] = useState('');
   const [contractType, setContractType] = useState('Diária');
   const [expirationDate, setExpirationDate] = useState('');
+  const [paymentAmount, setPaymentAmount] = useState('');
 
   const createJobMutation = useMutation({
     mutationFn: async (payload: any) => {
@@ -43,13 +44,19 @@ export default function NewJob() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Converte vírgula para ponto e converte para centavos
+    const amountStr = paymentAmount.replace(',', '.');
+    const paymentAmountCents = Math.round(parseFloat(amountStr) * 100);
+
     createJobMutation.mutate({
       title,
       description,
       requirements,
       location,
       contractType,
-      expiresAt: new Date(expirationDate).toISOString()
+      expiresAt: new Date(expirationDate).toISOString(),
+      paymentAmountCents
     });
   };
 
@@ -116,9 +123,25 @@ export default function NewJob() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="expirationDate" className="text-slate-300">Data de Expiração</Label>
-                <Input id="expirationDate" type="date" required value={expirationDate} onChange={(e) => setExpirationDate(e.target.value)} className="bg-slate-950/50 border-slate-700 text-white [color-scheme:dark]" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="expirationDate" className="text-slate-300">Data de Expiração</Label>
+                  <Input id="expirationDate" type="date" required value={expirationDate} onChange={(e) => setExpirationDate(e.target.value)} className="bg-slate-950/50 border-slate-700 text-white [color-scheme:dark]" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="paymentAmount" className="text-slate-300">Valor Ofertado (R$)</Label>
+                  <Input 
+                    id="paymentAmount" 
+                    type="number" 
+                    step="0.01" 
+                    min="0.01" 
+                    required 
+                    placeholder="Ex: 150.00"
+                    value={paymentAmount} 
+                    onChange={(e) => setPaymentAmount(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white" 
+                  />
+                </div>
               </div>
 
               <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={createJobMutation.isPending}>

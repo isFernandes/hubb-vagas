@@ -65,6 +65,11 @@ export default function JobsList() {
                 <div className="flex flex-wrap gap-2 text-sm text-slate-300">
                   <span className="flex items-center bg-slate-800 px-2 py-1 rounded"><MapPin className="mr-1 h-3 w-3"/> {job.location}</span>
                   <span className="flex items-center bg-slate-800 px-2 py-1 rounded"><Briefcase className="mr-1 h-3 w-3"/> {job.contractType}</span>
+                  {job.paymentAmountCents > 0 && (
+                    <span className="flex items-center bg-slate-800 px-2 py-1 rounded text-emerald-400 font-bold">
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(job.paymentAmountCents / 100)}
+                    </span>
+                  )}
                 </div>
                 <Link to={`/jobs/${job.id}`} className="block">
                   <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_0_15px_rgba(79,70,229,0.2)]">

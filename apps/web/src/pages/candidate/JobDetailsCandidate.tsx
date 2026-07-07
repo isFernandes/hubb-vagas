@@ -61,7 +61,12 @@ export default function JobDetailsCandidate() {
             <div className="flex flex-wrap gap-4 text-slate-300 mb-8 pb-8 border-b border-slate-800">
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><MapPin className="mr-2 h-4 w-4 text-indigo-500"/> {job.location}</div>
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Briefcase className="mr-2 h-4 w-4 text-indigo-500"/> {job.contractType}</div>
-              <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Calendar className="mr-2 h-4 w-4 text-indigo-500"/> Expira em: {new Date(job.expirationDate).toLocaleDateString()}</div>
+              <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Calendar className="mr-2 h-4 w-4 text-indigo-500"/> Expira em: {new Date(job.expirationDate || job.expiresAt).toLocaleDateString()}</div>
+              {job.paymentAmountCents > 0 && (
+                <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md font-bold text-emerald-400">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(job.paymentAmountCents / 100)}
+                </div>
+              )}
             </div>
 
             <div className="space-y-8 text-slate-300 leading-relaxed text-lg">
