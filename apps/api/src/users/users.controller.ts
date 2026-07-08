@@ -11,7 +11,11 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto, UpdateUserProfileDto, updateUserProfileSchema } from './dto/update-user.dto';
+import {
+  UpdateUserDto,
+  type UpdateUserProfileDto,
+  updateUserProfileSchema,
+} from './dto/update-user.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
@@ -45,7 +49,8 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   updateProfile(
     @Request() req,
-    @Body(new ZodValidationPipe(updateUserProfileSchema)) updateDto: UpdateUserProfileDto
+    @Body(new ZodValidationPipe(updateUserProfileSchema))
+    updateDto: UpdateUserProfileDto,
   ) {
     return this.usersService.update(req.user.profileId, updateDto);
   }

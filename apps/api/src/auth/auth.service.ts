@@ -19,7 +19,7 @@ export class AuthService {
       include: {
         user: true,
         company: true,
-      }
+      },
     });
 
     if (!user) {
@@ -32,7 +32,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const profileId = user.role === 'Company' ? user.company?.id : user.user?.id;
+    const profileId =
+      user.role === 'Company' ? user.company?.id : user.user?.id;
     const payload = { sub: user.id, email: user.email, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
@@ -41,7 +42,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
         profileId: profileId,
-      }
+      },
     };
   }
 

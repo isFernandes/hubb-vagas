@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../../src/app.module';
 import { JwtAuthGuard } from '../../src/guards/jwt-auth.guard';
 import { PrismaService } from '../../src/infra/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 describe('AccountsController (e2e)', () => {
   let app: INestApplication;
@@ -23,7 +24,9 @@ describe('AccountsController (e2e)', () => {
       .overrideProvider(PrismaService)
       .useValue({
         account: {
-          findUnique: jest.fn().mockResolvedValue({ id: 'account-123', password: 'old-password' }),
+          findUnique: jest
+            .fn()
+            .mockResolvedValue({ id: 'account-123', password: 'old-password' }),
           update: jest.fn().mockResolvedValue({}),
         },
         onModuleInit: jest.fn(),
@@ -31,7 +34,6 @@ describe('AccountsController (e2e)', () => {
       .compile();
 
     // mock bcrypt globally
-    const bcrypt = require('bcrypt');
     jest.spyOn(bcrypt, 'compare').mockResolvedValue(true);
     jest.spyOn(bcrypt, 'hashSync').mockReturnValue('hashed-new');
 

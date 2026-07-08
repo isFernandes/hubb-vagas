@@ -16,7 +16,11 @@ describe('CompaniesController (e2e)', () => {
       .useValue({
         canActivate: (context) => {
           const req = context.switchToHttp().getRequest();
-          req.user = { id: 'account-123', profileId: 'company-123', role: 'Company' };
+          req.user = {
+            id: 'account-123',
+            profileId: 'company-123',
+            role: 'Company',
+          };
           return true;
         },
       })

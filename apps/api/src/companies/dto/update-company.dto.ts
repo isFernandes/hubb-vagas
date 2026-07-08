@@ -10,4 +10,6 @@ export const updateCompanyProfileSchema = z.object({
   cnpj: z.string().optional(),
 });
 
-export type UpdateCompanyProfileDto = z.infer<typeof updateCompanyProfileSchema>;
+export type UpdateCompanyProfileDto = z.infer<
+  typeof updateCompanyProfileSchema
+>;

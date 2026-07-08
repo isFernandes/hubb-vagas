@@ -4,6 +4,7 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountsRepository } from '../repositories/accounts.repository';
 import { AuthService } from 'src/auth/auth.service';
 import { ClientProxy } from '@nestjs/microservices';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AccountsService {
@@ -58,8 +59,10 @@ export class AccountsService {
       throw new ConflictException('Conta não encontrada');
     }
 
-    const bcrypt = require('bcrypt');
-    const isPasswordValid = await bcrypt.compare(currentPassword, account.password);
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      account.password,
+    );
     if (!isPasswordValid) {
       throw new ConflictException('Senha atual incorreta');
     }

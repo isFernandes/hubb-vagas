@@ -11,7 +11,11 @@ import {
 } from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
-import { UpdateCompanyDto, UpdateCompanyProfileDto, updateCompanyProfileSchema } from './dto/update-company.dto';
+import {
+  UpdateCompanyDto,
+  type UpdateCompanyProfileDto,
+  updateCompanyProfileSchema,
+} from './dto/update-company.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
@@ -45,7 +49,8 @@ export class CompaniesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   updateProfile(
     @Request() req,
-    @Body(new ZodValidationPipe(updateCompanyProfileSchema)) updateDto: UpdateCompanyProfileDto
+    @Body(new ZodValidationPipe(updateCompanyProfileSchema))
+    updateDto: UpdateCompanyProfileDto,
   ) {
     return this.companiesService.update(req.user.profileId, updateDto);
   }

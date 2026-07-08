@@ -54,7 +54,9 @@ export class NotificationsConsumer {
   async handleApplicationRejected(
     @Payload() data: { email: string; jobTitle: string; companyName: string },
   ) {
-    console.log(`[E-MAIL INFO] Sending rejection email to ${data.email} for job ${data.jobTitle}`);
+    console.log(
+      `[E-MAIL INFO] Sending rejection email to ${data.email} for job ${data.jobTitle}`,
+    );
     try {
       await this.mailerService.sendMail({
         to: data.email,
@@ -63,7 +65,10 @@ export class NotificationsConsumer {
       });
       console.log(`[E-MAIL SENT] Rejection email sent to ${data.email}`);
     } catch (e) {
-      console.error(`[E-MAIL ERROR] Failed to send rejection email to ${data.email}:`, e);
+      console.error(
+        `[E-MAIL ERROR] Failed to send rejection email to ${data.email}:`,
+        e,
+      );
     }
   }
 }

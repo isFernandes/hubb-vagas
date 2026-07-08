@@ -14,7 +14,7 @@ import { AccountsService } from './accounts.service';
 import { type CreateAccountDto } from './dto/create-account.dto';
 import { type UpdateAccountDto } from './dto/update-account.dto';
 import {
-  UpdatePasswordDto,
+  type UpdatePasswordDto,
   updatePasswordSchema,
 } from './dto/update-password.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -30,7 +30,7 @@ export class AccountsController {
   @Post()
   async create(@Body() createAccountDto: CreateAccountDto) {
     if (createAccountDto.role === 'Company' && createAccountDto.cnpj) {
-      const cleanCnpj = createAccountDto.cnpj.replace(/[\.\-\/]/g, '');
+      const cleanCnpj = createAccountDto.cnpj.replace(/[.\-/]/g, '');
       try {
         const res = await fetch(
           `https://brasilapi.com.br/api/cnpj/v1/${cleanCnpj}`,
