@@ -1,0 +1,62 @@
+<h2>Dashboard Metrics Focus</h2>
+<p class="subtitle">What kind of data should be the primary focus of the Admin Dashboard?</p>
+
+<div class="options">
+  <div class="option" data-choice="simple_kpi" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>High-Level KPIs & Recent Activity</h3>
+      <p>Simple numeric cards and a list of the most recent actions in the system.</p>
+      <div class="mockup" style="margin-top: 10px;">
+        <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+          <div style="flex: 1; border: 1px solid #ccc; padding: 5px; text-align: center;">
+            <div style="font-size: 10px;">Total Users</div>
+            <div style="font-size: 14px; font-weight: bold;">1,204</div>
+          </div>
+          <div style="flex: 1; border: 1px solid #ccc; padding: 5px; text-align: center;">
+            <div style="font-size: 10px;">Active Jobs</div>
+            <div style="font-size: 14px; font-weight: bold;">84</div>
+          </div>
+          <div style="flex: 1; border: 1px solid #ccc; padding: 5px; text-align: center;">
+            <div style="font-size: 10px;">Applications</div>
+            <div style="font-size: 14px; font-weight: bold;">342</div>
+          </div>
+        </div>
+        <div style="border: 1px solid #ccc; padding: 5px; font-size: 10px;">
+          <strong>Recent Activity</strong><br>
+          - Job "Developer" created<br>
+          - User "Alice" registered<br>
+          - Application #104 approved
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="option" data-choice="charts" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>KPIs + Growth Charts</h3>
+      <p>Numeric cards alongside line/bar charts showing growth over time (requires adding a charting library like Recharts).</p>
+      <div class="mockup" style="margin-top: 10px;">
+        <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+          <div style="flex: 1; border: 1px solid #ccc; padding: 5px; text-align: center;">
+            <div style="font-size: 10px;">New Users (30d)</div>
+            <div style="font-size: 14px; font-weight: bold;">+12%</div>
+          </div>
+          <div style="flex: 1; border: 1px solid #ccc; padding: 5px; text-align: center;">
+            <div style="font-size: 10px;">Jobs Filled</div>
+            <div style="font-size: 14px; font-weight: bold;">42</div>
+          </div>
+        </div>
+        <div style="border: 1px solid #ccc; padding: 5px; height: 50px; display: flex; align-items: flex-end; gap: 2px;">
+          <div style="width: 10%; background: #999; height: 20%;"></div>
+          <div style="width: 10%; background: #999; height: 40%;"></div>
+          <div style="width: 10%; background: #999; height: 30%;"></div>
+          <div style="width: 10%; background: #999; height: 60%;"></div>
+          <div style="width: 10%; background: #999; height: 80%;"></div>
+          <div style="width: 10%; background: #999; height: 50%;"></div>
+          <span style="font-size: 10px; margin-left: 5px;">Registrations over time</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
