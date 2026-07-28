@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { toast } from 'sonner';
 import { Search } from 'lucide-react';
@@ -15,8 +15,15 @@ type Account = {
 };
 
 export default function AdminUsers() {
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
+  const [newStatus, setNewStatus] = useState<'ACTIVE' | 'SUSPENDED' | 'BANNED'>('ACTIVE');
+  const [reason, setReason] = useState('');
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-users', page, search],
@@ -27,6 +34,46 @@ export default function AdminUsers() {
       return response.data;
     },
   });
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      if (!selectedAccount) return;
+      const response = await api.patch(`/admin/users/${selectedAccount.id}/status`, {
+        status: newStatus,
+        reason,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success('Status updated successfully');
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      closeModal();
+    },
+    onError: () => {
+      toast.error('Failed to update status');
+    }
+  });
+
+  const openModal = (account: Account) => {
+    setSelectedAccount(account);
+    setNewStatus(account.status);
+    setReason('');
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedAccount(null);
+  };
+
+  const handleStatusChange = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reason.trim()) {
+      toast.error('Reason is required');
+      return;
+    }
+    mutation.mutate();
+  };
 
   if (isError) {
     toast.error('Failed to load users');
@@ -103,7 +150,12 @@ export default function AdminUsers() {
                       {new Date(account.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-blue-600 hover:text-blue-900">Manage Status</button>
+                      <button 
+                        onClick={() => openModal(account)}
+                        className="text-blue-600 hover:text-blue-900"
+                      >
+                        Manage Status
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -132,6 +184,72 @@ export default function AdminUsers() {
           </div>
         </div>
       </div>
+
+      {/* Status Change Modal */}
+      {isModalOpen && selectedAccount && (
+        <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={closeModal}></div>
+
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <form onSubmit={handleStatusChange}>
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                      <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        Change Status for {selectedAccount.email}
+                      </h3>
+                      <div className="mt-4 space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">New Status</label>
+                          <select
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border"
+                            value={newStatus}
+                            onChange={(e) => setNewStatus(e.target.value as any)}
+                          >
+                            <option value="ACTIVE">Active</option>
+                            <option value="SUSPENDED">Suspended</option>
+                            <option value="BANNED">Banned</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">Reason (Required for Audit Log)</label>
+                          <textarea
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            rows={3}
+                            placeholder="Explain why this action was taken..."
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            required
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="submit"
+                    disabled={mutation.isPending}
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-blue-400"
+                  >
+                    {mutation.isPending ? 'Saving...' : 'Save Changes'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
