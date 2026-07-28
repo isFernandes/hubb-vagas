@@ -62,3 +62,5 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 src/infra/prisma/generated
+
+.worktrees/
