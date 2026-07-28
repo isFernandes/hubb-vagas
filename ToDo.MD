@@ -80,6 +80,7 @@
 - [x] 10.2 Correção de bugs finais de rotas e validações Zod.
 - [x] 10.3 Ajustes de UX (Toasts nativos do Sonner para validações falhas).
 - [ ] 10.4 Resolver vulnerabilidades (npm audit fix) e breaking changes de dependências no frontend e backend.
+- [ ] 10.5 Simular pipeline de CI localmente e corrigir erros encontrados.
 
 ## 11. Monetização e Pagamentos (A Fazer)
 
@@ -94,7 +95,7 @@
 - [x] 12.3 Validação de CNPJ usando Brasil API. (Fácil - Chamada HTTP externa no backend)
 - [x] 12.4 Feedback de Fechamento: E-mail para os não selecionados. (Fácil - Disparar evento no RabbitMQ)
 - [x] 12.5 Painel de configurações (Settings) para edição de perfil, senha e bio. (Fácil/Médio - Nova tela e endpoint de PATCH)
-- [ ] 12.6 Suporte a avatar/foto de perfil em base64. (Médio - Ajuste no Prisma e componente de upload no Front)
+- [x] 12.6 Suporte a avatar/foto de perfil em base64. (Médio - Ajuste no Prisma e componente de upload no Front)
 - [ ] 12.7 Vagas Múltiplas: Campo `positionsAvailable`. (Médio - Ajustar a lógica de fechamento da vaga por contagem)
 - [ ] 12.8 Sistema de Reputação: Avaliações (1 a 5 estrelas). (Médio - Criação de novas tabelas e rotas pós-serviço)
 - [ ] 12.9 Política de Cancelamento (No-Show) com punição. (Médio/Complexo - Lógica de desconto de estrelas baseado no tempo)
