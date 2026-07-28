@@ -34,4 +34,22 @@ export class AdminController {
   ) {
     return this.adminService.updateUserStatus(id, body.status, body.reason, req.user.id);
   }
+
+  @Get('reports')
+  getReports(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('status') status: string = ''
+  ) {
+    return this.adminService.getReports(Number(page), Number(limit), status);
+  }
+
+  @Patch('reports/:id/resolve')
+  resolveReport(
+    @Param('id') id: string,
+    @Body() body: { status: string; notes?: string },
+    @Request() req: any
+  ) {
+    return this.adminService.resolveReport(id, body.status, body.notes || '', req.user.id);
+  }
 }

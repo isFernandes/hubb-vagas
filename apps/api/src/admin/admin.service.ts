@@ -102,4 +102,42 @@ export class AdminService {
 
     return result[0];
   }
+
+  async getReports(page: number, limit: number, status: string) {
+    const skip = (page - 1) * limit;
+    
+    const where = status ? { status: status as any } : {};
+
+    const [data, total] = await Promise.all([
+      this.prisma.report.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          reporter: { include: { user: true, company: true } },
+          reportedAccount: { include: { user: true, company: true } },
+          reportedJob: true,
+          resolvedBy: { include: { user: true, company: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.report.count({ where }),
+    ]);
+
+    return { data, total, page, limit };
+  }
+
+  async resolveReport(id: string, status: string, notes: string, adminId: string) {
+    const report = await this.prisma.report.findUnique({ where: { id } });
+    if (!report) throw new NotFoundException('Report not found');
+
+    return this.prisma.report.update({
+      where: { id },
+      data: {
+        status: status as any,
+        resolutionNotes: notes,
+        resolvedById: adminId,
+      },
+    });
+  }
 }

@@ -12,6 +12,7 @@ import { ApplicationsModule } from './applications/applications.module';
 import { RedisModule } from './infra/redis/redis.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AdminModule } from './admin/admin.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AdminModule } from './admin/admin.module';
     UsersModule,
     JobsModule,
     ApplicationsModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
