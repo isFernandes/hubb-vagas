@@ -15,5 +15,13 @@
   },
   "devDependencies": {
     "turbo": "latest"
+  },
+  "dependencies": {
+    "@eslint/eslintrc": "0.1.0",
+    "@nestjs/cli": "6.8.1",
+    "@types/jest": "^30.0.0",
+    "eslint": "10.8.0",
+    "jest": "^25.0.0",
+    "react-router-dom": "7.11.0"
   }
 }
