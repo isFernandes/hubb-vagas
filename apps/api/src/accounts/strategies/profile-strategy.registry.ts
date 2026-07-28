@@ -3,6 +3,7 @@ import { Role } from '../../decorators/role.enum';
 import { ProfileCreationStrategy } from './profile-creation.strategy';
 import { UserProfileStrategy } from './user-profile.strategy';
 import { CompanyProfileStrategy } from './company-profile.strategy';
+import { AdminProfileStrategy } from './admin-profile.strategy';
 
 @Injectable()
 export class ProfileStrategyRegistry implements OnModuleInit {
@@ -11,11 +12,13 @@ export class ProfileStrategyRegistry implements OnModuleInit {
   constructor(
     private readonly userProfileStrategy: UserProfileStrategy,
     private readonly companyProfileStrategy: CompanyProfileStrategy,
+    private readonly adminProfileStrategy: AdminProfileStrategy,
   ) {}
 
   onModuleInit() {
     this.strategies.set(Role.User, this.userProfileStrategy);
     this.strategies.set(Role.Company, this.companyProfileStrategy);
+    this.strategies.set(Role.Admin, this.adminProfileStrategy);
   }
 
   getStrategy(role: Role): ProfileCreationStrategy | undefined {

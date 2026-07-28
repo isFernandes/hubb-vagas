@@ -10,6 +10,7 @@ import { MessagingModule } from '../infra/messaging/messaging.module';
 import { AccountsConsumer } from './accounts.consumer';
 import { UserProfileStrategy } from './strategies/user-profile.strategy';
 import { CompanyProfileStrategy } from './strategies/company-profile.strategy';
+import { AdminProfileStrategy } from './strategies/admin-profile.strategy';
 import { ProfileStrategyRegistry } from './strategies/profile-strategy.registry';
 
 @Module({
@@ -20,6 +21,7 @@ import { ProfileStrategyRegistry } from './strategies/profile-strategy.registry'
     { provide: AccountsRepository, useClass: PrismaAccountsRepository },
     UserProfileStrategy,
     CompanyProfileStrategy,
+    AdminProfileStrategy,
     ProfileStrategyRegistry,
   ],
   exports: [AccountsService],
