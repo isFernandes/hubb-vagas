@@ -27,6 +27,7 @@ export type AggregateCompany = {
 export type CompanyMinAggregateOutputType = {
   id: string | null
   name: string | null
+  avatarUrl: string | null
   cnpj: string | null
   contact: string | null
   account_id: string | null
@@ -37,6 +38,7 @@ export type CompanyMinAggregateOutputType = {
 export type CompanyMaxAggregateOutputType = {
   id: string | null
   name: string | null
+  avatarUrl: string | null
   cnpj: string | null
   contact: string | null
   account_id: string | null
@@ -47,6 +49,7 @@ export type CompanyMaxAggregateOutputType = {
 export type CompanyCountAggregateOutputType = {
   id: number
   name: number
+  avatarUrl: number
   cnpj: number
   contact: number
   account_id: number
@@ -59,6 +62,7 @@ export type CompanyCountAggregateOutputType = {
 export type CompanyMinAggregateInputType = {
   id?: true
   name?: true
+  avatarUrl?: true
   cnpj?: true
   contact?: true
   account_id?: true
@@ -69,6 +73,7 @@ export type CompanyMinAggregateInputType = {
 export type CompanyMaxAggregateInputType = {
   id?: true
   name?: true
+  avatarUrl?: true
   cnpj?: true
   contact?: true
   account_id?: true
@@ -79,6 +84,7 @@ export type CompanyMaxAggregateInputType = {
 export type CompanyCountAggregateInputType = {
   id?: true
   name?: true
+  avatarUrl?: true
   cnpj?: true
   contact?: true
   account_id?: true
@@ -162,6 +168,7 @@ export type CompanyGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type CompanyGroupByOutputType = {
   id: string
   name: string
+  avatarUrl: string | null
   cnpj: string
   contact: string
   account_id: string
@@ -193,6 +200,7 @@ export type CompanyWhereInput = {
   NOT?: Prisma.CompanyWhereInput | Prisma.CompanyWhereInput[]
   id?: Prisma.StringFilter<"Company"> | string
   name?: Prisma.StringFilter<"Company"> | string
+  avatarUrl?: Prisma.StringNullableFilter<"Company"> | string | null
   cnpj?: Prisma.StringFilter<"Company"> | string
   contact?: Prisma.StringFilter<"Company"> | string
   account_id?: Prisma.StringFilter<"Company"> | string
@@ -205,6 +213,7 @@ export type CompanyWhereInput = {
 export type CompanyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
@@ -222,6 +231,7 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CompanyWhereInput[]
   NOT?: Prisma.CompanyWhereInput | Prisma.CompanyWhereInput[]
   name?: Prisma.StringFilter<"Company"> | string
+  avatarUrl?: Prisma.StringNullableFilter<"Company"> | string | null
   contact?: Prisma.StringFilter<"Company"> | string
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
@@ -232,6 +242,7 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
 export type CompanyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
@@ -248,6 +259,7 @@ export type CompanyScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CompanyScalarWhereWithAggregatesInput | Prisma.CompanyScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Company"> | string
   name?: Prisma.StringWithAggregatesFilter<"Company"> | string
+  avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
   cnpj?: Prisma.StringWithAggregatesFilter<"Company"> | string
   contact?: Prisma.StringWithAggregatesFilter<"Company"> | string
   account_id?: Prisma.StringWithAggregatesFilter<"Company"> | string
@@ -258,6 +270,7 @@ export type CompanyScalarWhereWithAggregatesInput = {
 export type CompanyCreateInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   createdAt?: Date | string
@@ -269,6 +282,7 @@ export type CompanyCreateInput = {
 export type CompanyUncheckedCreateInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   account_id: string
@@ -280,6 +294,7 @@ export type CompanyUncheckedCreateInput = {
 export type CompanyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -291,6 +306,7 @@ export type CompanyUpdateInput = {
 export type CompanyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -302,6 +318,7 @@ export type CompanyUncheckedUpdateInput = {
 export type CompanyCreateManyInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   account_id: string
@@ -312,6 +329,7 @@ export type CompanyCreateManyInput = {
 export type CompanyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -321,6 +339,7 @@ export type CompanyUpdateManyMutationInput = {
 export type CompanyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -336,6 +355,7 @@ export type CompanyNullableScalarRelationFilter = {
 export type CompanyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
@@ -346,6 +366,7 @@ export type CompanyCountOrderByAggregateInput = {
 export type CompanyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
@@ -356,6 +377,7 @@ export type CompanyMaxOrderByAggregateInput = {
 export type CompanyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  avatarUrl?: Prisma.SortOrder
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
@@ -417,6 +439,7 @@ export type CompanyUpdateOneRequiredWithoutJobsNestedInput = {
 export type CompanyCreateWithoutAccountInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   createdAt?: Date | string
@@ -427,6 +450,7 @@ export type CompanyCreateWithoutAccountInput = {
 export type CompanyUncheckedCreateWithoutAccountInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   createdAt?: Date | string
@@ -453,6 +477,7 @@ export type CompanyUpdateToOneWithWhereWithoutAccountInput = {
 export type CompanyUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -463,6 +488,7 @@ export type CompanyUpdateWithoutAccountInput = {
 export type CompanyUncheckedUpdateWithoutAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -473,6 +499,7 @@ export type CompanyUncheckedUpdateWithoutAccountInput = {
 export type CompanyCreateWithoutJobsInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   createdAt?: Date | string
@@ -483,6 +510,7 @@ export type CompanyCreateWithoutJobsInput = {
 export type CompanyUncheckedCreateWithoutJobsInput = {
   id?: string
   name: string
+  avatarUrl?: string | null
   cnpj: string
   contact: string
   account_id: string
@@ -509,6 +537,7 @@ export type CompanyUpdateToOneWithWhereWithoutJobsInput = {
 export type CompanyUpdateWithoutJobsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -519,6 +548,7 @@ export type CompanyUpdateWithoutJobsInput = {
 export type CompanyUncheckedUpdateWithoutJobsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
@@ -560,6 +590,7 @@ export type CompanyCountOutputTypeCountJobsArgs<ExtArgs extends runtime.Types.Ex
 export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  avatarUrl?: boolean
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
@@ -573,6 +604,7 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type CompanySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  avatarUrl?: boolean
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
@@ -584,6 +616,7 @@ export type CompanySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type CompanySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  avatarUrl?: boolean
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
@@ -595,6 +628,7 @@ export type CompanySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type CompanySelectScalar = {
   id?: boolean
   name?: boolean
+  avatarUrl?: boolean
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
@@ -602,7 +636,7 @@ export type CompanySelectScalar = {
   updatedAt?: boolean
 }
 
-export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "cnpj" | "contact" | "account_id" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cnpj" | "contact" | "account_id" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
 export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   jobs?: boolean | Prisma.Company$jobsArgs<ExtArgs>
@@ -624,6 +658,7 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
+    avatarUrl: string | null
     cnpj: string
     contact: string
     account_id: string
@@ -1056,6 +1091,7 @@ export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends runtime.
 export interface CompanyFieldRefs {
   readonly id: Prisma.FieldRef<"Company", 'String'>
   readonly name: Prisma.FieldRef<"Company", 'String'>
+  readonly avatarUrl: Prisma.FieldRef<"Company", 'String'>
   readonly cnpj: Prisma.FieldRef<"Company", 'String'>
   readonly contact: Prisma.FieldRef<"Company", 'String'>
   readonly account_id: Prisma.FieldRef<"Company", 'String'>

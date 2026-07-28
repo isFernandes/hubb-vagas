@@ -200,6 +200,7 @@ export type AccountWhereInput = {
   updated_at?: Prisma.DateTimeFilter<"Account"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   company?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
+  adminProfile?: Prisma.XOR<Prisma.AdminProfileNullableScalarRelationFilter, Prisma.AdminProfileWhereInput> | null
   jobStatusHistories?: Prisma.JobStatusHistoryListRelationFilter
   auditLogsTarget?: Prisma.AccountAuditLogListRelationFilter
   auditLogsAdmin?: Prisma.AccountAuditLogListRelationFilter
@@ -218,6 +219,7 @@ export type AccountOrderByWithRelationInput = {
   updated_at?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   company?: Prisma.CompanyOrderByWithRelationInput
+  adminProfile?: Prisma.AdminProfileOrderByWithRelationInput
   jobStatusHistories?: Prisma.JobStatusHistoryOrderByRelationAggregateInput
   auditLogsTarget?: Prisma.AccountAuditLogOrderByRelationAggregateInput
   auditLogsAdmin?: Prisma.AccountAuditLogOrderByRelationAggregateInput
@@ -239,6 +241,7 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeFilter<"Account"> | Date | string
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   company?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
+  adminProfile?: Prisma.XOR<Prisma.AdminProfileNullableScalarRelationFilter, Prisma.AdminProfileWhereInput> | null
   jobStatusHistories?: Prisma.JobStatusHistoryListRelationFilter
   auditLogsTarget?: Prisma.AccountAuditLogListRelationFilter
   auditLogsAdmin?: Prisma.AccountAuditLogListRelationFilter
@@ -283,6 +286,7 @@ export type AccountCreateInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
@@ -301,6 +305,7 @@ export type AccountUncheckedCreateInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
@@ -319,6 +324,7 @@ export type AccountUpdateInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
@@ -337,6 +343,7 @@ export type AccountUncheckedUpdateInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
@@ -459,6 +466,20 @@ export type AccountUpdateOneRequiredWithoutCompanyNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutCompanyInput, Prisma.AccountUpdateWithoutCompanyInput>, Prisma.AccountUncheckedUpdateWithoutCompanyInput>
 }
 
+export type AccountCreateNestedOneWithoutAdminProfileInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutAdminProfileInput, Prisma.AccountUncheckedCreateWithoutAdminProfileInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutAdminProfileInput
+  connect?: Prisma.AccountWhereUniqueInput
+}
+
+export type AccountUpdateOneRequiredWithoutAdminProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutAdminProfileInput, Prisma.AccountUncheckedCreateWithoutAdminProfileInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutAdminProfileInput
+  upsert?: Prisma.AccountUpsertWithoutAdminProfileInput
+  connect?: Prisma.AccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutAdminProfileInput, Prisma.AccountUpdateWithoutAdminProfileInput>, Prisma.AccountUncheckedUpdateWithoutAdminProfileInput>
+}
+
 export type AccountCreateNestedOneWithoutJobStatusHistoriesInput = {
   create?: Prisma.XOR<Prisma.AccountCreateWithoutJobStatusHistoriesInput, Prisma.AccountUncheckedCreateWithoutJobStatusHistoriesInput>
   connectOrCreate?: Prisma.AccountCreateOrConnectWithoutJobStatusHistoriesInput
@@ -556,6 +577,7 @@ export type AccountCreateWithoutUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
@@ -573,6 +595,7 @@ export type AccountUncheckedCreateWithoutUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
@@ -606,6 +629,7 @@ export type AccountUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
@@ -623,6 +647,7 @@ export type AccountUncheckedUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
@@ -640,6 +665,7 @@ export type AccountCreateWithoutCompanyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
@@ -657,6 +683,7 @@ export type AccountUncheckedCreateWithoutCompanyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
@@ -690,6 +717,7 @@ export type AccountUpdateWithoutCompanyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
@@ -707,6 +735,95 @@ export type AccountUncheckedUpdateWithoutCompanyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
+  jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+  auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
+  auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
+  reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
+  reportsTarget?: Prisma.ReportUncheckedUpdateManyWithoutReportedAccountNestedInput
+  reportsResolved?: Prisma.ReportUncheckedUpdateManyWithoutResolvedByNestedInput
+}
+
+export type AccountCreateWithoutAdminProfileInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.AccountStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  user?: Prisma.UserCreateNestedOneWithoutAccountInput
+  company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
+  auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
+  auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
+  reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
+  reportsTarget?: Prisma.ReportCreateNestedManyWithoutReportedAccountInput
+  reportsResolved?: Prisma.ReportCreateNestedManyWithoutResolvedByInput
+}
+
+export type AccountUncheckedCreateWithoutAdminProfileInput = {
+  id?: string
+  email: string
+  password: string
+  role: $Enums.Role
+  status?: $Enums.AccountStatus
+  created_at?: Date | string
+  updated_at?: Date | string
+  user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
+  company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
+  auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
+  auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
+  reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
+  reportsTarget?: Prisma.ReportUncheckedCreateNestedManyWithoutReportedAccountInput
+  reportsResolved?: Prisma.ReportUncheckedCreateNestedManyWithoutResolvedByInput
+}
+
+export type AccountCreateOrConnectWithoutAdminProfileInput = {
+  where: Prisma.AccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.AccountCreateWithoutAdminProfileInput, Prisma.AccountUncheckedCreateWithoutAdminProfileInput>
+}
+
+export type AccountUpsertWithoutAdminProfileInput = {
+  update: Prisma.XOR<Prisma.AccountUpdateWithoutAdminProfileInput, Prisma.AccountUncheckedUpdateWithoutAdminProfileInput>
+  create: Prisma.XOR<Prisma.AccountCreateWithoutAdminProfileInput, Prisma.AccountUncheckedCreateWithoutAdminProfileInput>
+  where?: Prisma.AccountWhereInput
+}
+
+export type AccountUpdateToOneWithWhereWithoutAdminProfileInput = {
+  where?: Prisma.AccountWhereInput
+  data: Prisma.XOR<Prisma.AccountUpdateWithoutAdminProfileInput, Prisma.AccountUncheckedUpdateWithoutAdminProfileInput>
+}
+
+export type AccountUpdateWithoutAdminProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneWithoutAccountNestedInput
+  company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
+  auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
+  auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
+  reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
+  reportsTarget?: Prisma.ReportUpdateManyWithoutReportedAccountNestedInput
+  reportsResolved?: Prisma.ReportUpdateManyWithoutResolvedByNestedInput
+}
+
+export type AccountUncheckedUpdateWithoutAdminProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
+  company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
@@ -725,6 +842,7 @@ export type AccountCreateWithoutJobStatusHistoriesInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
   reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
@@ -742,6 +860,7 @@ export type AccountUncheckedCreateWithoutJobStatusHistoriesInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
   reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
@@ -775,6 +894,7 @@ export type AccountUpdateWithoutJobStatusHistoriesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
   reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
@@ -792,6 +912,7 @@ export type AccountUncheckedUpdateWithoutJobStatusHistoriesInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
   reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -809,6 +930,7 @@ export type AccountCreateWithoutAuditLogsTargetInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
   reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
@@ -826,6 +948,7 @@ export type AccountUncheckedCreateWithoutAuditLogsTargetInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
   reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
@@ -848,6 +971,7 @@ export type AccountCreateWithoutAuditLogsAdminInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   reportsSubmitted?: Prisma.ReportCreateNestedManyWithoutReporterInput
@@ -865,6 +989,7 @@ export type AccountUncheckedCreateWithoutAuditLogsAdminInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   reportsSubmitted?: Prisma.ReportUncheckedCreateNestedManyWithoutReporterInput
@@ -898,6 +1023,7 @@ export type AccountUpdateWithoutAuditLogsTargetInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
   reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
@@ -915,6 +1041,7 @@ export type AccountUncheckedUpdateWithoutAuditLogsTargetInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
   reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -943,6 +1070,7 @@ export type AccountUpdateWithoutAuditLogsAdminInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   reportsSubmitted?: Prisma.ReportUpdateManyWithoutReporterNestedInput
@@ -960,6 +1088,7 @@ export type AccountUncheckedUpdateWithoutAuditLogsAdminInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   reportsSubmitted?: Prisma.ReportUncheckedUpdateManyWithoutReporterNestedInput
@@ -977,6 +1106,7 @@ export type AccountCreateWithoutReportsSubmittedInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
@@ -994,6 +1124,7 @@ export type AccountUncheckedCreateWithoutReportsSubmittedInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
@@ -1016,6 +1147,7 @@ export type AccountCreateWithoutReportsTargetInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
@@ -1033,6 +1165,7 @@ export type AccountUncheckedCreateWithoutReportsTargetInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
@@ -1055,6 +1188,7 @@ export type AccountCreateWithoutReportsResolvedInput = {
   updated_at?: Date | string
   user?: Prisma.UserCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogCreateNestedManyWithoutAdminInput
@@ -1072,6 +1206,7 @@ export type AccountUncheckedCreateWithoutReportsResolvedInput = {
   updated_at?: Date | string
   user?: Prisma.UserUncheckedCreateNestedOneWithoutAccountInput
   company?: Prisma.CompanyUncheckedCreateNestedOneWithoutAccountInput
+  adminProfile?: Prisma.AdminProfileUncheckedCreateNestedOneWithoutAccountInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedCreateNestedManyWithoutChangedByInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAccountInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedCreateNestedManyWithoutAdminInput
@@ -1105,6 +1240,7 @@ export type AccountUpdateWithoutReportsSubmittedInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
@@ -1122,6 +1258,7 @@ export type AccountUncheckedUpdateWithoutReportsSubmittedInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
@@ -1150,6 +1287,7 @@ export type AccountUpdateWithoutReportsTargetInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
@@ -1167,6 +1305,7 @@ export type AccountUncheckedUpdateWithoutReportsTargetInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
@@ -1195,6 +1334,7 @@ export type AccountUpdateWithoutReportsResolvedInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUpdateManyWithoutAdminNestedInput
@@ -1212,6 +1352,7 @@ export type AccountUncheckedUpdateWithoutReportsResolvedInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUncheckedUpdateOneWithoutAccountNestedInput
   company?: Prisma.CompanyUncheckedUpdateOneWithoutAccountNestedInput
+  adminProfile?: Prisma.AdminProfileUncheckedUpdateOneWithoutAccountNestedInput
   jobStatusHistories?: Prisma.JobStatusHistoryUncheckedUpdateManyWithoutChangedByNestedInput
   auditLogsTarget?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAccountNestedInput
   auditLogsAdmin?: Prisma.AccountAuditLogUncheckedUpdateManyWithoutAdminNestedInput
@@ -1305,6 +1446,7 @@ export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updated_at?: boolean
   user?: boolean | Prisma.Account$userArgs<ExtArgs>
   company?: boolean | Prisma.Account$companyArgs<ExtArgs>
+  adminProfile?: boolean | Prisma.Account$adminProfileArgs<ExtArgs>
   jobStatusHistories?: boolean | Prisma.Account$jobStatusHistoriesArgs<ExtArgs>
   auditLogsTarget?: boolean | Prisma.Account$auditLogsTargetArgs<ExtArgs>
   auditLogsAdmin?: boolean | Prisma.Account$auditLogsAdminArgs<ExtArgs>
@@ -1348,6 +1490,7 @@ export type AccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type AccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.Account$userArgs<ExtArgs>
   company?: boolean | Prisma.Account$companyArgs<ExtArgs>
+  adminProfile?: boolean | Prisma.Account$adminProfileArgs<ExtArgs>
   jobStatusHistories?: boolean | Prisma.Account$jobStatusHistoriesArgs<ExtArgs>
   auditLogsTarget?: boolean | Prisma.Account$auditLogsTargetArgs<ExtArgs>
   auditLogsAdmin?: boolean | Prisma.Account$auditLogsAdminArgs<ExtArgs>
@@ -1364,6 +1507,7 @@ export type $AccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   objects: {
     user: Prisma.$UserPayload<ExtArgs> | null
     company: Prisma.$CompanyPayload<ExtArgs> | null
+    adminProfile: Prisma.$AdminProfilePayload<ExtArgs> | null
     jobStatusHistories: Prisma.$JobStatusHistoryPayload<ExtArgs>[]
     auditLogsTarget: Prisma.$AccountAuditLogPayload<ExtArgs>[]
     auditLogsAdmin: Prisma.$AccountAuditLogPayload<ExtArgs>[]
@@ -1775,6 +1919,7 @@ export interface Prisma__AccountClient<T, Null = never, ExtArgs extends runtime.
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.Account$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   company<T extends Prisma.Account$companyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$companyArgs<ExtArgs>>): Prisma.Prisma__CompanyClient<runtime.Types.Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  adminProfile<T extends Prisma.Account$adminProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$adminProfileArgs<ExtArgs>>): Prisma.Prisma__AdminProfileClient<runtime.Types.Result.GetResult<Prisma.$AdminProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   jobStatusHistories<T extends Prisma.Account$jobStatusHistoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$jobStatusHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JobStatusHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogsTarget<T extends Prisma.Account$auditLogsTargetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$auditLogsTargetArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogsAdmin<T extends Prisma.Account$auditLogsAdminArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$auditLogsAdminArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2245,6 +2390,25 @@ export type Account$companyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   include?: Prisma.CompanyInclude<ExtArgs> | null
   where?: Prisma.CompanyWhereInput
+}
+
+/**
+ * Account.adminProfile
+ */
+export type Account$adminProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdminProfile
+   */
+  select?: Prisma.AdminProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdminProfile
+   */
+  omit?: Prisma.AdminProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminProfileInclude<ExtArgs> | null
+  where?: Prisma.AdminProfileWhereInput
 }
 
 /**

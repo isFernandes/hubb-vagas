@@ -196,4 +196,11 @@ export class AdminService {
     const { password: _, ...result } = newAdmin;
     return result;
   }
+
+  async updateProfile(id: string, data: { name?: string; avatarUrl?: string }) {
+    return this.prisma.adminProfile.update({
+      where: { id },
+      data,
+    });
+  }
 }

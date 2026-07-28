@@ -96,4 +96,12 @@ export class AdminController {
   createAdmin(@Body() body: { email: string; passwordPlain: string }) {
     return this.adminService.createAdmin(body.email, body.passwordPlain);
   }
+
+  @Patch('me/profile')
+  updateProfile(
+    @Request() req: any,
+    @Body() body: { name?: string; avatarUrl?: string },
+  ) {
+    return this.adminService.updateProfile(req.user.profileId, body);
+  }
 }

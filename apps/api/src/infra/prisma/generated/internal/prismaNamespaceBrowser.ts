@@ -54,6 +54,7 @@ export const ModelName = {
   Account: 'Account',
   User: 'User',
   Company: 'Company',
+  AdminProfile: 'AdminProfile',
   Job: 'Job',
   UserApplications: 'UserApplications',
   Application: 'Application',
@@ -95,6 +96,7 @@ export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeo
 export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  avatarUrl: 'avatarUrl',
   cpf: 'cpf',
   bio: 'bio',
   account_id: 'account_id',
@@ -108,6 +110,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const CompanyScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  avatarUrl: 'avatarUrl',
   cnpj: 'cnpj',
   contact: 'contact',
   account_id: 'account_id',
@@ -116,6 +119,18 @@ export const CompanyScalarFieldEnum = {
 } as const
 
 export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const AdminProfileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  avatarUrl: 'avatarUrl',
+  accountId: 'accountId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminProfileScalarFieldEnum = (typeof AdminProfileScalarFieldEnum)[keyof typeof AdminProfileScalarFieldEnum]
 
 
 export const JobScalarFieldEnum = {
