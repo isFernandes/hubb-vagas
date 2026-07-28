@@ -21,6 +21,8 @@ import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
 import AdminModeration from './pages/admin/Moderation';
 
+import AdminSettings from './pages/admin/Settings';
+
 import { Toaster } from '@/components/ui/sonner';
 
 const queryClient = new QueryClient();
@@ -57,6 +59,7 @@ export function AppRoutes() {
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="moderation" element={<AdminModeration />} />
+        <Route path="settings" element={<AdminSettings />} />
       </Route>
     </Routes>
   );

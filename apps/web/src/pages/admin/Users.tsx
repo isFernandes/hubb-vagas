@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api';
 import { toast } from 'sonner';
-import { Search } from 'lucide-react';
 
 type Account = {
   id: string;
@@ -20,10 +19,14 @@ export default function AdminUsers() {
   const [search, setSearch] = useState('');
 
   // Modal state
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [newStatus, setNewStatus] = useState<'ACTIVE' | 'SUSPENDED' | 'BANNED'>('ACTIVE');
   const [reason, setReason] = useState('');
+
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['admin-users', page, search],
@@ -47,22 +50,42 @@ export default function AdminUsers() {
     onSuccess: () => {
       toast.success('Status updated successfully');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
-      closeModal();
+      closeStatusModal();
     },
     onError: () => {
       toast.error('Failed to update status');
     }
   });
 
-  const openModal = (account: Account) => {
+  const adminMutation = useMutation({
+    mutationFn: async () => {
+      const response = await api.post(`/admin/admins`, {
+        email: adminEmail,
+        passwordPlain: adminPassword,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success('Admin created successfully');
+      queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+      setIsAdminModalOpen(false);
+      setAdminEmail('');
+      setAdminPassword('');
+    },
+    onError: (err: any) => {
+      toast.error(err.response?.data?.message || 'Failed to create admin');
+    }
+  });
+
+  const openStatusModal = (account: Account) => {
     setSelectedAccount(account);
     setNewStatus(account.status);
     setReason('');
-    setIsModalOpen(true);
+    setIsStatusModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeStatusModal = () => {
+    setIsStatusModalOpen(false);
     setSelectedAccount(null);
   };
 
@@ -97,16 +120,21 @@ export default function AdminUsers() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <h1 className="text-2xl font-bold text-gray-800">Users</h1>
+        <div className="flex space-x-4">
           <input
             type="text"
-            placeholder="Search by email..."
-            className="pl-9 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search email, name or document..."
+            className="border rounded-md px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <button
+            onClick={() => setIsAdminModalOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-sm"
+          >
+            Create Admin
+          </button>
         </div>
       </div>
 
@@ -151,7 +179,7 @@ export default function AdminUsers() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button 
-                        onClick={() => openModal(account)}
+                        onClick={() => openStatusModal(account)}
                         className="text-blue-600 hover:text-blue-900"
                       >
                         Manage Status
@@ -186,10 +214,10 @@ export default function AdminUsers() {
       </div>
 
       {/* Status Change Modal */}
-      {isModalOpen && selectedAccount && (
+      {isStatusModalOpen && selectedAccount && (
         <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={closeModal}></div>
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={closeStatusModal}></div>
 
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
@@ -239,7 +267,64 @@ export default function AdminUsers() {
                   </button>
                   <button
                     type="button"
-                    onClick={closeModal}
+                    onClick={closeStatusModal}
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAdminModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setIsAdminModalOpen(false)}></div>
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <form onSubmit={(e) => { e.preventDefault(); adminMutation.mutate(); }}>
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                    Create New Admin
+                  </h3>
+                  <div className="mt-4 space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Email Address</label>
+                      <input
+                        type="email"
+                        required
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        value={adminEmail}
+                        onChange={(e) => setAdminEmail(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Temporary Password</label>
+                      <input
+                        type="password"
+                        required
+                        minLength={6}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        value={adminPassword}
+                        onChange={(e) => setAdminPassword(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                  <button
+                    type="submit"
+                    disabled={adminMutation.isPending}
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-blue-400"
+                  >
+                    {adminMutation.isPending ? 'Creating...' : 'Create Admin'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsAdminModalOpen(false)}
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >
                     Cancel
