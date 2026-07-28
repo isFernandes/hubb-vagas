@@ -21,6 +21,9 @@ model Account {
   jobStatusHistories JobStatusHistory[]
   auditLogsTarget    AccountAuditLog[]  @relation("AccountTarget")
   auditLogsAdmin     AccountAuditLog[]  @relation("AccountAdmin")
+  reportsSubmitted   Report[]           @relation("ReportSubmitter")
+  reportsTarget      Report[]           @relation("ReportTarget")
+  reportsResolved    Report[]           @relation("ReportResolver")
 
   @@map("accounts")
 }
@@ -70,6 +73,7 @@ model Job {
   updatedAt     DateTime           @updatedAt
   applications  Application[]
   statusHistory JobStatusHistory[]
+  reports       Report[]
 
   @@map("jobs")
 }
@@ -149,4 +153,38 @@ model AccountAuditLog {
   createdAt      DateTime      @default(now())
 
   @@map("account_audit_logs")
+}
+
+enum ReportType {
+  FAKE_JOB
+  NO_SHOW
+  HARASSMENT
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  INVESTIGATING
+  RESOLVED
+  DISMISSED
+}
+
+model Report {
+  id                String       @id @default(uuid())
+  reporterId        String
+  reporter          Account      @relation("ReportSubmitter", fields: [reporterId], references: [id])
+  reportedAccountId String?
+  reportedAccount   Account?     @relation("ReportTarget", fields: [reportedAccountId], references: [id])
+  reportedJobId     String?
+  reportedJob       Job?         @relation(fields: [reportedJobId], references: [id])
+  type              ReportType
+  description       String
+  status            ReportStatus @default(PENDING)
+  resolvedById      String?
+  resolvedBy        Account?     @relation("ReportResolver", fields: [resolvedById], references: [id])
+  resolutionNotes   String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@map("reports")
 }
