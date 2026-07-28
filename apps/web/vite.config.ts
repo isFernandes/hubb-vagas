@@ -16,5 +16,19 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
     pool: 'threads',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: [
+        'src/pages/Login.tsx',
+        'src/pages/Register.tsx',
+        'src/pages/admin/Dashboard.tsx',
+        'src/pages/candidate/JobsList.tsx',
+        'src/components/ui/button.tsx',
+        'src/components/ui/input.tsx',
+        'src/components/ui/label.tsx'
+      ],
+      exclude: ['src/**/*.test.{ts,tsx}', 'src/setupTests.ts', 'src/main.tsx', 'src/vite-env.d.ts'],
+    },
   },
 })
