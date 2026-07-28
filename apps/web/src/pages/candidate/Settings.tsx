@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { api } from '@/lib/api';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { AvatarUpload } from '@/components/ui/AvatarUpload';
 
 export default function CandidateSettings() {
   const [activeTab, setActiveTab] = useState<'profile' | 'security'>('profile');
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [cpf, setCpf] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -36,7 +38,8 @@ export default function CandidateSettings() {
       </div>
 
       {activeTab === 'profile' && (
-        <form onSubmit={(e) => { e.preventDefault(); updateProfile.mutate({ name, bio, cpf }); }} className="flex flex-col gap-4">
+        <form onSubmit={(e) => { e.preventDefault(); updateProfile.mutate({ name, bio, cpf, avatarUrl }); }} className="flex flex-col gap-4">
+          <AvatarUpload defaultImage={avatarUrl} onImageCompressed={setAvatarUrl} />
           <input className="p-2 border" placeholder="Nome" value={name} onChange={e => setName(e.target.value)} />
           <input className="p-2 border" placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)} />
           <textarea className="p-2 border" placeholder="Bio" value={bio} onChange={e => setBio(e.target.value)} />

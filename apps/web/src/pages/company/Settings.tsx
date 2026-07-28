@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { api } from '@/lib/api';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { AvatarUpload } from '@/components/ui/AvatarUpload';
 
 export default function CompanySettings() {
   const [activeTab, setActiveTab] = useState<'profile' | 'security'>('profile');
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [cnpj, setCnpj] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
@@ -36,7 +38,8 @@ export default function CompanySettings() {
       </div>
 
       {activeTab === 'profile' && (
-        <form onSubmit={(e) => { e.preventDefault(); updateProfile.mutate({ name, contact, cnpj }); }} className="flex flex-col gap-4">
+        <form onSubmit={(e) => { e.preventDefault(); updateProfile.mutate({ name, contact, cnpj, avatarUrl }); }} className="flex flex-col gap-4">
+          <AvatarUpload defaultImage={avatarUrl} onImageCompressed={setAvatarUrl} />
           <input className="p-2 border" placeholder="Nome da Empresa" value={name} onChange={e => setName(e.target.value)} />
           <input className="p-2 border" placeholder="CNPJ" value={cnpj} onChange={e => setCnpj(e.target.value)} />
           <input className="p-2 border" placeholder="Contato (E-mail ou Telefone)" value={contact} onChange={e => setContact(e.target.value)} />
