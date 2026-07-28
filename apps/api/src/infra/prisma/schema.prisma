@@ -18,6 +18,7 @@ model Account {
   updated_at         DateTime           @default(now()) @updatedAt
   user               User?
   company            Company?
+  adminProfile       AdminProfile?
   jobStatusHistories JobStatusHistory[]
   auditLogsTarget    AccountAuditLog[]  @relation("AccountTarget")
   auditLogsAdmin     AccountAuditLog[]  @relation("AccountAdmin")
@@ -31,6 +32,7 @@ model Account {
 model User {
   id               String             @id @default(uuid())
   name             String
+  avatarUrl        String?
   cpf              String?            @unique
   bio              String?
   account_id       String             @unique
@@ -46,6 +48,7 @@ model User {
 model Company {
   id         String   @id @default(uuid())
   name       String
+  avatarUrl  String?
   cnpj       String   @unique
   contact    String
   account_id String   @unique
@@ -55,6 +58,18 @@ model Company {
   jobs       Job[]
 
   @@map("companies")
+}
+
+model AdminProfile {
+  id        String   @id @default(uuid())
+  name      String
+  avatarUrl String?
+  accountId String   @unique
+  account   Account  @relation(fields: [accountId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admin_profiles")
 }
 
 model Job {
