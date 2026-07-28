@@ -6,6 +6,7 @@
 /apps/web/node_modules
 .turbo/cache
 apps/api/dist
+apps/api/coverage
 
 
 # Logs
