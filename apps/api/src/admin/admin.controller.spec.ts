@@ -48,4 +48,26 @@ describe('AdminController', () => {
       });
     });
   });
+  describe('getUsers', () => {
+    it('should return paginated users from service', async () => {
+      const mockResult = { data: [], total: 0, page: 1, limit: 10 };
+      service.getUsers = jest.fn().mockResolvedValue(mockResult);
+      const result = await controller.getUsers(1, 10, '');
+      expect(service.getUsers).toHaveBeenCalledWith(1, 10, '');
+      expect(result).toEqual(mockResult);
+    });
+  });
+
+  describe('updateUserStatus', () => {
+    it('should call service to update user status and create audit log', async () => {
+      const mockResult = { id: 'user-id', status: 'BANNED' };
+      service.updateUserStatus = jest.fn().mockResolvedValue(mockResult);
+      const req = { user: { id: 'admin-id' } };
+      
+      const result = await controller.updateUserStatus('user-id', { status: 'BANNED', reason: 'Spam' }, req);
+      
+      expect(service.updateUserStatus).toHaveBeenCalledWith('user-id', 'BANNED', 'Spam', 'admin-id');
+      expect(result).toEqual(mockResult);
+    });
+  });
 });

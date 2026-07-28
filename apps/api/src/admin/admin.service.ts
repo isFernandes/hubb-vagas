@@ -1,6 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import Redis from 'ioredis';
 import { PrismaService } from '../infra/prisma/prisma.service';
+import { AccountStatus } from '../infra/prisma/generated';
 
 @Injectable()
 export class AdminService {
@@ -53,5 +54,52 @@ export class AdminService {
         jobsOverTime: [],
       };
     }
+  }
+
+  async getUsers(page: number, limit: number, search: string) {
+    const skip = (page - 1) * limit;
+    
+    const where = search ? {
+      email: { contains: search, mode: 'insensitive' as any },
+    } : {};
+
+    const [data, total] = await Promise.all([
+      this.prisma.account.findMany({
+        where,
+        skip,
+        take: limit,
+        include: {
+          user: true,
+          company: true,
+        },
+        orderBy: { created_at: 'desc' },
+      }),
+      this.prisma.account.count({ where }),
+    ]);
+
+    return { data, total, page, limit };
+  }
+
+  async updateUserStatus(id: string, newStatus: AccountStatus, reason: string, adminId: string) {
+    const account = await this.prisma.account.findUnique({ where: { id } });
+    if (!account) throw new NotFoundException('Account not found');
+
+    const result = await this.prisma.$transaction([
+      this.prisma.account.update({
+        where: { id },
+        data: { status: newStatus },
+      }),
+      this.prisma.accountAuditLog.create({
+        data: {
+          accountId: id,
+          adminId,
+          previousStatus: account.status,
+          newStatus,
+          reason,
+        },
+      }),
+    ]);
+
+    return result[0];
   }
 }
