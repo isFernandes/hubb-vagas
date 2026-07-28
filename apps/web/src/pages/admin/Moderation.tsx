@@ -142,7 +142,9 @@ export default function AdminModeration() {
                       <div className="text-xs text-gray-500">({report.reporter.role})</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm font-bold text-gray-900">{report.type.replace('_', ' ')}</div>
+                      <div className="text-sm font-bold text-gray-900">
+                        {report.type?.replace('_', ' ') || 'Unknown'}
+                      </div>
                       <div className="text-sm text-gray-500 truncate max-w-xs">
                         {report.reportedAccount ? `User: ${report.reportedAccount.email}` : ''}
                         {report.reportedJob ? `Job: ${report.reportedJob.title}` : ''}

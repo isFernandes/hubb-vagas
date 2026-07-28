@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const UpdateAccountSchema = z.object({
-  email: z.email().optional(),
+  email: z.string().email().optional(),
   password: z.string().min(8).optional(),
 });
 
