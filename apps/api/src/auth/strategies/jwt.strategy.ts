@@ -20,12 +20,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: { sub: string; email: string; role: string }) {
     let profileId: string | undefined = undefined;
 
-    if (payload.role === 'Company') {
+    if (payload.role === 'COMPANY') {
       const company = await this.prisma.company.findUnique({
         where: { account_id: payload.sub },
       });
       profileId = company?.id;
-    } else if (payload.role === 'User') {
+    } else if (payload.role === 'USER') {
       const user = await this.prisma.user.findUnique({
         where: { account_id: payload.sub },
       });

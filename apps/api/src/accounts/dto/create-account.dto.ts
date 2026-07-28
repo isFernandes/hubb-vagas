@@ -18,7 +18,7 @@ export const CreateAccountSchema = z
   .object({
     email: z.string().email(),
     password: z.string().min(8),
-    role: z.enum(['User', 'Admin', 'Company']),
+    role: z.enum(['USER', 'ADMIN', 'COMPANY']),
     // User profile fields
     name: z.string().optional(),
     bio: z.string().optional(),
@@ -39,7 +39,7 @@ export const CreateAccountSchema = z
       }),
   })
   .superRefine((data, ctx) => {
-    if (data.role === 'User' && !data.cpf) {
+    if (data.role === 'USER' && !data.cpf) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'CPF é obrigatório para Candidatos',

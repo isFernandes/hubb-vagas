@@ -33,7 +33,7 @@ export class AuthService {
     }
 
     const profileId =
-      user.role === 'Company' ? user.company?.id : user.user?.id;
+      user.role === 'COMPANY' ? user.company?.id : user.user?.id;
     const payload = { sub: user.id, email: user.email, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),

@@ -103,9 +103,9 @@ model Application {
 }
 
 enum Role {
-  User
-  Admin
-  Company
+  USER
+  ADMIN
+  COMPANY
 }
 
 enum JobStatus {

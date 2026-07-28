@@ -33,11 +33,13 @@ export class JobsService {
   }
 
   async create(data: any, companyId: string, accountId: string) {
-    let config = await this.prisma.globalConfig.findFirst();
+    const config = await this.prisma.globalConfig.findFirst();
     const minPrice = config ? config.minimumJobPriceCents : 5000;
-    
+
     if (data.paymentAmountCents < minPrice) {
-      throw new ForbiddenException(`O valor mínimo para uma vaga é de R$ ${(minPrice / 100).toFixed(2).replace('.', ',')}`);
+      throw new ForbiddenException(
+        `O valor mínimo para uma vaga é de R$ ${(minPrice / 100).toFixed(2).replace('.', ',')}`,
+      );
     }
 
     const job = await this.jobsRepository.create({

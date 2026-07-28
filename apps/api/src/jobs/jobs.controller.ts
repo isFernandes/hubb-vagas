@@ -58,7 +58,7 @@ export class JobsController {
             'ascii',
           );
           const payload = JSON.parse(payloadJson);
-          if (payload.role === 'Company' || payload.role === 'Admin') {
+          if (payload.role === 'COMPANY' || payload.role === 'ADMIN') {
             status = undefined; // Do not force PUBLISHED status for company/admin
           }
         }

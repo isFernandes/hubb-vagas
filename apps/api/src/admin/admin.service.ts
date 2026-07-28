@@ -1,7 +1,13 @@
-import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import Redis from 'ioredis';
 import { PrismaService } from '../infra/prisma/prisma.service';
-import { AccountStatus } from '../infra/prisma/generated';
+import { AccountStatus } from '../infra/prisma/generated/client';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AdminService {
@@ -16,12 +22,13 @@ export class AdminService {
     if (cached) return JSON.parse(cached);
 
     try {
-      const [totalUsers, totalCompanies, totalJobs, totalApplications] = await Promise.all([
-        this.prisma.user.count(),
-        this.prisma.company.count(),
-        this.prisma.job.count(),
-        this.prisma.application.count(),
-      ]);
+      const [totalUsers, totalCompanies, totalJobs, totalApplications] =
+        await Promise.all([
+          this.prisma.user.count(),
+          this.prisma.company.count(),
+          this.prisma.job.count(),
+          this.prisma.application.count(),
+        ]);
 
       const metrics = {
         totalUsers,
@@ -32,13 +39,13 @@ export class AdminService {
           { name: 'Week 1', count: 10 },
           { name: 'Week 2', count: 15 },
           { name: 'Week 3', count: 25 },
-          { name: 'Week 4', count: 42 }
+          { name: 'Week 4', count: 42 },
         ],
         jobsOverTime: [
           { name: 'Week 1', count: 5 },
           { name: 'Week 2', count: 8 },
           { name: 'Week 3', count: 12 },
-          { name: 'Week 4', count: 20 }
+          { name: 'Week 4', count: 20 },
         ],
       };
 
@@ -58,10 +65,12 @@ export class AdminService {
 
   async getUsers(page: number, limit: number, search: string) {
     const skip = (page - 1) * limit;
-    
-    const where = search ? {
-      email: { contains: search, mode: 'insensitive' as any },
-    } : {};
+
+    const where = search
+      ? {
+          email: { contains: search, mode: 'insensitive' as any },
+        }
+      : {};
 
     const [data, total] = await Promise.all([
       this.prisma.account.findMany({
@@ -80,7 +89,12 @@ export class AdminService {
     return { data, total, page, limit };
   }
 
-  async updateUserStatus(id: string, newStatus: AccountStatus, reason: string, adminId: string) {
+  async updateUserStatus(
+    id: string,
+    newStatus: AccountStatus,
+    reason: string,
+    adminId: string,
+  ) {
     const account = await this.prisma.account.findUnique({ where: { id } });
     if (!account) throw new NotFoundException('Account not found');
 
@@ -105,7 +119,7 @@ export class AdminService {
 
   async getReports(page: number, limit: number, status: string) {
     const skip = (page - 1) * limit;
-    
+
     const where = status ? { status: status as any } : {};
 
     const [data, total] = await Promise.all([
@@ -127,7 +141,12 @@ export class AdminService {
     return { data, total, page, limit };
   }
 
-  async resolveReport(id: string, status: string, notes: string, adminId: string) {
+  async resolveReport(
+    id: string,
+    status: string,
+    notes: string,
+    adminId: string,
+  ) {
     const report = await this.prisma.report.findUnique({ where: { id } });
     if (!report) throw new NotFoundException('Report not found');
 
@@ -149,7 +168,10 @@ export class AdminService {
     return config;
   }
 
-  async updateSettings(platformFeePercentage: number, minimumJobPriceCents: number) {
+  async updateSettings(
+    platformFeePercentage: number,
+    minimumJobPriceCents: number,
+  ) {
     const config = await this.getSettings();
     return this.prisma.globalConfig.update({
       where: { id: config.id },
@@ -161,7 +183,6 @@ export class AdminService {
     const existing = await this.prisma.account.findUnique({ where: { email } });
     if (existing) throw new ConflictException('Email already in use');
 
-    const bcrypt = require('bcrypt');
     const passwordHash = bcrypt.hashSync(passwordPlain, 10);
 
     const newAdmin = await this.prisma.account.create({

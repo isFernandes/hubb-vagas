@@ -38,7 +38,7 @@ export default function Register() {
       const payload = {
         email,
         password,
-        role: role === 'USER' ? 'User' : 'Company',
+        role: role === 'USER' ? 'USER' : 'COMPANY',
         ...(role === 'USER' ? { name, cpf: cpf.replace(/\D/g, ''), bio: resumeUrl, contact: '' } : { name: companyName, cnpj, contact: '' })
       };
       const { data } = await api.post('/accounts', payload);

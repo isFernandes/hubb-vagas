@@ -1,10 +1,20 @@
-import { Controller, Get, UseGuards, Query, Patch, Param, Body, Request, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Query,
+  Patch,
+  Param,
+  Body,
+  Request,
+  Post,
+} from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../decorators/role.enum';
-import { AccountStatus } from '../infra/prisma/generated';
+import { AccountStatus } from '../infra/prisma/generated/client';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -21,7 +31,7 @@ export class AdminController {
   getUsers(
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
-    @Query('search') search: string = ''
+    @Query('search') search: string = '',
   ) {
     return this.adminService.getUsers(Number(page), Number(limit), search);
   }
@@ -30,16 +40,21 @@ export class AdminController {
   updateUserStatus(
     @Param('id') id: string,
     @Body() body: { status: AccountStatus; reason: string },
-    @Request() req: any
+    @Request() req: any,
   ) {
-    return this.adminService.updateUserStatus(id, body.status, body.reason, req.user.id);
+    return this.adminService.updateUserStatus(
+      id,
+      body.status,
+      body.reason,
+      req.user.id,
+    );
   }
 
   @Get('reports')
   getReports(
     @Query('page') page: string = '1',
     @Query('limit') limit: string = '10',
-    @Query('status') status: string = ''
+    @Query('status') status: string = '',
   ) {
     return this.adminService.getReports(Number(page), Number(limit), status);
   }
@@ -48,9 +63,14 @@ export class AdminController {
   resolveReport(
     @Param('id') id: string,
     @Body() body: { status: string; notes?: string },
-    @Request() req: any
+    @Request() req: any,
   ) {
-    return this.adminService.resolveReport(id, body.status, body.notes || '', req.user.id);
+    return this.adminService.resolveReport(
+      id,
+      body.status,
+      body.notes || '',
+      req.user.id,
+    );
   }
 
   @Get('settings')
@@ -59,8 +79,17 @@ export class AdminController {
   }
 
   @Patch('settings')
-  updateSettings(@Body() body: { platformFeePercentage: number; minimumJobPriceCents: number }) {
-    return this.adminService.updateSettings(body.platformFeePercentage, body.minimumJobPriceCents);
+  updateSettings(
+    @Body()
+    body: {
+      platformFeePercentage: number;
+      minimumJobPriceCents: number;
+    },
+  ) {
+    return this.adminService.updateSettings(
+      body.platformFeePercentage,
+      body.minimumJobPriceCents,
+    );
   }
 
   @Post('admins')

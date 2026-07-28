@@ -29,7 +29,7 @@ export class AccountsController {
 
   @Post()
   async create(@Body() createAccountDto: CreateAccountDto) {
-    if (createAccountDto.role === 'Company' && createAccountDto.cnpj) {
+    if (createAccountDto.role === 'COMPANY' && createAccountDto.cnpj) {
       const cleanCnpj = createAccountDto.cnpj.replace(/[.\-/]/g, '');
       try {
         const res = await fetch(
