@@ -19,6 +19,7 @@ import { AdminLayout } from './layouts/AdminLayout';
 import { AdminRouteGuard } from './guards/AdminRouteGuard';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
+import AdminModeration from './pages/admin/Moderation';
 
 import { Toaster } from '@/components/ui/sonner';
 
@@ -55,6 +56,7 @@ export function AppRoutes() {
       <Route path="/admin" element={<AdminRouteGuard><AdminLayout /></AdminRouteGuard>}>
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="moderation" element={<AdminModeration />} />
       </Route>
     </Routes>
   );
