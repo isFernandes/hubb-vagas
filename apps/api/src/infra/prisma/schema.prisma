@@ -13,11 +13,14 @@ model Account {
   email              String             @unique
   password           String
   role               Role
+  status             AccountStatus      @default(ACTIVE)
   created_at         DateTime           @default(now())
   updated_at         DateTime           @default(now()) @updatedAt
   user               User?
   company            Company?
   jobStatusHistories JobStatusHistory[]
+  auditLogsTarget    AccountAuditLog[]  @relation("AccountTarget")
+  auditLogsAdmin     AccountAuditLog[]  @relation("AccountAdmin")
 
   @@map("accounts")
 }
@@ -126,4 +129,24 @@ model JobStatusHistory {
   createdAt    DateTime  @default(now())
 
   @@map("job_status_history")
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+model AccountAuditLog {
+  id             String        @id @default(uuid())
+  accountId      String
+  account        Account       @relation("AccountTarget", fields: [accountId], references: [id])
+  adminId        String
+  admin          Account       @relation("AccountAdmin", fields: [adminId], references: [id])
+  previousStatus AccountStatus
+  newStatus      AccountStatus
+  reason         String
+  createdAt      DateTime      @default(now())
+
+  @@map("account_audit_logs")
 }
