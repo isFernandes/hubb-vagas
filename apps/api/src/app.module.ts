@@ -11,9 +11,11 @@ import { AccountsModule } from './accounts/accounts.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { RedisModule } from './infra/redis/redis.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
+    AdminModule,
     NotificationsModule,
     RedisModule,
     ConfigModule.forRoot({
