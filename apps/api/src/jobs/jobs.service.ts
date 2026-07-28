@@ -9,6 +9,7 @@ import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.rep
 import { JobStatus } from '../infra/prisma/generated/client';
 import { ClientProxy } from '@nestjs/microservices';
 import { Redis } from 'ioredis';
+import { PrismaService } from '../infra/prisma/prisma.service';
 
 @Injectable()
 export class JobsService {
@@ -17,6 +18,7 @@ export class JobsService {
     private readonly statusHistoryRepository: JobStatusHistoryRepository,
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
+    private readonly prisma: PrismaService,
   ) {}
 
   private async invalidateListCaches() {
@@ -31,6 +33,13 @@ export class JobsService {
   }
 
   async create(data: any, companyId: string, accountId: string) {
+    let config = await this.prisma.globalConfig.findFirst();
+    const minPrice = config ? config.minimumJobPriceCents : 5000;
+    
+    if (data.paymentAmountCents < minPrice) {
+      throw new ForbiddenException(`O valor mínimo para uma vaga é de R$ ${(minPrice / 100).toFixed(2).replace('.', ',')}`);
+    }
+
     const job = await this.jobsRepository.create({
       ...data,
       companyId,

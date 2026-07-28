@@ -1,4 +1,4 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, ConflictException } from '@nestjs/common';
 import Redis from 'ioredis';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { AccountStatus } from '../infra/prisma/generated';
@@ -139,5 +139,40 @@ export class AdminService {
         resolvedById: adminId,
       },
     });
+  }
+
+  async getSettings() {
+    let config = await this.prisma.globalConfig.findFirst();
+    if (!config) {
+      config = await this.prisma.globalConfig.create({ data: {} });
+    }
+    return config;
+  }
+
+  async updateSettings(platformFeePercentage: number, minimumJobPriceCents: number) {
+    const config = await this.getSettings();
+    return this.prisma.globalConfig.update({
+      where: { id: config.id },
+      data: { platformFeePercentage, minimumJobPriceCents },
+    });
+  }
+
+  async createAdmin(email: string, passwordPlain: string) {
+    const existing = await this.prisma.account.findUnique({ where: { email } });
+    if (existing) throw new ConflictException('Email already in use');
+
+    const bcrypt = require('bcrypt');
+    const passwordHash = bcrypt.hashSync(passwordPlain, 10);
+
+    const newAdmin = await this.prisma.account.create({
+      data: {
+        email,
+        password: passwordHash,
+        role: 'ADMIN',
+      },
+    });
+
+    const { password: _, ...result } = newAdmin;
+    return result;
   }
 }

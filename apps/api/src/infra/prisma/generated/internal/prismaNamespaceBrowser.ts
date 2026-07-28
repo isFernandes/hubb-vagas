@@ -59,7 +59,8 @@ export const ModelName = {
   Application: 'Application',
   JobStatusHistory: 'JobStatusHistory',
   AccountAuditLog: 'AccountAuditLog',
-  Report: 'Report'
+  Report: 'Report',
+  GlobalConfig: 'GlobalConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -196,6 +197,17 @@ export const ReportScalarFieldEnum = {
 } as const
 
 export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum]
+
+
+export const GlobalConfigScalarFieldEnum = {
+  id: 'id',
+  platformFeePercentage: 'platformFeePercentage',
+  minimumJobPriceCents: 'minimumJobPriceCents',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GlobalConfigScalarFieldEnum = (typeof GlobalConfigScalarFieldEnum)[keyof typeof GlobalConfigScalarFieldEnum]
 
 
 export const SortOrder = {

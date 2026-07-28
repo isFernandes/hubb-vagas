@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Query, Patch, Param, Body, Request } from '@nestjs/common';
+import { Controller, Get, UseGuards, Query, Patch, Param, Body, Request, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
@@ -51,5 +51,20 @@ export class AdminController {
     @Request() req: any
   ) {
     return this.adminService.resolveReport(id, body.status, body.notes || '', req.user.id);
+  }
+
+  @Get('settings')
+  getSettings() {
+    return this.adminService.getSettings();
+  }
+
+  @Patch('settings')
+  updateSettings(@Body() body: { platformFeePercentage: number; minimumJobPriceCents: number }) {
+    return this.adminService.updateSettings(body.platformFeePercentage, body.minimumJobPriceCents);
+  }
+
+  @Post('admins')
+  createAdmin(@Body() body: { email: string; passwordPlain: string }) {
+    return this.adminService.createAdmin(body.email, body.passwordPlain);
   }
 }

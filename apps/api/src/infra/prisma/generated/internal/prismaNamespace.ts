@@ -392,7 +392,8 @@ export const ModelName = {
   Application: 'Application',
   JobStatusHistory: 'JobStatusHistory',
   AccountAuditLog: 'AccountAuditLog',
-  Report: 'Report'
+  Report: 'Report',
+  GlobalConfig: 'GlobalConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "account" | "user" | "company" | "job" | "userApplications" | "application" | "jobStatusHistory" | "accountAuditLog" | "report"
+    modelProps: "account" | "user" | "company" | "job" | "userApplications" | "application" | "jobStatusHistory" | "accountAuditLog" | "report" | "globalConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1078,6 +1079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GlobalConfig: {
+      payload: Prisma.$GlobalConfigPayload<ExtArgs>
+      fields: Prisma.GlobalConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GlobalConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GlobalConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.GlobalConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GlobalConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>
+        }
+        findMany: {
+          args: Prisma.GlobalConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>[]
+        }
+        create: {
+          args: Prisma.GlobalConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>
+        }
+        createMany: {
+          args: Prisma.GlobalConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GlobalConfigCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>[]
+        }
+        delete: {
+          args: Prisma.GlobalConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>
+        }
+        update: {
+          args: Prisma.GlobalConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.GlobalConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GlobalConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GlobalConfigUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>[]
+        }
+        upsert: {
+          args: Prisma.GlobalConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GlobalConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.GlobalConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGlobalConfig>
+        }
+        groupBy: {
+          args: Prisma.GlobalConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GlobalConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GlobalConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GlobalConfigCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1235,6 +1310,17 @@ export const ReportScalarFieldEnum = {
 } as const
 
 export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum]
+
+
+export const GlobalConfigScalarFieldEnum = {
+  id: 'id',
+  platformFeePercentage: 'platformFeePercentage',
+  minimumJobPriceCents: 'minimumJobPriceCents',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GlobalConfigScalarFieldEnum = (typeof GlobalConfigScalarFieldEnum)[keyof typeof GlobalConfigScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1525,6 +1611,7 @@ export type GlobalOmitConfig = {
   jobStatusHistory?: Prisma.JobStatusHistoryOmit
   accountAuditLog?: Prisma.AccountAuditLogOmit
   report?: Prisma.ReportOmit
+  globalConfig?: Prisma.GlobalConfigOmit
 }
 
 /* Types for Logging */

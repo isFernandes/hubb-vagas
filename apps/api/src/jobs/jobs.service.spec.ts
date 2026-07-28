@@ -3,6 +3,7 @@ import { JobsService } from './jobs.service';
 import { JobsRepository } from '../repositories/jobs.repository';
 import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { JobStatus } from '../infra/prisma/generated/client';
+import { PrismaService } from '../infra/prisma/prisma.service';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 describe('JobsService', () => {
@@ -55,8 +56,16 @@ describe('JobsService', () => {
           useValue: {
             get: jest.fn(),
             setex: jest.fn(),
-            del: jest.fn(),
+            del: jest.fn().mockResolvedValue(1),
             keys: jest.fn().mockResolvedValue([]),
+          },
+        },
+        {
+          provide: PrismaService,
+          useValue: {
+            globalConfig: {
+              findFirst: jest.fn().mockResolvedValue({ minimumJobPriceCents: 5000 }),
+            },
           },
         },
       ],

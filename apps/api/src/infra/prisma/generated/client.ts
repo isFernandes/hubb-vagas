@@ -84,3 +84,8 @@ export type AccountAuditLog = Prisma.AccountAuditLogModel
  * 
  */
 export type Report = Prisma.ReportModel
+/**
+ * Model GlobalConfig
+ * 
+ */
+export type GlobalConfig = Prisma.GlobalConfigModel
