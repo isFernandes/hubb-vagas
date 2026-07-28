@@ -15,6 +15,8 @@ import JobsList from './pages/candidate/JobsList';
 import JobDetailsCandidate from './pages/candidate/JobDetailsCandidate';
 import CandidateSettings from './pages/candidate/Settings';
 import CompanySettings from './pages/company/Settings';
+import { AdminLayout } from './layouts/AdminLayout';
+import { AdminRouteGuard } from './guards/AdminRouteGuard';
 
 import { Toaster } from '@/components/ui/sonner';
 
@@ -46,6 +48,12 @@ export function AppRoutes() {
       <Route path="/dashboard/jobs/new" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><NewJob /></PrivateRoute>} />
       <Route path="/dashboard/jobs/:id" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><JobDetails /></PrivateRoute>} />
       <Route path="/dashboard/settings" element={<PrivateRoute allowedRoles={['COMPANY']}><CompanySettings /></PrivateRoute>} />
+      
+      {/* Rotas Admin */}
+      <Route path="/admin" element={<AdminRouteGuard><AdminLayout /></AdminRouteGuard>}>
+        {/* Placeholder for dashboard, will be replaced in Task 4 */}
+        <Route index element={<div>Admin Dashboard Placeholder</div>} />
+      </Route>
     </Routes>
   );
 }
