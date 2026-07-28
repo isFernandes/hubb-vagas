@@ -15,13 +15,12 @@ export const AdminLayout = () => {
           >
             Dashboard
           </Link>
-          <a
-            href="#"
-            className="block px-4 py-2 rounded text-gray-500 cursor-not-allowed"
-            title="Coming soon"
+          <Link
+            to="/admin/users"
+            className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
             Users
-          </a>
+          </Link>
           <a
             href="#"
             className="block px-4 py-2 rounded text-gray-500 cursor-not-allowed"
