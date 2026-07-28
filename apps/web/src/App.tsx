@@ -17,6 +17,7 @@ import CandidateSettings from './pages/candidate/Settings';
 import CompanySettings from './pages/company/Settings';
 import { AdminLayout } from './layouts/AdminLayout';
 import { AdminRouteGuard } from './guards/AdminRouteGuard';
+import AdminDashboard from './pages/admin/Dashboard';
 
 import { Toaster } from '@/components/ui/sonner';
 
@@ -51,8 +52,7 @@ export function AppRoutes() {
       
       {/* Rotas Admin */}
       <Route path="/admin" element={<AdminRouteGuard><AdminLayout /></AdminRouteGuard>}>
-        {/* Placeholder for dashboard, will be replaced in Task 4 */}
-        <Route index element={<div>Admin Dashboard Placeholder</div>} />
+        <Route index element={<AdminDashboard />} />
       </Route>
     </Routes>
   );
