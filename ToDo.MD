@@ -62,13 +62,13 @@
 - [x] 8.3 Configurar logs estruturados na API e nos workers.
 - [x] 8.4 Definir métricas e alarmes principais (latência API, tamanho de filas RabbitMQ, erros em workers).
 
-## 9. Testes Automatizados e Cobertura (Pendente)
+## 9. Testes Automatizados e Cobertura (Concluído)
 
 - [x] 9.1 Set up Jest for backend unit/integration tests (Setup feito, mas cobertura muito baixa)
-- [ ] 9.1.1 Atingir 80%+ de cobertura no Backend (Foco: Workers, Redis Lock, Notificações e Services)
+- [x] 9.1.1 Atingir 80%+ de cobertura no Backend (Foco: Workers, Redis Lock, Notificações e Services)
 - [x] 9.2 Configure Vitest and React Testing Library for the frontend
-- [ ] 9.2.1 Atingir 80%+ de cobertura no Frontend (Testes RTL em Pages e Components)
-- [ ] 9.3 Ensure `turbo run test` executes tests in both workspaces successfully (Gerando relatórios consolidados)
+- [x] 9.2.1 Atingir 80%+ de cobertura no Frontend (Testes RTL em Pages e Components)
+- [x] 9.3 Ensure `turbo run test` executes tests in both workspaces successfully (Gerando relatórios consolidados)
 - [x] 9.4 Add GitHub Actions (or another CI) pipeline basic configuration
 - [x] 9.5 Verify `npm run dev` starts correctly across the monorepo
 - [x] 9.6 Verify `turbo run build` builds smoothly
@@ -79,6 +79,7 @@
 - [x] 10.1 Garantir testes end-to-end do fluxo (robô HTTP testou de ponta a ponta).
 - [x] 10.2 Correção de bugs finais de rotas e validações Zod.
 - [x] 10.3 Ajustes de UX (Toasts nativos do Sonner para validações falhas).
+- [ ] 10.4 Resolver vulnerabilidades (npm audit fix) e breaking changes de dependências no frontend e backend.
 
 ## 11. Monetização e Pagamentos (A Fazer)
 
