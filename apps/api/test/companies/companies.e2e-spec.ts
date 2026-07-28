@@ -19,7 +19,7 @@ describe('CompaniesController (e2e)', () => {
           req.user = {
             id: 'account-123',
             profileId: 'company-123',
-            role: 'Company',
+            role: 'COMPANY',
           };
           return true;
         },

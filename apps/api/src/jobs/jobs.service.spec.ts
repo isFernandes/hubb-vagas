@@ -64,7 +64,9 @@ describe('JobsService', () => {
           provide: PrismaService,
           useValue: {
             globalConfig: {
-              findFirst: jest.fn().mockResolvedValue({ minimumJobPriceCents: 5000 }),
+              findFirst: jest
+                .fn()
+                .mockResolvedValue({ minimumJobPriceCents: 5000 }),
             },
           },
         },

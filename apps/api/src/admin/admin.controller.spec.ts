@@ -63,10 +63,19 @@ describe('AdminController', () => {
       const mockResult = { id: 'user-id', status: 'BANNED' };
       service.updateUserStatus = jest.fn().mockResolvedValue(mockResult);
       const req = { user: { id: 'admin-id' } };
-      
-      const result = await controller.updateUserStatus('user-id', { status: 'BANNED', reason: 'Spam' }, req);
-      
-      expect(service.updateUserStatus).toHaveBeenCalledWith('user-id', 'BANNED', 'Spam', 'admin-id');
+
+      const result = await controller.updateUserStatus(
+        'user-id',
+        { status: 'BANNED', reason: 'Spam' },
+        req,
+      );
+
+      expect(service.updateUserStatus).toHaveBeenCalledWith(
+        'user-id',
+        'BANNED',
+        'Spam',
+        'admin-id',
+      );
       expect(result).toEqual(mockResult);
     });
   });

@@ -17,7 +17,7 @@ describe('UsersController (e2e)', () => {
       .useValue({
         canActivate: (context) => {
           const req = context.switchToHttp().getRequest();
-          req.user = { id: 'account-123', profileId: 'user-123', role: 'User' };
+          req.user = { id: 'account-123', profileId: 'user-123', role: 'USER' };
           return true;
         },
       })
