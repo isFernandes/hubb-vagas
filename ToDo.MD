@@ -107,7 +107,8 @@
 - [x] 13.3 Funcionalidade de banimento/suspensão de usuários com Log de Auditoria (quem baniu, quando e motivo).
 - [x] 13.4 Sistema de moderação de denúncias (Vagas falsas, no-show, assédio).
 - [ ] 13.5 Gestão Financeira e Disputas (Acompanhar fluxo de caixa, taxas retidas e resolução de conflitos de pagamento).
-- [ ] 13.6 Configurações Globais do Sistema (Ajustar taxa da plataforma %, valor mínimo de vaga, etc., sem hardcode).
+- [x] 13.6 Configurações Globais do Sistema (Ajustar taxa da plataforma %, valor mínimo de vaga, etc., sem hardcode).
+- [x] 13.7 Configurar e manter outros usuários admin e gerenciamento de acessos.
 
 ## 14. Algoritmos Avançados de Alocação (A Fazer)
 
