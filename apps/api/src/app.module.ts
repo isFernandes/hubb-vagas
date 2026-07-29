@@ -13,6 +13,7 @@ import { RedisModule } from './infra/redis/redis.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AdminModule } from './admin/admin.module';
 import { ReportsModule } from './reports/reports.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ReportsModule } from './reports/reports.module';
     JobsModule,
     ApplicationsModule,
     ReportsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
