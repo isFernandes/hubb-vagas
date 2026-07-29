@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 
 @Injectable()
 export class PaymentsService {
@@ -22,5 +22,11 @@ export class PaymentsService {
       }
     });
     return result.init_point!;
+  }
+
+  async verifyPayment(paymentId: string): Promise<boolean> {
+    const payment = new Payment(this.client);
+    const data = await payment.get({ id: paymentId });
+    return data.status === 'approved';
   }
 }
