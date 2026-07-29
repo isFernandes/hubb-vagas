@@ -51,7 +51,7 @@ export class AdminService {
 
       await this.redis.setex(cacheKey, 300, JSON.stringify(metrics)); // 300 seconds = 5 mins
       return metrics;
-    } catch (error) {
+    } catch {
       return {
         totalUsers: 0,
         totalCompanies: 0,
@@ -193,7 +193,7 @@ export class AdminService {
       },
     });
 
-    const { password: _, ...result } = newAdmin;
+    const { password, ...result } = newAdmin;
     return result;
   }
 
