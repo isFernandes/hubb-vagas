@@ -61,7 +61,8 @@ export const ModelName = {
   JobStatusHistory: 'JobStatusHistory',
   AccountAuditLog: 'AccountAuditLog',
   Report: 'Report',
-  GlobalConfig: 'GlobalConfig'
+  GlobalConfig: 'GlobalConfig',
+  Review: 'Review'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -100,6 +101,8 @@ export const UserScalarFieldEnum = {
   cpf: 'cpf',
   bio: 'bio',
   account_id: 'account_id',
+  averageRating: 'averageRating',
+  reviewCount: 'reviewCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -114,6 +117,8 @@ export const CompanyScalarFieldEnum = {
   cnpj: 'cnpj',
   contact: 'contact',
   account_id: 'account_id',
+  averageRating: 'averageRating',
+  reviewCount: 'reviewCount',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -223,6 +228,19 @@ export const GlobalConfigScalarFieldEnum = {
 } as const
 
 export type GlobalConfigScalarFieldEnum = (typeof GlobalConfigScalarFieldEnum)[keyof typeof GlobalConfigScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  direction: 'direction',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
 export const SortOrder = {

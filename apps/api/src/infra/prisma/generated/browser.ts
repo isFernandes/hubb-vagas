@@ -72,3 +72,8 @@ export type Report = Prisma.ReportModel
  * 
  */
 export type GlobalConfig = Prisma.GlobalConfigModel
+/**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel

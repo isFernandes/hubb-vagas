@@ -79,7 +79,7 @@
 - [x] 10.1 Garantir testes end-to-end do fluxo (robô HTTP testou de ponta a ponta).
 - [x] 10.2 Correção de bugs finais de rotas e validações Zod.
 - [x] 10.3 Ajustes de UX (Toasts nativos do Sonner para validações falhas).
-- [ ] 10.4 Resolver vulnerabilidades (npm audit fix) e breaking changes de dependências no frontend e backend.
+- [x] 10.4 Resolver vulnerabilidades (npm audit fix) e breaking changes de dependências no frontend e backend.
 - [x] 10.5 Simular pipeline de CI localmente e corrigir erros encontrados.
 
 ## 11. Monetização e Pagamentos (A Fazer)

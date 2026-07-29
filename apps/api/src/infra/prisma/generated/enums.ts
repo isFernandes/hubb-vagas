@@ -65,3 +65,11 @@ export const ReportStatus = {
 } as const
 
 export type ReportStatus = (typeof ReportStatus)[keyof typeof ReportStatus]
+
+
+export const ReviewDirection = {
+  COMPANY_TO_USER: 'COMPANY_TO_USER',
+  USER_TO_COMPANY: 'USER_TO_COMPANY'
+} as const
+
+export type ReviewDirection = (typeof ReviewDirection)[keyof typeof ReviewDirection]

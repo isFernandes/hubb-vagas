@@ -20,8 +20,20 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  averageRating: number | null
+  reviewCount: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  averageRating: number | null
+  reviewCount: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -31,6 +43,8 @@ export type UserMinAggregateOutputType = {
   cpf: string | null
   bio: string | null
   account_id: string | null
+  averageRating: number | null
+  reviewCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +56,8 @@ export type UserMaxAggregateOutputType = {
   cpf: string | null
   bio: string | null
   account_id: string | null
+  averageRating: number | null
+  reviewCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,11 +69,23 @@ export type UserCountAggregateOutputType = {
   cpf: number
   bio: number
   account_id: number
+  averageRating: number
+  reviewCount: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  averageRating?: true
+  reviewCount?: true
+}
+
+export type UserSumAggregateInputType = {
+  averageRating?: true
+  reviewCount?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -66,6 +94,8 @@ export type UserMinAggregateInputType = {
   cpf?: true
   bio?: true
   account_id?: true
+  averageRating?: true
+  reviewCount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +107,8 @@ export type UserMaxAggregateInputType = {
   cpf?: true
   bio?: true
   account_id?: true
+  averageRating?: true
+  reviewCount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +120,8 @@ export type UserCountAggregateInputType = {
   cpf?: true
   bio?: true
   account_id?: true
+  averageRating?: true
+  reviewCount?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -131,6 +165,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -161,6 +207,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -172,9 +220,13 @@ export type UserGroupByOutputType = {
   cpf: string | null
   bio: string | null
   account_id: string
+  averageRating: number
+  reviewCount: number
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -204,6 +256,8 @@ export type UserWhereInput = {
   cpf?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
   account_id?: Prisma.StringFilter<"User"> | string
+  averageRating?: Prisma.FloatFilter<"User"> | number
+  reviewCount?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
@@ -218,6 +272,8 @@ export type UserOrderByWithRelationInput = {
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   account?: Prisma.AccountOrderByWithRelationInput
@@ -235,6 +291,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   bio?: Prisma.StringNullableFilter<"User"> | string | null
+  averageRating?: Prisma.FloatFilter<"User"> | number
+  reviewCount?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
@@ -249,11 +307,15 @@ export type UserOrderByWithAggregationInput = {
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -266,6 +328,8 @@ export type UserScalarWhereWithAggregatesInput = {
   cpf?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   bio?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   account_id?: Prisma.StringWithAggregatesFilter<"User"> | string
+  averageRating?: Prisma.FloatWithAggregatesFilter<"User"> | number
+  reviewCount?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -276,6 +340,8 @@ export type UserCreateInput = {
   avatarUrl?: string | null
   cpf?: string | null
   bio?: string | null
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutUserInput
@@ -290,6 +356,8 @@ export type UserUncheckedCreateInput = {
   cpf?: string | null
   bio?: string | null
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
@@ -302,6 +370,8 @@ export type UserUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutUserNestedInput
@@ -316,6 +386,8 @@ export type UserUncheckedUpdateInput = {
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
@@ -329,6 +401,8 @@ export type UserCreateManyInput = {
   cpf?: string | null
   bio?: string | null
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -339,6 +413,8 @@ export type UserUpdateManyMutationInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -350,6 +426,8 @@ export type UserUncheckedUpdateManyInput = {
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -366,8 +444,15 @@ export type UserCountOrderByAggregateInput = {
   cpf?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -377,6 +462,8 @@ export type UserMaxOrderByAggregateInput = {
   cpf?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -388,8 +475,15 @@ export type UserMinOrderByAggregateInput = {
   cpf?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -433,6 +527,22 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type UserCreateNestedOneWithoutUserApplicationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutUserApplicationsInput, Prisma.UserUncheckedCreateWithoutUserApplicationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserApplicationsInput
@@ -467,6 +577,8 @@ export type UserCreateWithoutAccountInput = {
   avatarUrl?: string | null
   cpf?: string | null
   bio?: string | null
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
@@ -479,6 +591,8 @@ export type UserUncheckedCreateWithoutAccountInput = {
   avatarUrl?: string | null
   cpf?: string | null
   bio?: string | null
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
@@ -507,6 +621,8 @@ export type UserUpdateWithoutAccountInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
@@ -519,6 +635,8 @@ export type UserUncheckedUpdateWithoutAccountInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
@@ -531,6 +649,8 @@ export type UserCreateWithoutUserApplicationsInput = {
   avatarUrl?: string | null
   cpf?: string | null
   bio?: string | null
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutUserInput
@@ -544,6 +664,8 @@ export type UserUncheckedCreateWithoutUserApplicationsInput = {
   cpf?: string | null
   bio?: string | null
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
@@ -571,6 +693,8 @@ export type UserUpdateWithoutUserApplicationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutUserNestedInput
@@ -584,6 +708,8 @@ export type UserUncheckedUpdateWithoutUserApplicationsInput = {
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
@@ -595,6 +721,8 @@ export type UserCreateWithoutApplicationsInput = {
   avatarUrl?: string | null
   cpf?: string | null
   bio?: string | null
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutUserInput
@@ -608,6 +736,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   cpf?: string | null
   bio?: string | null
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutUserInput
@@ -635,6 +765,8 @@ export type UserUpdateWithoutApplicationsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutUserNestedInput
@@ -648,6 +780,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutUserNestedInput
@@ -700,6 +834,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   cpf?: boolean
   bio?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -715,6 +851,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   cpf?: boolean
   bio?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -727,6 +865,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   cpf?: boolean
   bio?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -739,11 +879,13 @@ export type UserSelectScalar = {
   cpf?: boolean
   bio?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cpf" | "bio" | "account_id" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cpf" | "bio" | "account_id" | "averageRating" | "reviewCount" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
@@ -771,6 +913,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     cpf: string | null
     bio: string | null
     account_id: string
+    averageRating: number
+    reviewCount: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1205,6 +1349,8 @@ export interface UserFieldRefs {
   readonly cpf: Prisma.FieldRef<"User", 'String'>
   readonly bio: Prisma.FieldRef<"User", 'String'>
   readonly account_id: Prisma.FieldRef<"User", 'String'>
+  readonly averageRating: Prisma.FieldRef<"User", 'Float'>
+  readonly reviewCount: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

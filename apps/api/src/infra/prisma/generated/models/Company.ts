@@ -20,8 +20,20 @@ export type CompanyModel = runtime.Types.Result.DefaultSelection<Prisma.$Company
 
 export type AggregateCompany = {
   _count: CompanyCountAggregateOutputType | null
+  _avg: CompanyAvgAggregateOutputType | null
+  _sum: CompanySumAggregateOutputType | null
   _min: CompanyMinAggregateOutputType | null
   _max: CompanyMaxAggregateOutputType | null
+}
+
+export type CompanyAvgAggregateOutputType = {
+  averageRating: number | null
+  reviewCount: number | null
+}
+
+export type CompanySumAggregateOutputType = {
+  averageRating: number | null
+  reviewCount: number | null
 }
 
 export type CompanyMinAggregateOutputType = {
@@ -31,6 +43,8 @@ export type CompanyMinAggregateOutputType = {
   cnpj: string | null
   contact: string | null
   account_id: string | null
+  averageRating: number | null
+  reviewCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +56,8 @@ export type CompanyMaxAggregateOutputType = {
   cnpj: string | null
   contact: string | null
   account_id: string | null
+  averageRating: number | null
+  reviewCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,11 +69,23 @@ export type CompanyCountAggregateOutputType = {
   cnpj: number
   contact: number
   account_id: number
+  averageRating: number
+  reviewCount: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type CompanyAvgAggregateInputType = {
+  averageRating?: true
+  reviewCount?: true
+}
+
+export type CompanySumAggregateInputType = {
+  averageRating?: true
+  reviewCount?: true
+}
 
 export type CompanyMinAggregateInputType = {
   id?: true
@@ -66,6 +94,8 @@ export type CompanyMinAggregateInputType = {
   cnpj?: true
   contact?: true
   account_id?: true
+  averageRating?: true
+  reviewCount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +107,8 @@ export type CompanyMaxAggregateInputType = {
   cnpj?: true
   contact?: true
   account_id?: true
+  averageRating?: true
+  reviewCount?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +120,8 @@ export type CompanyCountAggregateInputType = {
   cnpj?: true
   contact?: true
   account_id?: true
+  averageRating?: true
+  reviewCount?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -131,6 +165,18 @@ export type CompanyAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CompanyAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CompanySumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CompanyMinAggregateInputType
@@ -161,6 +207,8 @@ export type CompanyGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: CompanyCountAggregateInputType | true
+  _avg?: CompanyAvgAggregateInputType
+  _sum?: CompanySumAggregateInputType
   _min?: CompanyMinAggregateInputType
   _max?: CompanyMaxAggregateInputType
 }
@@ -172,9 +220,13 @@ export type CompanyGroupByOutputType = {
   cnpj: string
   contact: string
   account_id: string
+  averageRating: number
+  reviewCount: number
   createdAt: Date
   updatedAt: Date
   _count: CompanyCountAggregateOutputType | null
+  _avg: CompanyAvgAggregateOutputType | null
+  _sum: CompanySumAggregateOutputType | null
   _min: CompanyMinAggregateOutputType | null
   _max: CompanyMaxAggregateOutputType | null
 }
@@ -204,6 +256,8 @@ export type CompanyWhereInput = {
   cnpj?: Prisma.StringFilter<"Company"> | string
   contact?: Prisma.StringFilter<"Company"> | string
   account_id?: Prisma.StringFilter<"Company"> | string
+  averageRating?: Prisma.FloatFilter<"Company"> | number
+  reviewCount?: Prisma.IntFilter<"Company"> | number
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
@@ -217,6 +271,8 @@ export type CompanyOrderByWithRelationInput = {
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   account?: Prisma.AccountOrderByWithRelationInput
@@ -233,6 +289,8 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Company"> | string
   avatarUrl?: Prisma.StringNullableFilter<"Company"> | string | null
   contact?: Prisma.StringFilter<"Company"> | string
+  averageRating?: Prisma.FloatFilter<"Company"> | number
+  reviewCount?: Prisma.IntFilter<"Company"> | number
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
@@ -246,11 +304,15 @@ export type CompanyOrderByWithAggregationInput = {
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.CompanyCountOrderByAggregateInput
+  _avg?: Prisma.CompanyAvgOrderByAggregateInput
   _max?: Prisma.CompanyMaxOrderByAggregateInput
   _min?: Prisma.CompanyMinOrderByAggregateInput
+  _sum?: Prisma.CompanySumOrderByAggregateInput
 }
 
 export type CompanyScalarWhereWithAggregatesInput = {
@@ -263,6 +325,8 @@ export type CompanyScalarWhereWithAggregatesInput = {
   cnpj?: Prisma.StringWithAggregatesFilter<"Company"> | string
   contact?: Prisma.StringWithAggregatesFilter<"Company"> | string
   account_id?: Prisma.StringWithAggregatesFilter<"Company"> | string
+  averageRating?: Prisma.FloatWithAggregatesFilter<"Company"> | number
+  reviewCount?: Prisma.IntWithAggregatesFilter<"Company"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
 }
@@ -273,6 +337,8 @@ export type CompanyCreateInput = {
   avatarUrl?: string | null
   cnpj: string
   contact: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutCompanyInput
@@ -286,6 +352,8 @@ export type CompanyUncheckedCreateInput = {
   cnpj: string
   contact: string
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   jobs?: Prisma.JobUncheckedCreateNestedManyWithoutCompanyInput
@@ -297,6 +365,8 @@ export type CompanyUpdateInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutCompanyNestedInput
@@ -310,6 +380,8 @@ export type CompanyUncheckedUpdateInput = {
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   jobs?: Prisma.JobUncheckedUpdateManyWithoutCompanyNestedInput
@@ -322,6 +394,8 @@ export type CompanyCreateManyInput = {
   cnpj: string
   contact: string
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -332,6 +406,8 @@ export type CompanyUpdateManyMutationInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -343,6 +419,8 @@ export type CompanyUncheckedUpdateManyInput = {
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -359,8 +437,15 @@ export type CompanyCountOrderByAggregateInput = {
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type CompanyAvgOrderByAggregateInput = {
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
 }
 
 export type CompanyMaxOrderByAggregateInput = {
@@ -370,6 +455,8 @@ export type CompanyMaxOrderByAggregateInput = {
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -381,8 +468,15 @@ export type CompanyMinOrderByAggregateInput = {
   cnpj?: Prisma.SortOrder
   contact?: Prisma.SortOrder
   account_id?: Prisma.SortOrder
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type CompanySumOrderByAggregateInput = {
+  averageRating?: Prisma.SortOrder
+  reviewCount?: Prisma.SortOrder
 }
 
 export type CompanyScalarRelationFilter = {
@@ -442,6 +536,8 @@ export type CompanyCreateWithoutAccountInput = {
   avatarUrl?: string | null
   cnpj: string
   contact: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   jobs?: Prisma.JobCreateNestedManyWithoutCompanyInput
@@ -453,6 +549,8 @@ export type CompanyUncheckedCreateWithoutAccountInput = {
   avatarUrl?: string | null
   cnpj: string
   contact: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   jobs?: Prisma.JobUncheckedCreateNestedManyWithoutCompanyInput
@@ -480,6 +578,8 @@ export type CompanyUpdateWithoutAccountInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   jobs?: Prisma.JobUpdateManyWithoutCompanyNestedInput
@@ -491,6 +591,8 @@ export type CompanyUncheckedUpdateWithoutAccountInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   jobs?: Prisma.JobUncheckedUpdateManyWithoutCompanyNestedInput
@@ -502,6 +604,8 @@ export type CompanyCreateWithoutJobsInput = {
   avatarUrl?: string | null
   cnpj: string
   contact: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   account: Prisma.AccountCreateNestedOneWithoutCompanyInput
@@ -514,6 +618,8 @@ export type CompanyUncheckedCreateWithoutJobsInput = {
   cnpj: string
   contact: string
   account_id: string
+  averageRating?: number
+  reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -540,6 +646,8 @@ export type CompanyUpdateWithoutJobsInput = {
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   account?: Prisma.AccountUpdateOneRequiredWithoutCompanyNestedInput
@@ -552,6 +660,8 @@ export type CompanyUncheckedUpdateWithoutJobsInput = {
   cnpj?: Prisma.StringFieldUpdateOperationsInput | string
   contact?: Prisma.StringFieldUpdateOperationsInput | string
   account_id?: Prisma.StringFieldUpdateOperationsInput | string
+  averageRating?: Prisma.FloatFieldUpdateOperationsInput | number
+  reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -594,6 +704,8 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -608,6 +720,8 @@ export type CompanySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -620,6 +734,8 @@ export type CompanySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
@@ -632,11 +748,13 @@ export type CompanySelectScalar = {
   cnpj?: boolean
   contact?: boolean
   account_id?: boolean
+  averageRating?: boolean
+  reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cnpj" | "contact" | "account_id" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cnpj" | "contact" | "account_id" | "averageRating" | "reviewCount" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
 export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   jobs?: boolean | Prisma.Company$jobsArgs<ExtArgs>
@@ -662,6 +780,8 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     cnpj: string
     contact: string
     account_id: string
+    averageRating: number
+    reviewCount: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["company"]>
@@ -1095,6 +1215,8 @@ export interface CompanyFieldRefs {
   readonly cnpj: Prisma.FieldRef<"Company", 'String'>
   readonly contact: Prisma.FieldRef<"Company", 'String'>
   readonly account_id: Prisma.FieldRef<"Company", 'String'>
+  readonly averageRating: Prisma.FieldRef<"Company", 'Float'>
+  readonly reviewCount: Prisma.FieldRef<"Company", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Company", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Company", 'DateTime'>
 }
