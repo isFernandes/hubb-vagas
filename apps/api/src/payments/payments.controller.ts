@@ -15,10 +15,12 @@ export class PaymentsController {
   @HttpCode(200)
   async handleWebhook(@Body() body: any) {
     if (body.type === 'payment' && body.data && body.data.id) {
-      const paymentInfo = await this.paymentsService.verifyPayment(body.data.id);
+      const paymentInfo = await this.paymentsService.verifyPayment(
+        body.data.id,
+      );
       if (paymentInfo && paymentInfo.approved) {
         const { jobId, appId } = paymentInfo;
-        
+
         // Find job to get the companyId
         const job = await this.prisma.job.findUnique({
           where: { id: jobId },
@@ -31,11 +33,12 @@ export class PaymentsController {
             appId,
             companyId: job.companyId,
           });
-          console.log(`[PaymentsWebhook] Approved payment for Job ${jobId}, App ${appId}. Emitted approval event.`);
+          console.log(
+            `[PaymentsWebhook] Approved payment for Job ${jobId}, App ${appId}. Emitted approval event.`,
+          );
         }
       }
     }
     return { received: true };
   }
 }
-

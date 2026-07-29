@@ -199,9 +199,15 @@ export class JobsService {
 
     const config = await this.prisma.globalConfig.findFirst();
     const minPrice = config ? config.minimumJobPriceCents : 5000;
-    const price = job.paymentAmountCents ? job.paymentAmountCents / 100 : minPrice / 100;
+    const price = job.paymentAmountCents
+      ? job.paymentAmountCents / 100
+      : minPrice / 100;
 
-    const initPoint = await this.paymentsService.createPreference(jobId, appId, price);
+    const initPoint = await this.paymentsService.createPreference(
+      jobId,
+      appId,
+      price,
+    );
 
     return {
       checkoutRequired: true,

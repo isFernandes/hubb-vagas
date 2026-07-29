@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Param, Body, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Body,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
@@ -15,12 +23,18 @@ export class ReviewsController {
   async submitReview(
     @Param('applicationId') applicationId: string,
     @Body() body: { rating: number; comment?: string },
-    @Request() req
+    @Request() req,
   ) {
     const role = req.user.role;
     const reviewerId = req.user.profileId;
 
-    return this.reviewsService.submitReview(applicationId, body.rating, body.comment || '', reviewerId, role);
+    return this.reviewsService.submitReview(
+      applicationId,
+      body.rating,
+      body.comment || '',
+      reviewerId,
+      role,
+    );
   }
 
   @Get('user/:userId')
