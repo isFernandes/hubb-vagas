@@ -97,7 +97,7 @@
 - [x] 12.5 Painel de configurações (Settings) para edição de perfil, senha e bio. (Fácil/Médio - Nova tela e endpoint de PATCH)
 - [x] 12.6 Suporte a avatar/foto de perfil em base64. (Médio - Ajuste no Prisma e componente de upload no Front)
 - [ ] 12.7 Vagas Múltiplas: Campo `positionsAvailable`. (Médio - Ajustar a lógica de fechamento da vaga por contagem)
-- [ ] 12.8 Sistema de Reputação: Avaliações (1 a 5 estrelas). (Médio - Criação de novas tabelas e rotas pós-serviço)
+- [ ] 12.8 Sistema de Reputação: Avaliações (1 a 5 estrelas). (Médio - Criação de novas tabelas e rotas pós-serviço) [BACKEND CONCLUÍDO, FRONTEND PENDENTE]
 - [ ] 12.9 Política de Cancelamento (No-Show) com punição. (Médio/Complexo - Lógica de desconto de estrelas baseado no tempo)
 - [ ] 12.10 Validador de conflito de agenda (mín. 1h entre bicos). (Complexo - Checagem de cruzamento de horários em aplicações ativas)
 - [ ] 12.11 Busca por geolocalização (Raio de atuação). (Muito Complexo - Conversão de endereço em Lat/Lng e buscas por distância - PostGIS/Haversine)
