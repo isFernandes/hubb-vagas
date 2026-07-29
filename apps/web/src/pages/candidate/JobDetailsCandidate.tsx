@@ -3,13 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { ReviewModal } from '@/components/ReviewModal';
 
 export default function JobDetailsCandidate() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [applied, setApplied] = useState(false);
+  const [application, setApplication] = useState<any>(null);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
 
   const { user } = useAuth();
 
@@ -18,8 +21,11 @@ export default function JobDetailsCandidate() {
     queryFn: async () => {
       const { data } = await api.get(`/jobs/${id}`);
       if (user && data.applications) {
-        const hasApplied = data.applications.some((app: any) => app.userId === user.profileId);
-        setApplied(hasApplied);
+        const userApp = data.applications.find((app: any) => app.userId === user.profileId);
+        if (userApp) {
+          setApplied(true);
+          setApplication(userApp);
+        }
       }
       return data;
     },
@@ -82,8 +88,20 @@ export default function JobDetailsCandidate() {
 
             <div className="mt-12 pt-8 border-t border-slate-800">
               {applied ? (
-                <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400">
-                  <CheckCircle className="mr-2 h-5 w-5" /> Candidatura enviada com sucesso!
+                <div className="flex flex-col gap-4">
+                  <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center justify-center text-emerald-400">
+                    <CheckCircle className="mr-2 h-5 w-5" /> Candidatura enviada com sucesso!
+                  </div>
+                  {job.status === 'CLOSED_HIRED' && application?.status === 'APPROVED' && (
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      className="w-full md:w-auto text-lg border-indigo-500 text-indigo-400 hover:bg-indigo-500 hover:text-white"
+                      onClick={() => setIsReviewOpen(true)}
+                    >
+                      <Star className="mr-2 h-5 w-5" /> Avaliar Empresa
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <Button 
@@ -99,6 +117,7 @@ export default function JobDetailsCandidate() {
           </div>
         </div>
       </div>
+      {isReviewOpen && <ReviewModal applicationId={application?.id} onClose={() => setIsReviewOpen(false)} />}
     </div>
   );
 }
