@@ -80,3 +80,9 @@ To ensure fast reads across the platform, we will cache the aggregated rating da
 - **Unit Tests:** `CreateReviewService` to heavily validate the `APPROVED`/`CLOSED_HIRED` rule and permission boundaries.
 - **Worker Tests:** Ensure the RabbitMQ consumer recalculates averages precisely and handles decimal rounding correctly.
 - **E2E Tests:** Full flow of closing a job, creating a review, attempting to duplicate the review, and verifying the read endpoints.
+
+## 6. Frontend Scope (Web App)
+- **Profile Pages:** Update both the Company and User public profiles to display the `averageRating` (Stars UI) and `reviewCount`.
+- **Review History:** Add a section on the profile pages to list the paginated reviews (comment, stars, reviewer info).
+- **Review Submission Modal:** Add a "Leave a Review" button on the *Job History / Application Status* page. This button appears only when the job is marked `CLOSED_HIRED` and application is `APPROVED`. It opens a modal with a 1-5 star selector and a text area for the comment.
+- **State Management & UI:** Implement optimistic updates when a review is submitted, and use toast notifications (e.g., Sonner) for success/error feedback.
