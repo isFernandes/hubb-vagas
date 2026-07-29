@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, ConflictException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../infra/prisma/prisma.service';
 
 @Injectable()
@@ -10,9 +15,10 @@ export class ReviewsService {
     rating: number,
     comment: string,
     reviewerId: string,
-    role: 'USER' | 'COMPANY'
+    role: 'USER' | 'COMPANY',
   ) {
-    const direction = role === 'COMPANY' ? 'COMPANY_TO_USER' : 'USER_TO_COMPANY';
+    const direction =
+      role === 'COMPANY' ? 'COMPANY_TO_USER' : 'USER_TO_COMPANY';
 
     const application = await this.prisma.application.findUnique({
       where: { id: applicationId },
@@ -23,8 +29,13 @@ export class ReviewsService {
       throw new BadRequestException('Application not found');
     }
 
-    if (application.status !== 'APPROVED' || application.job.status !== 'CLOSED_HIRED') {
-      throw new BadRequestException('Application must be APPROVED and Job must be CLOSED_HIRED');
+    if (
+      application.status !== 'APPROVED' ||
+      application.job.status !== 'CLOSED_HIRED'
+    ) {
+      throw new BadRequestException(
+        'Application must be APPROVED and Job must be CLOSED_HIRED',
+      );
     }
 
     // Verify ownership
@@ -80,7 +91,10 @@ export class ReviewsService {
     });
 
     const reviewCount = reviews.length;
-    const averageRating = reviewCount > 0 ? reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviewCount : 0;
+    const averageRating =
+      reviewCount > 0
+        ? reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviewCount
+        : 0;
 
     await this.prisma.user.update({
       where: { id: userId },
@@ -106,7 +120,10 @@ export class ReviewsService {
     });
 
     const reviewCount = reviews.length;
-    const averageRating = reviewCount > 0 ? reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviewCount : 0;
+    const averageRating =
+      reviewCount > 0
+        ? reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviewCount
+        : 0;
 
     await this.prisma.company.update({
       where: { id: companyId },
@@ -123,7 +140,9 @@ export class ReviewsService {
 
     return this.prisma.review.findMany({
       where: { applicationId: { in: appIds }, direction: 'COMPANY_TO_USER' },
-      include: { application: { include: { job: { include: { company: true } } } } },
+      include: {
+        application: { include: { job: { include: { company: true } } } },
+      },
     });
   }
 

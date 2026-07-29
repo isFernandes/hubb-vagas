@@ -82,11 +82,11 @@
 - [x] 10.4 Resolver vulnerabilidades (npm audit fix) e breaking changes de dependências no frontend e backend.
 - [x] 10.5 Simular pipeline de CI localmente e corrigir erros encontrados.
 
-## 11. Monetização e Pagamentos (A Fazer)
+## 11. Monetização e Pagamentos (Concluído)
 
-- [ ] 11.1 Integrar gateway de pagamento (ex: Mercado Pago / Stripe) para transações na plataforma.
-- [ ] 11.2 Suportar métodos: Cartão de Crédito, Cartão de Débito e PIX.
-- [ ] 11.3 Construir interface de checkout para as empresas ou freelancers.
+- [x] 11.1 Integrar gateway de pagamento (ex: Mercado Pago / Stripe) para transações na plataforma.
+- [x] 11.2 Suportar métodos: Cartão de Crédito, Cartão de Débito e PIX.
+- [x] 11.3 Construir interface de checkout para as empresas ou freelancers.
 
 ## 12. Segurança, UX e Refinamentos de Domínio (A Fazer)
 

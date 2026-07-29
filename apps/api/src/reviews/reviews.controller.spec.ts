@@ -11,7 +11,11 @@ describe('ReviewsController', () => {
       providers: [
         {
           provide: ReviewsService,
-          useValue: { submitReview: vi.fn(), getUserReviews: vi.fn(), getCompanyReviews: vi.fn() },
+          useValue: {
+            submitReview: vi.fn(),
+            getUserReviews: vi.fn(),
+            getCompanyReviews: vi.fn(),
+          },
         },
       ],
     }).compile();

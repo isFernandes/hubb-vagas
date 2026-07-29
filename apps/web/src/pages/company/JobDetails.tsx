@@ -1,15 +1,19 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase } from 'lucide-react';
+import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase, Star } from 'lucide-react';
 import { toast } from 'sonner';
+import { ReviewModal } from '@/components/ReviewModal';
 
 export default function JobDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [selectedAppId, setSelectedAppId] = useState<string>('');
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job-details', id],
@@ -105,6 +109,19 @@ export default function JobDetails() {
                           Aprovar & Contratar
                         </Button>
                       )}
+
+                      {job.status === 'CLOSED_HIRED' && app.status === 'APPROVED' && (
+                        <Button 
+                          onClick={() => {
+                            setSelectedAppId(app.id);
+                            setIsReviewOpen(true);
+                          }}
+                          className="w-full bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30 border border-indigo-500/30"
+                        >
+                          <Star className="mr-2 h-4 w-4" />
+                          Avaliar Candidato
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))
@@ -113,6 +130,12 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
+      {isReviewOpen && (
+        <ReviewModal 
+          applicationId={selectedAppId} 
+          onClose={() => setIsReviewOpen(false)} 
+        />
+      )}
     </div>
   );
 }
