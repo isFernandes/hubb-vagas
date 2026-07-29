@@ -139,3 +139,9 @@
 ### 5. Escalabilidade de Negócios e Produto
 - [ ] Planos de Assinatura (SaaS): Evoluir gateway para assinaturas recorrentes (Premium/PRO).
 - [ ] Internacionalização (i18n): Estrutura base multi-idioma (PT-BR, EN) no React e nos templates de e-mail.
+
+### 6. Observabilidade Avançada e Confiabilidade (SRE)
+- [ ] OpenTelemetry (APM): Tracing distribuído para mapear requisições ponta a ponta (API -> Redis -> Postgres -> RabbitMQ -> Workers).
+- [ ] Status Page Pública: Página (ex: *status.hubbvagas.com*) permitindo que os usuários verifiquem a saúde dos sistemas em tempo real.
+- [ ] Métricas em Tempo Real: Exposição de endpoints `/metrics` (Prometheus) integrados ao Grafana (monitorando latência, tamanho de filas e saturação de DB).
+- [ ] Monitoramento Sintético e Alertas: Pings constantes simulando o usuário final e disparo de incidentes (Slack/PagerDuty) em caso de *downtime*.
