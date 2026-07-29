@@ -120,3 +120,13 @@
 
 - [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
 - [ ] Chat interno na plataforma para ocultar contatos diretos até aprovação final (Improvement Futuro).
+- [ ] **Inteligência e Matching**: Algoritmo de scoring para calcular "match" de afinidade entre perfil do candidato e a vaga.
+- [ ] **Testes de Habilidades (Assessments)**: Empresas poderem anexar quizzes ou testes técnicos à candidatura.
+- [ ] **Notificações Multicanal**: Alertas via WhatsApp (Twilio/Zenvia) e Push para engajamento em tempo real.
+- [ ] **Agendamento de Entrevistas**: Integração com calendários (Google/Outlook) para facilitar o agendamento de reuniões.
+- [ ] **Funil de Contratação Kanban**: Visualização em formato Kanban para a empresa gerenciar o status dos candidatos.
+- [ ] **Analytics e Exportação**: Relatórios de *Time-to-Hire*, funil de conversão e exportação de dados em CSV.
+- [ ] **Compliance LGPD**: Worker para anonimização de dados caso o usuário exerça o "direito ao esquecimento" na deleção de conta.
+- [ ] **Controle de Sessões Ativas**: Painel de segurança para o usuário visualizar conexões ativas e invalidar tokens JWT via Redis.
+- [ ] **Planos de Assinatura (SaaS)**: Evoluir o sistema financeiro para suportar planos recorrentes (Premium/PRO) de empresas ou candidatos.
+- [ ] **Internacionalização (i18n)**: Estrutura multi-idioma no frontend e nos envios de e-mail.
