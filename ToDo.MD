@@ -118,15 +118,24 @@
 
 ## Improvements (Melhorias Contínuas)
 
-- [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
-- [ ] Chat interno na plataforma para ocultar contatos diretos até aprovação final (Improvement Futuro).
-- [ ] **Inteligência e Matching**: Algoritmo de scoring para calcular "match" de afinidade entre perfil do candidato e a vaga.
-- [ ] **Testes de Habilidades (Assessments)**: Empresas poderem anexar quizzes ou testes técnicos à candidatura.
-- [ ] **Notificações Multicanal**: Alertas via WhatsApp (Twilio/Zenvia) e Push para engajamento em tempo real.
-- [ ] **Agendamento de Entrevistas**: Integração com calendários (Google/Outlook) para facilitar o agendamento de reuniões.
-- [ ] **Funil de Contratação Kanban**: Visualização em formato Kanban para a empresa gerenciar o status dos candidatos.
-- [ ] **Analytics e Exportação**: Relatórios de *Time-to-Hire*, funil de conversão e exportação de dados em CSV.
-- [ ] **Compliance LGPD**: Worker para anonimização de dados caso o usuário exerça o "direito ao esquecimento" na deleção de conta.
-- [ ] **Controle de Sessões Ativas**: Painel de segurança para o usuário visualizar conexões ativas e invalidar tokens JWT via Redis.
-- [ ] **Planos de Assinatura (SaaS)**: Evoluir o sistema financeiro para suportar planos recorrentes (Premium/PRO) de empresas ou candidatos.
-- [ ] **Internacionalização (i18n)**: Estrutura multi-idioma no frontend e nos envios de e-mail.
+### 1. Segurança, Compliance e LGPD
+- [ ] Worker de Exclusão (LGPD): Fluxo de anonimização de dados caso o usuário exerça o "direito ao esquecimento".
+- [ ] Controle de Sessões Ativas: Painel de segurança para visualizar conexões logadas e revogar tokens JWT no Redis remotamente.
+
+### 2. Inteligência, Matching e Triagem
+- [ ] Motor de Matching: Algoritmo de scoring para dar "match" e ordenar candidatos por afinidade com a vaga.
+- [ ] Assessments e Quizzes: Permitir que empresas anexem testes técnicos na candidatura para triagem automática.
+
+### 3. Comunicação e Engajamento
+- [ ] Chat interno: Mensageria na plataforma para ocultar contatos diretos até a fase final.
+- [ ] Notificações Multicanal: Alertas de processos via WhatsApp (Twilio/Zenvia) e Push Notifications.
+- [ ] Agendamento de Entrevistas: Integração nativa com Google Calendar/Outlook para marcar reuniões.
+
+### 4. Ferramentas para Empresas (B2B) e Analytics
+- [x] Admin Bypass: Permitir que Administradores contornem a restrição de propriedade da vaga.
+- [ ] Funil de Contratação (Kanban): Board visual para a empresa arrastar os candidatos entre fases (Triagem -> Entrevista -> Contratado).
+- [ ] Analytics de Recrutamento: Painel de exportação de dados (CSV) e métricas como *Time-to-Hire* e conversão.
+
+### 5. Escalabilidade de Negócios e Produto
+- [ ] Planos de Assinatura (SaaS): Evoluir gateway para assinaturas recorrentes (Premium/PRO).
+- [ ] Internacionalização (i18n): Estrutura base multi-idioma (PT-BR, EN) no React e nos templates de e-mail.
