@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ForbiddenException,
+  BadRequestException,
   Inject,
 } from '@nestjs/common';
 import { JobsRepository } from '../repositories/jobs.repository';
@@ -10,6 +11,7 @@ import { JobStatus } from '../infra/prisma/generated/client';
 import { ClientProxy } from '@nestjs/microservices';
 import { Redis } from 'ioredis';
 import { PrismaService } from '../infra/prisma/prisma.service';
+import { PaymentsService } from '../payments/payments.service';
 
 @Injectable()
 export class JobsService {
@@ -19,6 +21,7 @@ export class JobsService {
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
     private readonly prisma: PrismaService,
+    private readonly paymentsService: PaymentsService,
   ) {}
 
   private async invalidateListCaches() {
@@ -190,9 +193,19 @@ export class JobsService {
       );
     }
 
-    this.client.emit('application_approved', { jobId, appId, companyId });
+    if (job.status === JobStatus.CLOSED_HIRED) {
+      throw new BadRequestException('Esta vaga já está fechada e contratada.');
+    }
+
+    const config = await this.prisma.globalConfig.findFirst();
+    const minPrice = config ? config.minimumJobPriceCents : 5000;
+    const price = job.paymentAmountCents ? job.paymentAmountCents / 100 : minPrice / 100;
+
+    const initPoint = await this.paymentsService.createPreference(jobId, appId, price);
+
     return {
-      message: 'Application approved successfully, processing job closure.',
+      checkoutRequired: true,
+      init_point: initPoint,
     };
   }
 }

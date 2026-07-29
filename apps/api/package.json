@@ -61,7 +61,6 @@
     "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.0",
     "@types/ioredis": "^5.0.0",
-    "@types/mercadopago": "^1.5.11",
     "@types/node": "^22.10.7",
     "@types/nodemailer": "^8.0.1",
     "@types/supertest": "^6.0.2",

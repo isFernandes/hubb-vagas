@@ -1,21 +1,109 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
+import { PrismaService } from '../infra/prisma/prisma.service';
 
 describe('PaymentsController', () => {
   let controller: PaymentsController;
+  let paymentsService: PaymentsService;
+  let prismaService: PrismaService;
+  let rmqClientEmit: jest.Mock;
 
   beforeEach(async () => {
+    rmqClientEmit = jest.fn();
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PaymentsController],
-      providers: [{ provide: PaymentsService, useValue: { createPreference: jest.fn().mockResolvedValue('url') } }],
+      providers: [
+        {
+          provide: PaymentsService,
+          useValue: {
+            verifyPayment: jest.fn(),
+          },
+        },
+        {
+          provide: PrismaService,
+          useValue: {
+            job: {
+              findUnique: jest.fn(),
+            },
+          },
+        },
+        {
+          provide: 'RMQ_CLIENT',
+          useValue: {
+            emit: rmqClientEmit,
+          },
+        },
+      ],
     }).compile();
 
     controller = module.get<PaymentsController>(PaymentsController);
+    paymentsService = module.get<PaymentsService>(PaymentsService);
+    prismaService = module.get<PrismaService>(PrismaService);
   });
 
-  it('should call createPreference', async () => {
-    const result = await controller.createCheckout('job-123');
-    expect(result).toEqual({ init_point: 'url' });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
+
+  describe('handleWebhook', () => {
+    it('should emit application_approved event when payment is approved', async () => {
+      const webhookBody = {
+        type: 'payment',
+        data: { id: 'payment-123' },
+      };
+
+      jest.spyOn(paymentsService, 'verifyPayment').mockResolvedValue({
+        approved: true,
+        jobId: 'job-123',
+        appId: 'app-456',
+      });
+
+      jest.spyOn(prismaService.job, 'findUnique').mockResolvedValue({
+        id: 'job-123',
+        companyId: 'company-789',
+      } as any);
+
+      const result = await controller.handleWebhook(webhookBody);
+
+      expect(paymentsService.verifyPayment).toHaveBeenCalledWith('payment-123');
+      expect(prismaService.job.findUnique).toHaveBeenCalledWith({
+        where: { id: 'job-123' },
+      });
+      expect(rmqClientEmit).toHaveBeenCalledWith('application_approved', {
+        jobId: 'job-123',
+        appId: 'app-456',
+        companyId: 'company-789',
+      });
+      expect(result).toEqual({ received: true });
+    });
+
+    it('should not emit application_approved when payment verification fails', async () => {
+      const webhookBody = {
+        type: 'payment',
+        data: { id: 'payment-123' },
+      };
+
+      jest.spyOn(paymentsService, 'verifyPayment').mockResolvedValue(null);
+
+      const result = await controller.handleWebhook(webhookBody);
+
+      expect(paymentsService.verifyPayment).toHaveBeenCalledWith('payment-123');
+      expect(rmqClientEmit).not.toHaveBeenCalled();
+      expect(result).toEqual({ received: true });
+    });
+
+    it('should ignore non-payment webhook events', async () => {
+      const webhookBody = {
+        type: 'subscription',
+        data: { id: 'sub-123' },
+      };
+
+      const result = await controller.handleWebhook(webhookBody);
+
+      expect(paymentsService.verifyPayment).not.toHaveBeenCalled();
+      expect(rmqClientEmit).not.toHaveBeenCalled();
+      expect(result).toEqual({ received: true });
+    });
   });
 });

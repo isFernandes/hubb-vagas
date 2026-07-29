@@ -5,6 +5,7 @@ import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.rep
 import { JobStatus } from '../infra/prisma/generated/client';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { PaymentsService } from '../payments/payments.service';
 
 describe('JobsService', () => {
   let service: JobsService;
@@ -68,6 +69,12 @@ describe('JobsService', () => {
                 .fn()
                 .mockResolvedValue({ minimumJobPriceCents: 5000 }),
             },
+          },
+        },
+        {
+          provide: PaymentsService,
+          useValue: {
+            createPreference: jest.fn().mockResolvedValue('url'),
           },
         },
       ],

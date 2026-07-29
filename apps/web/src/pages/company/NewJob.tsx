@@ -25,19 +25,9 @@ export default function NewJob() {
       const { data } = await api.post('/jobs', payload);
       return data;
     },
-    onSuccess: async (data) => {
-      toast.success('Vaga criada! Redirecionando para pagamento...');
-      try {
-        const checkoutRes = await api.post(`/jobs/${data.id}/checkout`);
-        if (checkoutRes.data.init_point) {
-          window.location.href = checkoutRes.data.init_point;
-        } else {
-          navigate('/dashboard');
-        }
-      } catch (err) {
-        toast.error('Erro ao gerar pagamento. Acesse o painel para tentar novamente.');
-        navigate('/dashboard');
-      }
+    onSuccess: () => {
+      toast.success('Vaga publicada com sucesso!');
+      navigate('/dashboard');
     },
     onError: (err: any) => {
       console.error(err);
@@ -155,7 +145,7 @@ export default function NewJob() {
               </div>
 
               <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={createJobMutation.isPending}>
-                {createJobMutation.isPending ? 'Redirecionando...' : 'Pagar e Publicar Vaga'}
+                {createJobMutation.isPending ? 'Publicando...' : 'Publicar Vaga'}
               </Button>
             </form>
           </CardContent>

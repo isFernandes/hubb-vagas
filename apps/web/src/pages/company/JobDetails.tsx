@@ -4,6 +4,7 @@ import { api } from '@/lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function JobDetails() {
   const { id } = useParams();
@@ -24,12 +25,18 @@ export default function JobDetails() {
       const { data } = await api.patch(`/jobs/${id}/applications/${appId}/approve`);
       return data;
     },
-    onSuccess: () => {
-      alert('Candidato aprovado e vaga encerrada com sucesso!');
-      queryClient.invalidateQueries({ queryKey: ['job-details', id] });
+    onSuccess: (data) => {
+      if (data.checkoutRequired && data.init_point) {
+        toast.success('Redirecionando para o pagamento...');
+        window.location.href = data.init_point;
+      } else {
+        toast.success('Candidato aprovado e vaga encerrada com sucesso!');
+        queryClient.invalidateQueries({ queryKey: ['job-details', id] });
+      }
     },
-    onError: () => {
-      alert('Falha ao aprovar candidato. A vaga pode já estar encerrada.');
+    onError: (err: any) => {
+      const message = err?.response?.data?.message || 'Falha ao aprovar candidato. A vaga pode já estar encerrada.';
+      toast.error(message);
     }
   });
 
