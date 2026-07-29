@@ -118,5 +118,30 @@
 
 ## Improvements (Melhorias Contínuas)
 
-- [x] Permitir que usuários com role Admin possam contornar a restrição de propriedade da vaga no Update/Delete de Jobs.
-- [ ] Chat interno na plataforma para ocultar contatos diretos até aprovação final (Improvement Futuro).
+### 1. Segurança, Compliance e LGPD
+- [ ] Worker de Exclusão (LGPD): Fluxo de anonimização de dados caso o usuário exerça o "direito ao esquecimento".
+- [ ] Controle de Sessões Ativas: Painel de segurança para visualizar conexões logadas e revogar tokens JWT no Redis remotamente.
+
+### 2. Inteligência, Matching e Triagem
+- [ ] Motor de Matching: Algoritmo de scoring para dar "match" e ordenar candidatos por afinidade com a vaga.
+- [ ] Assessments e Quizzes: Permitir que empresas anexem testes técnicos na candidatura para triagem automática.
+
+### 3. Comunicação e Engajamento
+- [ ] Chat interno: Mensageria na plataforma para ocultar contatos diretos até a fase final.
+- [ ] Notificações Multicanal: Alertas de processos via WhatsApp (Twilio/Zenvia) e Push Notifications.
+- [ ] Agendamento de Entrevistas: Integração nativa com Google Calendar/Outlook para marcar reuniões.
+
+### 4. Ferramentas para Empresas (B2B) e Analytics
+- [x] Admin Bypass: Permitir que Administradores contornem a restrição de propriedade da vaga.
+- [ ] Funil de Contratação (Kanban): Board visual para a empresa arrastar os candidatos entre fases (Triagem -> Entrevista -> Contratado).
+- [ ] Analytics de Recrutamento: Painel de exportação de dados (CSV) e métricas como *Time-to-Hire* e conversão.
+
+### 5. Escalabilidade de Negócios e Produto
+- [ ] Planos de Assinatura (SaaS): Evoluir gateway para assinaturas recorrentes (Premium/PRO).
+- [ ] Internacionalização (i18n): Estrutura base multi-idioma (PT-BR, EN) no React e nos templates de e-mail.
+
+### 6. Observabilidade Avançada e Confiabilidade (SRE)
+- [ ] OpenTelemetry (APM): Tracing distribuído para mapear requisições ponta a ponta (API -> Redis -> Postgres -> RabbitMQ -> Workers).
+- [ ] Status Page Pública: Página (ex: *status.hubbvagas.com*) permitindo que os usuários verifiquem a saúde dos sistemas em tempo real.
+- [ ] Métricas em Tempo Real: Exposição de endpoints `/metrics` (Prometheus) integrados ao Grafana (monitorando latência, tamanho de filas e saturação de DB).
+- [ ] Monitoramento Sintético e Alertas: Pings constantes simulando o usuário final e disparo de incidentes (Slack/PagerDuty) em caso de *downtime*.
