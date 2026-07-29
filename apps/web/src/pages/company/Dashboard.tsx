@@ -3,11 +3,27 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { LogOut, PlusCircle, Briefcase } from 'lucide-react';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const payment = searchParams.get('payment');
+    if (payment === 'success') {
+      toast.success('Pagamento recebido e candidato contratado com sucesso!');
+      searchParams.delete('payment');
+      setSearchParams(searchParams);
+    } else if (payment === 'failure') {
+      toast.error('O pagamento foi recusado ou cancelado. A contratação não pôde ser concluída.');
+      searchParams.delete('payment');
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams]);
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ['company-jobs', user?.profileId],

@@ -6,9 +6,10 @@ import { JobsRepository } from 'src/repositories/jobs.repository';
 import { PrismaJobsRepository } from '../infra/prisma/prisma-repository/prismaJobs.repository';
 import { MessagingModule } from '../infra/messaging/messaging.module';
 import { JobClosureWorker } from './job-closure.worker';
+import { PaymentsModule } from '../payments/payments.module';
 
 @Module({
-  imports: [MessagingModule],
+  imports: [MessagingModule, PaymentsModule],
   controllers: [JobsController, JobClosureWorker],
   providers: [
     JobsService,
