@@ -42,9 +42,17 @@ O sistema é pensado como um projeto de **conhecimento/estudo**, mas com decisõ
   - **Segurança/autenticação**:
     - Autenticação (ex.: JWT, Cognito ou outro IdP).
     - Autorização baseada em roles (`company`, `user`, `admin`).
-  - **Observabilidade**:
+    - Validação de CPF para candidatos e CNPJ via Brasil API para empresas.
+  - **Observabilidade e Governança**:
     - Logs centralizados (ex.: CloudWatch Logs).
     - Métricas e alarmes básicos para API, filas e workers.
+    - Log de Auditoria para banimentos e ações administrativas.
+
+- **Requisitos de Negócios e Financeiros (Novos)**:
+  - **Monetização/Pagamentos**: Integração de gateway de pagamento para transações (Cartão, PIX).
+  - **Reputação**: Sistema de avaliações (1 a 5 estrelas).
+  - **Administração**: Painel web para gestão de usuários, denúncias e configurações globais.
+  - **Experiência**: E-mails de feedback para não selecionados, campos de remuneração (`paymentAmount`) nas vagas e suporte a avatar.
 
 ---
 

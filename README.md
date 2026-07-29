@@ -62,7 +62,19 @@ Se você está em busca de uma nova oportunidade, o Hubb Vagas oferece uma exper
 
 ---
 
-## 4. Segurança, Privacidade e Estabilidade
+## 4. Funcionalidades Avançadas (Novidades)
+
+O Hubb Vagas evoluiu com funcionalidades corporativas completas:
+- **Monetização e Pagamentos:** Integração segura com gateway de pagamentos suportando Cartão de Crédito, Débito e PIX, com um fluxo de checkout nativo.
+- **Administração e Governança:** Painel Web exclusivo (Admin) com dashboard de métricas, gestão de usuários, moderação de denúncias e logs de auditoria para suspensão/banimento.
+- **Sistema de Reputação:** Avaliações (1 a 5 estrelas) ao término do serviço para fortalecer a confiança na comunidade.
+- **Validações e Melhorias de Perfil:** Validação inteligente de CPF e CNPJ (via Brasil API), upload de avatares/fotos e configurações granulares de conta (bio, senha).
+- **Feedback Transparente:** E-mails disparados automaticamente para candidatos não selecionados em vagas encerradas, garantindo respeito e transparência.
+- **Detalhes de Vaga Expandidos:** Vagas agora contam com a exibição de remuneração (`paymentAmount`), facilitando a triagem por parte dos candidatos.
+
+---
+
+## 5. Segurança, Privacidade e Estabilidade
 
 O Hubb Vagas foi desenhado com tecnologia de ponta para garantir uma experiência premium:
 

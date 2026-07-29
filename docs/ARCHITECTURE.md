@@ -31,10 +31,13 @@ O sistema foi desenhado com o conceito de **Monorepo** (gerenciado via [Turborep
 
 ### 2.2 Domain-Driven Design (Core)
 O sistema foca em domínios isolados implementados como módulos no NestJS:
-- **Accounts**: Gerenciamento base de credenciais, senhas encriptadas com Bcrypt e delegação de Roles.
-- **Users / Companies**: Extensão do Account base, guardando os perfis específicos (Candidato vs Empresa).
-- **Jobs**: Gestão das vagas. Controla a publicação e mantém um `JobStatusHistory` imutável.
-- **Applications**: Candidaturas às vagas.
+- **Accounts**: Gerenciamento base de credenciais, senhas encriptadas com Bcrypt e delegação de Roles. Validações ativas de CPF e CNPJ (via Brasil API).
+- **Users / Companies**: Extensão do Account base, guardando os perfis específicos (Candidato vs Empresa), suporte a avatar e configurações.
+- **Jobs**: Gestão das vagas (agora com suporte a remuneração/`paymentAmount`). Controla a publicação e mantém um `JobStatusHistory` imutável.
+- **Applications**: Candidaturas às vagas. Dispara eventos de feedback para não selecionados.
+- **Admin & Governance**: Painel de administração, listagem de usuários, log de auditoria, banimentos e moderação de denúncias.
+- **Payments**: Integração de gateway de pagamento (Cartão, PIX, Débito) e checkout.
+- **Reputation**: Sistema de avaliações cruzadas (1 a 5 estrelas) entre empresas e candidatos.
 
 ---
 
