@@ -2,24 +2,25 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Allow candidates to be placed on a standby list ("fila de espera") if the company enables this feature for their job. If a hired candidate cancels or gets reported for a no-show, the system automatically promotes the first standby candidate.
+**Goal:** Allow candidates to be placed on a standby list ("fila de espera") if the company enables this feature for their job. If a hired candidate cancels or gets reported for a no-show, the system reopens the job and moves the first standby candidate to the under-review status (`SCREENING`) so the company can manually approve and pay for them.
 
 **Architecture:**
 1. Add `STANDBY` to the `ApplicationStatus` enum in Prisma.
 2. Add `enableStandby Boolean @default(false)` to the `Job` model in Prisma.
 3. In the company's job dashboard, allow enabling standby when creating/editing the job.
 4. If a job has `enableStandby: true`, when the final position is approved (meaning the job is filled and changes to `CLOSED_HIRED`), change the status of all other pending candidates (`APPLIED`, `SCREENING`) automatically to `STANDBY` instead of rejecting them.
-5. Create a standby promotion event handler. When a hired candidate's application is cancelled (due to refunds, admin no-show approvals, or manual cancellation), check if there are `STANDBY` applications for that job.
-6. If standby applications exist, promote the oldest standby candidate (`createdAt ASC`) to `APPROVED`.
-7. If no standby candidates exist, reopen the job by changing its status back to `PUBLISHED` and freeing the slot.
+5. Create a standby promotion event handler. When a hired candidate's application is cancelled (due to refunds, admin no-show approvals, or manual cancellation):
+   - Set the job's status back to `PUBLISHED` (reopening the slot).
+   - If standby candidates exist, promote the oldest standby candidate (`createdAt ASC`) to `SCREENING` (under review).
+   - Emit an event to notify the company that a candidate has been promoted to review, directing them to the dashboard to manually approve and pay for the new candidate.
 
 **Tech Stack:** NestJS, Prisma, RabbitMQ, Vitest, React
 
 ## Global Constraints
 
-- Standby promotions must be processed sequentially based on application submission date (`createdAt ASC`).
-- Promoted standby candidates inherit the approved status immediately.
-- Reopening the job back to `PUBLISHED` is required if no standby candidates are available.
+- Standby promotions must change candidate status to `SCREENING` (never `APPROVED` automatically).
+- Reopening the job back to `PUBLISHED` is required when a slot opens up, regardless of whether a standby queue exists.
+- The company must explicitly review and perform checkout/payment to hire a promoted candidate.
 
 ---
 
@@ -76,13 +77,14 @@ git commit -m "db: add enableStandby and STANDBY application status"
 
 **Interfaces:**
 - Consumes: `promoteNextStandby(jobId: string): Promise<void>`
-- Produces: Updates the first standby candidate to `APPROVED` or reopens the job to `PUBLISHED`.
+- Produces: Reopens the job to `PUBLISHED` and moves the oldest standby to `SCREENING` (if exists).
 
 - [ ] **Step 1: Write unit tests**
 
 Create `apps/api/src/applications/standby-promotion.service.spec.ts` to test:
-- Promotion of oldest standby candidate to `APPROVED`.
-- Reopening of Job to `PUBLISHED` if standby is empty.
+- Reopening of Job to `PUBLISHED`.
+- Promotion of the oldest standby candidate to `SCREENING` status.
+- Notification event trigger for the company owner.
 
 - [ ] **Step 2: Run test to verify failure**
 
@@ -106,30 +108,32 @@ export class StandbyPromotionService {
   ) {}
 
   async promoteNextStandby(jobId: string) {
+    // 1. Reopen the job to PUBLISHED
+    await this.prisma.job.update({
+      where: { id: jobId },
+      data: { status: JobStatus.PUBLISHED },
+    });
+
+    // 2. Fetch the oldest standby candidate
     const nextStandby = await this.prisma.application.findFirst({
       where: { jobId, status: 'STANDBY' },
       orderBy: { createdAt: 'asc' },
-      include: { user: { include: { account: true } } },
+      include: { job: { include: { company: { include: { account: true } } } } },
     });
 
     if (nextStandby) {
-      // 1. Promote to APPROVED
+      // 3. Move from STANDBY to SCREENING (for manual review)
       await this.prisma.application.update({
         where: { id: nextStandby.id },
-        data: { status: 'APPROVED' },
+        data: { status: 'SCREENING' },
       });
 
-      // 2. Notify candidate
-      this.client.emit('application_promoted_from_standby', {
-        email: nextStandby.user.account.email,
+      // 4. Notify the company owner via RabbitMQ
+      this.client.emit('standby_candidate_promoted_to_screening', {
+        companyEmail: nextStandby.job.company.account.email,
         jobId,
+        jobTitle: nextStandby.job.title,
         applicationId: nextStandby.id,
-      });
-    } else {
-      // 3. No standby candidates, reopen the job
-      await this.prisma.job.update({
-        where: { id: jobId },
-        data: { status: JobStatus.PUBLISHED },
       });
     }
   }
@@ -145,7 +149,7 @@ Expected: PASS.
 
 ```bash
 git add apps/api/src/applications/
-git commit -m "feat: implement StandbyPromotionService and job reopening"
+git commit -m "feat: implement StandbyPromotionService with screening promotion"
 ```
 
 ---
@@ -209,7 +213,7 @@ Add checkbox: `"Ativar fila de espera (Standby)"` updating the `enableStandby` s
 
 - [ ] **Step 2: Show standby queue list in JobDetails.tsx**
 
-Under the candidates list, group candidates in `STANDBY` status under a new section titled "Candidatos em Fila de Espera" and display their position in line.
+Under the candidates list, group candidates in `STANDBY` status under a new section titled "Candidatos em Fila de Espera" and display their position in line. Ensure the "Aprovar" button is visible and active for candidates promoted to `SCREENING`.
 
 - [ ] **Step 3: Commit**
 
