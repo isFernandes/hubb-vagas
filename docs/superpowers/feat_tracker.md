@@ -69,7 +69,7 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 *   **Plano de Implementação:** [2026-07-29-waiting-list.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md)
 *   **Tarefas Principais:**
     - [ ] Task 1: Database Migration (`STANDBY` application status, `enableStandby` on `Job`)
-    - [ ] Task 2: Standby Promotion Service logic (`createdAt ASC` promotion and job reopening)
+    - [ ] Task 2: Standby Promotion Service logic (SCREENING status promotion and job reopening)
     - [ ] Task 3: Conditional conversion of pending candidates to standby in `JobClosureWorker`
     - [ ] Task 4: Frontend standby enable checkboxes and standby candidates queue views
 
