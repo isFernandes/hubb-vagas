@@ -14,7 +14,7 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 | 1 | **Item 12.7: Vagas Múltiplas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-positions-available.md) | [x] Concluído |
 | 2 | **Item 12.10: Conflito de Agenda** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-schedule-conflict-validator.md) | [x] Concluído |
 | 3 | **Item 12.11: Busca por Geolocalização** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [x] Concluído |
-| 4 | **Item 12.9: Política de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [ ] Não Iniciado |
+| 4 | **Item 12.9: Política de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [x] Concluído |
 | 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [ ] Não Iniciado |
 | 6 | **Item 13.5: Gestão Financeira e Disputas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md) | [ ] Não Iniciado |
 
@@ -53,15 +53,15 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
     - [x] Task 4: Frontend autocomplete addresses, browser GPS filters
 
 ### 4. Item 12.9: Política de Cancelamento (No-Show) com Punição
-*   **Status:** [ ] Não Iniciado
+*   **Status:** [x] Concluído
 *   **Design Spec:** [2026-07-29-no-show-penalty-design.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/specs/2026-07-29-no-show-penalty-design.md)
 *   **Plano de Implementação:** [2026-07-29-no-show-penalty.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md)
 *   **Tarefas Principais:**
-    - [ ] Task 1: Database Migration (`defenseDescription` in `Report`)
-    - [ ] Task 2: Add validation for creating no-show reports in `ReportsService`
-    - [ ] Task 3: Defense submittals in `PATCH /reports/:id/defense`
-    - [ ] Task 4: Admin resolution logic generating 1-star penalty reviews and automatic suspensions (3 infractions)
-    - [ ] Task 5: Frontend company reporting controls, candidate defense dashboard, and admin moderation views
+    - [x] Task 1: No-Show Report Handler API validations
+    - [x] Task 2: Admin Resolution & Auto-Review Penalty logic (with auto-suspension)
+    - [x] Task 3: Frontend Administration & Reporting Buttons in Modals`PATCH /reports/:id/defense`
+    - [x] Task 4: Admin resolution logic generating 1-star penalty reviews and automatic suspensions (3 infractions)
+    - [x] Task 5: Frontend company reporting controls, candidate defense dashboard, and admin moderation views
 
 ### 5. Item 14.1: Fila de Espera / Reservas (Standby)
 *   **Status:** [ ] Não Iniciado
