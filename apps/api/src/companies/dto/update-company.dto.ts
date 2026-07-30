@@ -1,8 +1,5 @@
+import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCompanyDto } from './create-company.dto';
-
-export class UpdateCompanyDto extends PartialType(CreateCompanyDto) {}
 
 export const updateCompanyProfileSchema = z.object({
   name: z.string().optional(),
@@ -11,6 +8,5 @@ export const updateCompanyProfileSchema = z.object({
   avatarUrl: z.string().max(500000, 'Avatar image is too large').optional(),
 });
 
-export type UpdateCompanyProfileDto = z.infer<
-  typeof updateCompanyProfileSchema
->;
+export class UpdateCompanyProfileDto extends createZodDto(updateCompanyProfileSchema) {}
+export class UpdateCompanyDto extends createZodDto(updateCompanyProfileSchema) {}

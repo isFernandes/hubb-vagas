@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, HttpAdapterHost } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { JsonLoggerService } from './infra/logger/json-logger.service';
 import { LoggingInterceptor } from './infra/logger/logging.interceptor';
 import { ZodValidationPipe } from 'nestjs-zod';
+import { PrismaClientExceptionFilter } from './infra/filters/prisma-client-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -13,6 +14,9 @@ async function bootstrap() {
   app.useLogger(new JsonLoggerService());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ZodValidationPipe());
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
   const configService = app.get(ConfigService);
 

@@ -1,3 +1,4 @@
+import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 export const UpdateAccountSchema = z.object({
@@ -5,4 +6,4 @@ export const UpdateAccountSchema = z.object({
   password: z.string().min(8).optional(),
 });
 
-export type UpdateAccountDto = z.infer<typeof UpdateAccountSchema>;
+export class UpdateAccountDto extends createZodDto(UpdateAccountSchema) {}
