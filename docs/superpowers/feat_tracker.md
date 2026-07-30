@@ -11,7 +11,7 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 
 | Prioridade | Funcionalidade | Arquivo do Plano | Status |
 |---|---|---|---|
-| 1 | **Item 12.7: Vagas Múltiplas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-positions-available.md) | [ ] Não Iniciado |
+| 1 | **Item 12.7: Vagas Múltiplas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-positions-available.md) | [x] Concluído |
 | 2 | **Item 12.10: Conflito de Agenda** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-schedule-conflict-validator.md) | [ ] Não Iniciado |
 | 3 | **Item 12.11: Busca por Geolocalização** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [ ] Não Iniciado |
 | 4 | **Item 12.9: Política de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [ ] Não Iniciado |
@@ -23,14 +23,14 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 ## Detalhamento das Funcionalidades
 
 ### 1. Item 12.7: Vagas Múltiplas (`positionsAvailable`)
-*   **Status:** [ ] Não Iniciado
+*   **Status:** [x] Concluído
 *   **Design Spec:** [2026-07-29-positions-available-design.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/specs/2026-07-29-positions-available-design.md)
 *   **Plano de Implementação:** [2026-07-29-positions-available.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-positions-available.md)
 *   **Tarefas Principais:**
-    - [ ] Task 1: Database Migration (`positionsAvailable`)
-    - [ ] Task 2: DTO and Service Validation in `JobsService`
-    - [ ] Task 3: `JobClosureWorker` Refactor to support count checks
-    - [ ] Task 4: Frontend inputs in `NewJob.tsx` and counts display in `JobDetails.tsx`
+    - [x] Task 1: Database Migration (`positionsAvailable`)
+    - [x] Task 2: DTO and Service Validation in `JobsService`
+    - [x] Task 3: `JobClosureWorker` Refactor to support count checks
+    - [x] Task 4: Frontend inputs in `NewJob.tsx` and counts display in `JobDetails.tsx`
 
 ### 2. Item 12.10: Validador de Conflito de Agenda
 *   **Status:** [ ] Não Iniciado
