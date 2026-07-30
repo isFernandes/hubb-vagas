@@ -9,6 +9,7 @@ import { PrismaService } from '../infra/prisma/prisma.service';
 import { AccountStatus } from '../infra/prisma/generated/client';
 import * as bcrypt from 'bcrypt';
 import { ClientProxy } from '@nestjs/microservices';
+import { StandbyPromotionService } from '../applications/standby-promotion.service';
 
 @Injectable()
 export class AdminService {
@@ -16,6 +17,7 @@ export class AdminService {
     private readonly prisma: PrismaService,
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
+    private readonly standbyPromotionService: StandbyPromotionService,
   ) {}
 
   async getDashboardMetrics() {
@@ -218,6 +220,9 @@ export class AdminService {
           });
 
           this.client.emit('review_created', { applicationId: app.id, direction: 'COMPANY_TO_USER' });
+          
+          await this.standbyPromotionService.promoteNextStandby(report.reportedJobId!);
+
           return this.prisma.report.findUnique({ where: { id } });
         }
       }

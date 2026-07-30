@@ -11,6 +11,9 @@ export const createJobSchema = z.object({
   positionsAvailable: z.number().int().positive().optional(),
   executionDate: z.string().datetime().optional(),
   durationHours: z.number().int().positive().optional(),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  enableStandby: z.boolean().optional().default(false),
 });
 
 export type CreateJobDto = z.infer<typeof createJobSchema>;

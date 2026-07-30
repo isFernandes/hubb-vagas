@@ -6,6 +6,7 @@ describe('AdminService', () => {
   let prisma: any;
   let redis: any;
   let rmqClient: any;
+  let standbyPromotionService: any;
 
   beforeEach(() => {
     prisma = {
@@ -40,7 +41,10 @@ describe('AdminService', () => {
     rmqClient = {
       emit: vi.fn(),
     };
-    service = new AdminService(prisma, redis, rmqClient);
+    standbyPromotionService = {
+      promoteNextStandby: vi.fn(),
+    };
+    service = new AdminService(prisma, redis, rmqClient, standbyPromotionService);
   });
 
   it('should be defined', () => {
@@ -81,7 +85,7 @@ describe('AdminService', () => {
       update: expect.objectContaining({ rating: 1 }),
       create: expect.objectContaining({ rating: 1 }),
     }));
-    
     expect(rmqClient.emit).toHaveBeenCalledWith('review_created', { applicationId: 'app-1', direction: 'COMPANY_TO_USER' });
+    expect(standbyPromotionService.promoteNextStandby).toHaveBeenCalledWith('job-1');
   });
 });
