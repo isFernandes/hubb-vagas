@@ -104,7 +104,7 @@ export default function JobDetails() {
               {job.applications?.length === 0 ? (
                 <p className="text-slate-400 text-sm">Nenhum candidato até o momento.</p>
               ) : (
-                job.applications?.map((app: any) => (
+                job.applications?.filter((a: any) => a.status !== 'STANDBY').map((app: any) => (
                   <Card key={app.id} className="bg-slate-900 border-slate-800">
                     <CardHeader className="p-4 pb-2">
                       <CardTitle className="text-md flex items-center gap-2 text-white">
@@ -156,6 +156,33 @@ export default function JobDetails() {
                 ))
               )}
             </div>
+
+            {job.applications?.some((a: any) => a.status === 'STANDBY') && (
+              <div className="mt-8">
+                <h3 className="text-lg font-bold text-slate-300 mb-4">Fila de Espera (Standby)</h3>
+                <div className="space-y-4">
+                  {job.applications
+                    ?.filter((a: any) => a.status === 'STANDBY')
+                    .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+                    .map((app: any, index: number) => (
+                      <Card key={app.id} className="bg-slate-900 border-slate-800">
+                        <CardHeader className="p-4 pb-2">
+                          <CardTitle className="text-md flex items-center justify-between text-white">
+                            <div className="flex items-center gap-2">
+                              <UserCircle className="h-5 w-5 text-slate-400"/>
+                              {app.user?.name || 'Candidato'}
+                            </div>
+                            <span className="text-sm text-slate-500 font-normal">#{index + 1} na fila</span>
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-0 space-y-4">
+                          <p className="text-sm text-slate-400 truncate">Status: <span className="font-medium text-amber-400/80">{app.status}</span></p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

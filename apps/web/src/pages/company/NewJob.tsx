@@ -25,6 +25,7 @@ export default function NewJob() {
   const [durationHours, setDurationHours] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [enableStandby, setEnableStandby] = useState(false);
 
   const createJobMutation = useMutation({
     mutationFn: async (payload: any) => {
@@ -63,7 +64,8 @@ export default function NewJob() {
       contractType,
       expiresAt: new Date(expirationDate).toISOString(),
       paymentAmountCents,
-      positionsAvailable: parseInt(positionsAvailable, 10)
+      positionsAvailable: parseInt(positionsAvailable, 10),
+      enableStandby
     };
 
     if (latitude !== '' && longitude !== '') {
@@ -245,6 +247,19 @@ export default function NewJob() {
                     placeholder="Ex: -46.633308"
                   />
                 </div>
+              </div>
+
+              <div className="flex items-center space-x-2 border-t border-slate-800 pt-6 mt-6">
+                <input 
+                  type="checkbox" 
+                  id="enableStandby" 
+                  checked={enableStandby} 
+                  onChange={(e) => setEnableStandby(e.target.checked)} 
+                  className="w-4 h-4 rounded bg-slate-950/50 border-slate-700 text-indigo-600 focus:ring-indigo-500"
+                />
+                <Label htmlFor="enableStandby" className="text-slate-300 cursor-pointer">
+                  Ativar fila de espera (Standby) - Manter suplentes em caso de desistências
+                </Label>
               </div>
 
               <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={createJobMutation.isPending}>
