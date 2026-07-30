@@ -15,7 +15,7 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 | 2 | **Item 12.10: Conflito de Agenda** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-schedule-conflict-validator.md) | [x] Concluído |
 | 3 | **Item 12.11: Busca por Geolocalização** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [x] Concluído |
 | 4 | **Item 12.9: Política de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [x] Concluído |
-| 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [ ] Não Iniciado |
+| 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [x] Concluído |
 | 6 | **Item 13.5: Gestão Financeira e Disputas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md) | [ ] Não Iniciado |
 
 ---
@@ -64,14 +64,14 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
     - [x] Task 5: Frontend company reporting controls, candidate defense dashboard, and admin moderation views
 
 ### 5. Item 14.1: Fila de Espera / Reservas (Standby)
-*   **Status:** [ ] Não Iniciado
+*   **Status:** [x] Concluído
 *   **Design Spec:** [2026-07-29-waiting-list-design.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/specs/2026-07-29-waiting-list-design.md)
 *   **Plano de Implementação:** [2026-07-29-waiting-list.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md)
 *   **Tarefas Principais:**
-    - [ ] Task 1: Database Migration (`STANDBY` application status, `enableStandby` on `Job`)
-    - [ ] Task 2: Standby Promotion Service logic (SCREENING status promotion and job reopening)
-    - [ ] Task 3: Conditional conversion of pending candidates to standby in `JobClosureWorker`
-    - [ ] Task 4: Frontend standby enable checkboxes and standby candidates queue views
+    - [x] Task 1: Database Updates (Status and Job config)
+    - [x] Task 2: Service Logic for Standby Promotion & Job Reopening
+    - [x] Task 3: Hook Standby Conversion on Job Closure Worker
+    - [x] Task 4: Frontend Toggle and Standby Views
 
 ### 6. Item 13.5: Gestão Financeira e Disputas
 *   **Status:** [ ] Não Iniciado
