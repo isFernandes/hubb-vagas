@@ -104,7 +104,7 @@ export class JobClosureWorker {
             data: { status: 'APPROVED' },
           });
 
-          // Fetch applications that will be rejected to emit events
+          // Fetch applications that will be rejected/standby to emit events
           const appsToReject = await this.prisma.application.findMany({
             where: {
               jobId,
@@ -114,27 +114,31 @@ export class JobClosureWorker {
             include: { user: { include: { account: true } } },
           });
 
+          const nextStatus = job.enableStandby ? 'STANDBY' : 'REJECTED';
+
           await this.prisma.application.updateMany({
             where: {
               jobId,
               id: { not: appId },
               status: { in: ['APPLIED', 'SCREENING'] },
             },
-            data: { status: 'REJECTED' },
+            data: { status: nextStatus },
           });
 
-          const jobWithCompany = await this.prisma.job.findUnique({
-            where: { id: jobId },
-            include: { company: true },
-          });
+          if (!job.enableStandby) {
+            const jobWithCompany = await this.prisma.job.findUnique({
+              where: { id: jobId },
+              include: { company: true },
+            });
 
-          if (jobWithCompany) {
-            for (const app of appsToReject) {
-              this.client.emit('application_rejected', {
-                email: app.user.account.email,
-                jobTitle: jobWithCompany.title,
-                companyName: jobWithCompany.company.name,
-              });
+            if (jobWithCompany) {
+              for (const app of appsToReject) {
+                this.client.emit('application_rejected', {
+                  email: app.user.account.email,
+                  jobTitle: jobWithCompany.title,
+                  companyName: jobWithCompany.company.name,
+                });
+              }
             }
           }
 
