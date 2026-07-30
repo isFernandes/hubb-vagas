@@ -6,6 +6,9 @@ export abstract class JobsRepository {
     companyId?: string;
     search?: string;
     status?: any;
+    latitude?: number;
+    longitude?: number;
+    radius?: number;
   }): Promise<any[]>;
   abstract findById(id: string): Promise<any>;
   abstract update(id: string, data: any): Promise<any>;

@@ -16,6 +16,9 @@ export class PrismaJobsRepository implements JobsRepository {
     companyId?: string;
     search?: string;
     status?: any;
+    latitude?: number;
+    longitude?: number;
+    radius?: number;
   }): Promise<any[]> {
     const where: any = {};
 
@@ -37,6 +40,27 @@ export class PrismaJobsRepository implements JobsRepository {
           { title: { contains: filters.search, mode: 'insensitive' } },
           { description: { contains: filters.search, mode: 'insensitive' } },
         ];
+      }
+
+      if (filters.latitude && filters.longitude && filters.radius) {
+        const lat = parseFloat(filters.latitude as any);
+        const lng = parseFloat(filters.longitude as any);
+        const radiusKm = parseFloat(filters.radius as any);
+
+        if (!isNaN(lat) && !isNaN(lng) && !isNaN(radiusKm)) {
+          // Use raw query to retrieve IDs within radius
+          const matchingJobs: { id: string }[] = await this.prisma.$queryRaw`
+            SELECT id FROM jobs
+            WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+              AND (6371 * acos(
+                cos(radians(${lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${lng})) + 
+                sin(radians(${lat})) * sin(radians(latitude))
+              )) <= ${radiusKm}
+          `;
+
+          const ids = matchingJobs.map(j => j.id);
+          where.id = { in: ids };
+        }
       }
     }
 
