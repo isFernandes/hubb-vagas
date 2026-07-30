@@ -11,6 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   });
+  app.enableCors();
   app.useLogger(new JsonLoggerService());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ZodValidationPipe());
