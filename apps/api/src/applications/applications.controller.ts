@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, Param } from '@nestjs/common';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
@@ -23,5 +23,12 @@ export class ApplicationsController {
     @Request() req,
   ) {
     return this.applicationsService.apply(dto.jobId, req.user.profileId);
+  }
+
+  @Get('conflicts/:jobId')
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  checkConflicts(@Param('jobId') jobId: string, @Request() req) {
+    return this.applicationsService.checkConflicts(jobId, req.user.profileId);
   }
 }

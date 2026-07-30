@@ -10,6 +10,7 @@ import { JobStatus } from '../infra/prisma/generated/client';
 import { ClientProxy } from '@nestjs/microservices';
 
 import { PrismaService } from '../infra/prisma/prisma.service';
+import { hasTimeConflict } from '../utils/time-conflict.util';
 
 @Injectable()
 export class ApplicationsService {
@@ -65,11 +66,7 @@ export class ApplicationsService {
         const appStart = app.job.executionDate.getTime();
         const appEnd = appStart + app.job.durationHours * 60 * 60 * 1000;
 
-        // Buffer of 1 hour (3600000 ms)
-        const startConflict = targetStart < appEnd + 3600000;
-        const endConflict = appStart < targetEnd + 3600000;
-
-        if (startConflict && endConflict) {
+        if (hasTimeConflict(targetStart, targetEnd, appStart, appEnd)) {
           throw new BadRequestException(
             'Conflito de agenda: você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).',
           );
@@ -89,5 +86,42 @@ export class ApplicationsService {
     });
 
     return application;
+  }
+
+  async checkConflicts(jobId: string, userId: string): Promise<{ hasConflict: boolean; message?: string }> {
+    const job = await this.jobsRepository.findById(jobId);
+    if (!job || !job.executionDate || !job.durationHours) {
+      return { hasConflict: false };
+    }
+
+    const targetStart = job.executionDate.getTime();
+    const targetEnd = targetStart + job.durationHours * 60 * 60 * 1000;
+
+    const overlappingApps = await this.prisma.application.findMany({
+      where: {
+        userId,
+        status: 'APPROVED',
+        job: {
+          executionDate: { not: null },
+          durationHours: { not: null },
+        },
+      },
+      include: { job: true },
+    });
+
+    for (const app of overlappingApps) {
+      if (!app.job.executionDate || !app.job.durationHours) continue;
+      const appStart = app.job.executionDate.getTime();
+      const appEnd = appStart + app.job.durationHours * 60 * 60 * 1000;
+
+      if (hasTimeConflict(targetStart, targetEnd, appStart, appEnd)) {
+        return { 
+          hasConflict: true, 
+          message: 'Você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).' 
+        };
+      }
+    }
+
+    return { hasConflict: false };
   }
 }

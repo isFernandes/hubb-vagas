@@ -64,7 +64,15 @@ export default function NewJob() {
       positionsAvailable: parseInt(positionsAvailable, 10)
     };
 
-    if (executionDate && executionTime && durationHours) {
+    const hasAnyExecField = executionDate || executionTime || durationHours;
+    const hasAllExecFields = executionDate && executionTime && durationHours;
+
+    if (hasAnyExecField && !hasAllExecFields) {
+      toast.error('Para informar a execução da vaga, preencha a Data, o Horário e a Duração.');
+      return;
+    }
+
+    if (hasAllExecFields) {
       payload.executionDate = new Date(`${executionDate}T${executionTime}`).toISOString();
       payload.durationHours = parseInt(durationHours, 10);
     }

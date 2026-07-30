@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle, Star, Clock } from 'lucide-react';
+import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle, Star, Clock, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { ReviewModal } from '@/components/ReviewModal';
 
@@ -13,6 +13,7 @@ export default function JobDetailsCandidate() {
   const [applied, setApplied] = useState(false);
   const [application, setApplication] = useState<any>(null);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [hasConflict, setHasConflict] = useState<{ hasConflict: boolean; message?: string } | null>(null);
 
   const { user } = useAuth();
 
@@ -25,6 +26,14 @@ export default function JobDetailsCandidate() {
         if (userApp) {
           setApplied(true);
           setApplication(userApp);
+        } else if (data.executionDate && data.durationHours) {
+          // Verify conflict if not applied yet
+          try {
+            const conflictRes = await api.get(`/applications/conflicts/${id}`);
+            setHasConflict(conflictRes.data);
+          } catch (e) {
+            console.error('Failed to check conflicts', e);
+          }
         }
       }
       return data;
@@ -115,14 +124,26 @@ export default function JobDetailsCandidate() {
                   )}
                 </div>
               ) : (
-                <Button 
-                  size="lg" 
-                  className="w-full md:w-auto text-lg px-12 py-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all hover:shadow-[0_0_30px_rgba(79,70,229,0.6)]"
-                  disabled={applyMutation.isPending}
-                  onClick={() => applyMutation.mutate()}
-                >
-                  {applyMutation.isPending ? 'Enviando...' : 'Candidatar-se agora'}
-                </Button>
+                <div className="flex flex-col gap-4">
+                  {hasConflict?.hasConflict && (
+                    <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-lg flex items-start text-rose-400 text-sm">
+                      <AlertTriangle className="mr-3 h-5 w-5 shrink-0 mt-0.5" /> 
+                      <div>
+                        <strong>Atenção:</strong> {hasConflict.message || 'Você já possui um bico aprovado neste horário.'} 
+                        <br/>
+                        Você não poderá ser aprovado nesta vaga a menos que a outra seja cancelada.
+                      </div>
+                    </div>
+                  )}
+                  <Button 
+                    size="lg" 
+                    className="w-full md:w-auto text-lg px-12 py-6 bg-indigo-600 hover:bg-indigo-700 text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all hover:shadow-[0_0_30px_rgba(79,70,229,0.6)]"
+                    disabled={applyMutation.isPending || hasConflict?.hasConflict}
+                    onClick={() => applyMutation.mutate()}
+                  >
+                    {applyMutation.isPending ? 'Enviando...' : 'Candidatar-se agora'}
+                  </Button>
+                </div>
               )}
             </div>
           </div>

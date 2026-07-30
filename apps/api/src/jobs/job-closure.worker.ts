@@ -4,6 +4,7 @@ import { LockService } from '../infra/redis/lock.service';
 import { JobsRepository } from '../repositories/jobs.repository';
 import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { PrismaService } from '../infra/prisma/prisma.service';
+import { hasTimeConflict } from '../utils/time-conflict.util';
 import { JobStatus } from '../infra/prisma/generated/client';
 import { Redis } from 'ioredis';
 
@@ -36,6 +37,55 @@ export class JobClosureWorker {
     try {
       const job = await this.jobsRepository.findById(jobId);
       if (job && job.status === JobStatus.PUBLISHED) {
+        const targetApp = await this.prisma.application.findUnique({
+          where: { id: appId },
+        });
+
+        if (!targetApp) {
+          console.log(`[JobClosureWorker] Application ${appId} not found.`);
+          return;
+        }
+
+        // Check if candidate already has an overlapping APPROVED application
+        if (job.executionDate && job.durationHours) {
+          const targetStart = job.executionDate.getTime();
+          const targetEnd = targetStart + job.durationHours * 60 * 60 * 1000;
+
+          const overlappingApps = await this.prisma.application.findMany({
+            where: {
+              userId: targetApp.userId,
+              status: 'APPROVED',
+              id: { not: appId },
+              job: {
+                executionDate: { not: null },
+                durationHours: { not: null },
+              },
+            },
+            include: { job: true },
+          });
+
+          let hasConflict = false;
+          for (const app of overlappingApps) {
+            if (!app.job.executionDate || !app.job.durationHours) continue;
+            const appStart = app.job.executionDate.getTime();
+            const appEnd = appStart + app.job.durationHours * 60 * 60 * 1000;
+
+            if (hasTimeConflict(targetStart, targetEnd, appStart, appEnd)) {
+              hasConflict = true;
+              break;
+            }
+          }
+
+          if (hasConflict) {
+            await this.prisma.application.update({
+              where: { id: appId },
+              data: { status: 'REJECTED' },
+            });
+            console.log(`[JobClosureWorker] Application ${appId} was rejected due to an overlapping APPROVED job.`);
+            return;
+          }
+        }
+
         const approvedCount = await this.prisma.application.count({
           where: { jobId, status: 'APPROVED' },
         });
@@ -126,10 +176,6 @@ export class JobClosureWorker {
 
         // --- Task 3: Automatic rejection of overlapping pending gigs ---
         if (job.executionDate && job.durationHours) {
-          const targetApp = await this.prisma.application.findUnique({
-            where: { id: appId },
-          });
-          
           if (targetApp) {
             const targetStart = job.executionDate.getTime();
             const targetEnd = targetStart + job.durationHours * 60 * 60 * 1000;
@@ -153,10 +199,7 @@ export class JobClosureWorker {
               const appStart = app.job.executionDate.getTime();
               const appEnd = appStart + app.job.durationHours * 60 * 60 * 1000;
 
-              const startConflict = targetStart < appEnd + 3600000;
-              const endConflict = appStart < targetEnd + 3600000;
-
-              if (startConflict && endConflict) {
+              if (hasTimeConflict(targetStart, targetEnd, appStart, appEnd)) {
                 appsToCancel.push(app);
               }
             }
