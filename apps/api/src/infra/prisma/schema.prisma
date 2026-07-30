@@ -101,6 +101,7 @@ model Job {
   applications       Application[]
   statusHistory JobStatusHistory[]
   reports       Report[]
+  transactions       Transaction[]
 
   @@map("jobs")
 }
@@ -126,6 +127,7 @@ model Application {
   updatedAt        DateTime           @updatedAt
   userApplications UserApplications[]
   reviews          Review[]
+  transactions     Transaction[]
 
   @@map("applications")
 }
@@ -245,4 +247,27 @@ model Review {
 
   @@unique([applicationId, direction])
   @@map("reviews")
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REFUNDED
+  DISPUTED
+}
+
+model Transaction {
+  id              String            @id @default(uuid())
+  jobId           String
+  job             Job               @relation(fields: [jobId], references: [id])
+  applicationId   String
+  application     Application       @relation(fields: [applicationId], references: [id])
+  amountCents     Int
+  feeCents        Int
+  status          TransactionStatus @default(PENDING)
+  paymentId       String?           @unique
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@map("transactions")
 }
