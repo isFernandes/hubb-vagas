@@ -28,7 +28,10 @@ describe('AdminService', () => {
       },
       user: {
         findUnique: vi.fn(),
-      }
+      },
+      $transaction: vi.fn(async (callback) => {
+        return await callback(prisma);
+      }),
     };
     redis = {
       get: vi.fn(),
@@ -54,6 +57,7 @@ describe('AdminService', () => {
 
     prisma.user.findUnique.mockResolvedValue({
       id: 'user-1',
+      account: { status: 'ACTIVE' }
     });
 
     prisma.application.findFirst.mockResolvedValue({

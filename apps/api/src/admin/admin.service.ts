@@ -152,41 +152,18 @@ export class AdminService {
     const report = await this.prisma.report.findUnique({ where: { id } });
     if (!report) throw new NotFoundException('Report not found');
 
-    const updated = await this.prisma.report.update({
-      where: { id },
-      data: {
-        status: status as any,
-        resolutionNotes: notes,
-        resolvedById: adminId,
-      },
-    });
-
-    if (status === 'RESOLVED' && report.type === 'NO_SHOW' && report.reportedAccountId && report.reportedJobId) {
-      const user = await this.prisma.user.findUnique({ where: { account_id: report.reportedAccountId }});
+    if (status === 'RESOLVED' && report.status !== 'RESOLVED' && report.type === 'NO_SHOW' && report.reportedAccountId && report.reportedJobId) {
+      const user = await this.prisma.user.findUnique({ 
+        where: { account_id: report.reportedAccountId },
+        include: { account: true }
+      });
+      
       if (user) {
         const app = await this.prisma.application.findFirst({
           where: { jobId: report.reportedJobId, userId: user.id },
         });
 
         if (app) {
-          await this.prisma.review.upsert({
-            where: {
-              applicationId_direction: {
-                applicationId: app.id,
-                direction: 'COMPANY_TO_USER',
-              },
-            },
-            update: { rating: 1, comment: 'Penalidade automática por ausência (No-Show)' },
-            create: {
-              applicationId: app.id,
-              direction: 'COMPANY_TO_USER',
-              rating: 1,
-              comment: 'Penalidade automática por ausência (No-Show)',
-            },
-          });
-
-          this.client.emit('review_created', { applicationId: app.id, direction: 'COMPANY_TO_USER' });
-          
           const activeNoShows = await this.prisma.report.count({
             where: {
               reportedAccountId: report.reportedAccountId,
@@ -195,26 +172,65 @@ export class AdminService {
             },
           });
           
-          if (activeNoShows >= 3) {
-            await this.prisma.account.update({
-              where: { id: report.reportedAccountId },
-              data: { status: 'SUSPENDED' },
-            });
-            await this.prisma.accountAuditLog.create({
+          const needsSuspension = activeNoShows + 1 >= 3 && user.account.status !== 'SUSPENDED';
+
+          await this.prisma.$transaction(async (tx) => {
+            await tx.report.update({
+              where: { id },
               data: {
-                accountId: report.reportedAccountId,
-                adminId,
-                previousStatus: 'ACTIVE',
-                newStatus: 'SUSPENDED',
-                reason: 'Suspensão automática: 3 ou mais denúncias de No-Show confirmadas.',
+                status: status as any,
+                resolutionNotes: notes,
+                resolvedById: adminId,
               },
             });
-          }
+
+            await tx.review.upsert({
+              where: {
+                applicationId_direction: {
+                  applicationId: app.id,
+                  direction: 'COMPANY_TO_USER',
+                },
+              },
+              update: { rating: 1, comment: 'Penalidade automática por ausência (No-Show)' },
+              create: {
+                applicationId: app.id,
+                direction: 'COMPANY_TO_USER',
+                rating: 1,
+                comment: 'Penalidade automática por ausência (No-Show)',
+              },
+            });
+
+            if (needsSuspension) {
+              await tx.account.update({
+                where: { id: report.reportedAccountId! },
+                data: { status: 'SUSPENDED' },
+              });
+              await tx.accountAuditLog.create({
+                data: {
+                  accountId: report.reportedAccountId!,
+                  adminId,
+                  previousStatus: user.account.status,
+                  newStatus: 'SUSPENDED',
+                  reason: 'Suspensão automática: 3 ou mais denúncias de No-Show confirmadas.',
+                },
+              });
+            }
+          });
+
+          this.client.emit('review_created', { applicationId: app.id, direction: 'COMPANY_TO_USER' });
+          return this.prisma.report.findUnique({ where: { id } });
         }
       }
     }
 
-    return updated;
+    return this.prisma.report.update({
+      where: { id },
+      data: {
+        status: status as any,
+        resolutionNotes: notes,
+        resolvedById: adminId,
+      },
+    });
   }
 
   async getSettings() {
