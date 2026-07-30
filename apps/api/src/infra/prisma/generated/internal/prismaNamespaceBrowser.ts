@@ -62,7 +62,8 @@ export const ModelName = {
   AccountAuditLog: 'AccountAuditLog',
   Report: 'Report',
   GlobalConfig: 'GlobalConfig',
-  Review: 'Review'
+  Review: 'Review',
+  Transaction: 'Transaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -104,7 +105,9 @@ export const UserScalarFieldEnum = {
   averageRating: 'averageRating',
   reviewCount: 'reviewCount',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  latitude: 'latitude',
+  longitude: 'longitude'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -149,7 +152,12 @@ export const JobScalarFieldEnum = {
   expiresAt: 'expiresAt',
   paymentAmountCents: 'paymentAmountCents',
   positionsAvailable: 'positionsAvailable',
+  executionDate: 'executionDate',
+  durationHours: 'durationHours',
+  latitude: 'latitude',
+  longitude: 'longitude',
   status: 'status',
+  enableStandby: 'enableStandby',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -208,6 +216,7 @@ export const ReportScalarFieldEnum = {
   reporterId: 'reporterId',
   reportedAccountId: 'reportedAccountId',
   reportedJobId: 'reportedJobId',
+  reportedTransactionId: 'reportedTransactionId',
   type: 'type',
   description: 'description',
   status: 'status',
@@ -242,6 +251,21 @@ export const ReviewScalarFieldEnum = {
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const TransactionScalarFieldEnum = {
+  id: 'id',
+  jobId: 'jobId',
+  applicationId: 'applicationId',
+  amountCents: 'amountCents',
+  feeCents: 'feeCents',
+  status: 'status',
+  paymentId: 'paymentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -32,7 +32,8 @@ export const ApplicationStatus = {
   APPLIED: 'APPLIED',
   SCREENING: 'SCREENING',
   APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
+  REJECTED: 'REJECTED',
+  STANDBY: 'STANDBY'
 } as const
 
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
@@ -73,3 +74,13 @@ export const ReviewDirection = {
 } as const
 
 export type ReviewDirection = (typeof ReviewDirection)[keyof typeof ReviewDirection]
+
+
+export const TransactionStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REFUNDED: 'REFUNDED',
+  DISPUTED: 'DISPUTED'
+} as const
+
+export type TransactionStatus = (typeof TransactionStatus)[keyof typeof TransactionStatus]

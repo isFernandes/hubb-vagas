@@ -194,6 +194,7 @@ export type ApplicationWhereInput = {
   job?: Prisma.XOR<Prisma.JobScalarRelationFilter, Prisma.JobWhereInput>
   userApplications?: Prisma.UserApplicationsListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  transactions?: Prisma.TransactionListRelationFilter
 }
 
 export type ApplicationOrderByWithRelationInput = {
@@ -207,6 +208,7 @@ export type ApplicationOrderByWithRelationInput = {
   job?: Prisma.JobOrderByWithRelationInput
   userApplications?: Prisma.UserApplicationsOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  transactions?: Prisma.TransactionOrderByRelationAggregateInput
 }
 
 export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -223,6 +225,7 @@ export type ApplicationWhereUniqueInput = Prisma.AtLeast<{
   job?: Prisma.XOR<Prisma.JobScalarRelationFilter, Prisma.JobWhereInput>
   userApplications?: Prisma.UserApplicationsListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  transactions?: Prisma.TransactionListRelationFilter
 }, "id">
 
 export type ApplicationOrderByWithAggregationInput = {
@@ -258,6 +261,7 @@ export type ApplicationCreateInput = {
   job: Prisma.JobCreateNestedOneWithoutApplicationsInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutApplicationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateInput = {
@@ -269,6 +273,7 @@ export type ApplicationUncheckedCreateInput = {
   updatedAt?: Date | string
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutApplicationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUpdateInput = {
@@ -280,6 +285,7 @@ export type ApplicationUpdateInput = {
   job?: Prisma.JobUpdateOneRequiredWithoutApplicationsNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutApplicationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateInput = {
@@ -291,6 +297,7 @@ export type ApplicationUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutApplicationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateManyInput = {
@@ -476,6 +483,20 @@ export type ApplicationUpdateOneRequiredWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationUpdateToOneWithWhereWithoutReviewsInput, Prisma.ApplicationUpdateWithoutReviewsInput>, Prisma.ApplicationUncheckedUpdateWithoutReviewsInput>
 }
 
+export type ApplicationCreateNestedOneWithoutTransactionsInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutTransactionsInput, Prisma.ApplicationUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutTransactionsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+}
+
+export type ApplicationUpdateOneRequiredWithoutTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ApplicationCreateWithoutTransactionsInput, Prisma.ApplicationUncheckedCreateWithoutTransactionsInput>
+  connectOrCreate?: Prisma.ApplicationCreateOrConnectWithoutTransactionsInput
+  upsert?: Prisma.ApplicationUpsertWithoutTransactionsInput
+  connect?: Prisma.ApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ApplicationUpdateToOneWithWhereWithoutTransactionsInput, Prisma.ApplicationUpdateWithoutTransactionsInput>, Prisma.ApplicationUncheckedUpdateWithoutTransactionsInput>
+}
+
 export type ApplicationCreateWithoutUserInput = {
   id?: string
   status?: $Enums.ApplicationStatus
@@ -484,6 +505,7 @@ export type ApplicationCreateWithoutUserInput = {
   job: Prisma.JobCreateNestedOneWithoutApplicationsInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutApplicationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutUserInput = {
@@ -494,6 +516,7 @@ export type ApplicationUncheckedCreateWithoutUserInput = {
   updatedAt?: Date | string
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutApplicationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutUserInput = {
@@ -542,6 +565,7 @@ export type ApplicationCreateWithoutJobInput = {
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutApplicationInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutJobInput = {
@@ -552,6 +576,7 @@ export type ApplicationUncheckedCreateWithoutJobInput = {
   updatedAt?: Date | string
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutApplicationInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutJobInput = {
@@ -588,6 +613,7 @@ export type ApplicationCreateWithoutUserApplicationsInput = {
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
   job: Prisma.JobCreateNestedOneWithoutApplicationsInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutUserApplicationsInput = {
@@ -598,6 +624,7 @@ export type ApplicationUncheckedCreateWithoutUserApplicationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutUserApplicationsInput = {
@@ -624,6 +651,7 @@ export type ApplicationUpdateWithoutUserApplicationsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
   job?: Prisma.JobUpdateOneRequiredWithoutApplicationsNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutUserApplicationsInput = {
@@ -634,6 +662,7 @@ export type ApplicationUncheckedUpdateWithoutUserApplicationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateWithoutReviewsInput = {
@@ -644,6 +673,7 @@ export type ApplicationCreateWithoutReviewsInput = {
   user: Prisma.UserCreateNestedOneWithoutApplicationsInput
   job: Prisma.JobCreateNestedOneWithoutApplicationsInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationUncheckedCreateWithoutReviewsInput = {
@@ -654,6 +684,7 @@ export type ApplicationUncheckedCreateWithoutReviewsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutApplicationInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutApplicationInput
 }
 
 export type ApplicationCreateOrConnectWithoutReviewsInput = {
@@ -680,6 +711,7 @@ export type ApplicationUpdateWithoutReviewsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
   job?: Prisma.JobUpdateOneRequiredWithoutApplicationsNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutReviewsInput = {
@@ -690,6 +722,67 @@ export type ApplicationUncheckedUpdateWithoutReviewsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationCreateWithoutTransactionsInput = {
+  id?: string
+  status?: $Enums.ApplicationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutApplicationsInput
+  job: Prisma.JobCreateNestedOneWithoutApplicationsInput
+  userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutApplicationInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationUncheckedCreateWithoutTransactionsInput = {
+  id?: string
+  userId: string
+  jobId: string
+  status?: $Enums.ApplicationStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutApplicationInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutApplicationInput
+}
+
+export type ApplicationCreateOrConnectWithoutTransactionsInput = {
+  where: Prisma.ApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutTransactionsInput, Prisma.ApplicationUncheckedCreateWithoutTransactionsInput>
+}
+
+export type ApplicationUpsertWithoutTransactionsInput = {
+  update: Prisma.XOR<Prisma.ApplicationUpdateWithoutTransactionsInput, Prisma.ApplicationUncheckedUpdateWithoutTransactionsInput>
+  create: Prisma.XOR<Prisma.ApplicationCreateWithoutTransactionsInput, Prisma.ApplicationUncheckedCreateWithoutTransactionsInput>
+  where?: Prisma.ApplicationWhereInput
+}
+
+export type ApplicationUpdateToOneWithWhereWithoutTransactionsInput = {
+  where?: Prisma.ApplicationWhereInput
+  data: Prisma.XOR<Prisma.ApplicationUpdateWithoutTransactionsInput, Prisma.ApplicationUncheckedUpdateWithoutTransactionsInput>
+}
+
+export type ApplicationUpdateWithoutTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
+  job?: Prisma.JobUpdateOneRequiredWithoutApplicationsNestedInput
+  userApplications?: Prisma.UserApplicationsUpdateManyWithoutApplicationNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutApplicationNestedInput
+}
+
+export type ApplicationUncheckedUpdateWithoutTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  jobId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutApplicationNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationCreateManyUserInput = {
@@ -708,6 +801,7 @@ export type ApplicationUpdateWithoutUserInput = {
   job?: Prisma.JobUpdateOneRequiredWithoutApplicationsNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutApplicationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutUserInput = {
@@ -718,6 +812,7 @@ export type ApplicationUncheckedUpdateWithoutUserInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutApplicationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutUserInput = {
@@ -744,6 +839,7 @@ export type ApplicationUpdateWithoutJobInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutApplicationsNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutApplicationNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateWithoutJobInput = {
@@ -754,6 +850,7 @@ export type ApplicationUncheckedUpdateWithoutJobInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutApplicationNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutApplicationNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutApplicationNestedInput
 }
 
 export type ApplicationUncheckedUpdateManyWithoutJobInput = {
@@ -772,11 +869,13 @@ export type ApplicationUncheckedUpdateManyWithoutJobInput = {
 export type ApplicationCountOutputType = {
   userApplications: number
   reviews: number
+  transactions: number
 }
 
 export type ApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userApplications?: boolean | ApplicationCountOutputTypeCountUserApplicationsArgs
   reviews?: boolean | ApplicationCountOutputTypeCountReviewsArgs
+  transactions?: boolean | ApplicationCountOutputTypeCountTransactionsArgs
 }
 
 /**
@@ -803,6 +902,13 @@ export type ApplicationCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.T
   where?: Prisma.ReviewWhereInput
 }
 
+/**
+ * ApplicationCountOutputType without action
+ */
+export type ApplicationCountOutputTypeCountTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransactionWhereInput
+}
+
 
 export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -815,6 +921,7 @@ export type ApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   job?: boolean | Prisma.JobDefaultArgs<ExtArgs>
   userApplications?: boolean | Prisma.Application$userApplicationsArgs<ExtArgs>
   reviews?: boolean | Prisma.Application$reviewsArgs<ExtArgs>
+  transactions?: boolean | Prisma.Application$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["application"]>
 
@@ -855,6 +962,7 @@ export type ApplicationInclude<ExtArgs extends runtime.Types.Extensions.Internal
   job?: boolean | Prisma.JobDefaultArgs<ExtArgs>
   userApplications?: boolean | Prisma.Application$userApplicationsArgs<ExtArgs>
   reviews?: boolean | Prisma.Application$reviewsArgs<ExtArgs>
+  transactions?: boolean | Prisma.Application$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.ApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ApplicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -873,6 +981,7 @@ export type $ApplicationPayload<ExtArgs extends runtime.Types.Extensions.Interna
     job: Prisma.$JobPayload<ExtArgs>
     userApplications: Prisma.$UserApplicationsPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    transactions: Prisma.$TransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1279,6 +1388,7 @@ export interface Prisma__ApplicationClient<T, Null = never, ExtArgs extends runt
   job<T extends Prisma.JobDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.JobDefaultArgs<ExtArgs>>): Prisma.Prisma__JobClient<runtime.Types.Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   userApplications<T extends Prisma.Application$userApplicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$userApplicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.Application$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transactions<T extends Prisma.Application$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Application$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1760,6 +1870,30 @@ export type Application$reviewsArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Application.transactions
+ */
+export type Application$transactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transaction
+   */
+  select?: Prisma.TransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transaction
+   */
+  omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  where?: Prisma.TransactionWhereInput
+  orderBy?: Prisma.TransactionOrderByWithRelationInput | Prisma.TransactionOrderByWithRelationInput[]
+  cursor?: Prisma.TransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
 }
 
 /**

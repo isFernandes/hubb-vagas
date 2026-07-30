@@ -77,6 +77,7 @@ export class PrismaJobsRepository implements JobsRepository {
           },
         },
         company: true,
+        transactions: true,
       },
     });
   }

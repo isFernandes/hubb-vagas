@@ -29,6 +29,7 @@ export type ReportMinAggregateOutputType = {
   reporterId: string | null
   reportedAccountId: string | null
   reportedJobId: string | null
+  reportedTransactionId: string | null
   type: $Enums.ReportType | null
   description: string | null
   status: $Enums.ReportStatus | null
@@ -43,6 +44,7 @@ export type ReportMaxAggregateOutputType = {
   reporterId: string | null
   reportedAccountId: string | null
   reportedJobId: string | null
+  reportedTransactionId: string | null
   type: $Enums.ReportType | null
   description: string | null
   status: $Enums.ReportStatus | null
@@ -57,6 +59,7 @@ export type ReportCountAggregateOutputType = {
   reporterId: number
   reportedAccountId: number
   reportedJobId: number
+  reportedTransactionId: number
   type: number
   description: number
   status: number
@@ -73,6 +76,7 @@ export type ReportMinAggregateInputType = {
   reporterId?: true
   reportedAccountId?: true
   reportedJobId?: true
+  reportedTransactionId?: true
   type?: true
   description?: true
   status?: true
@@ -87,6 +91,7 @@ export type ReportMaxAggregateInputType = {
   reporterId?: true
   reportedAccountId?: true
   reportedJobId?: true
+  reportedTransactionId?: true
   type?: true
   description?: true
   status?: true
@@ -101,6 +106,7 @@ export type ReportCountAggregateInputType = {
   reporterId?: true
   reportedAccountId?: true
   reportedJobId?: true
+  reportedTransactionId?: true
   type?: true
   description?: true
   status?: true
@@ -188,6 +194,7 @@ export type ReportGroupByOutputType = {
   reporterId: string
   reportedAccountId: string | null
   reportedJobId: string | null
+  reportedTransactionId: string | null
   type: $Enums.ReportType
   description: string
   status: $Enums.ReportStatus
@@ -223,6 +230,7 @@ export type ReportWhereInput = {
   reporterId?: Prisma.StringFilter<"Report"> | string
   reportedAccountId?: Prisma.StringNullableFilter<"Report"> | string | null
   reportedJobId?: Prisma.StringNullableFilter<"Report"> | string | null
+  reportedTransactionId?: Prisma.StringNullableFilter<"Report"> | string | null
   type?: Prisma.EnumReportTypeFilter<"Report"> | $Enums.ReportType
   description?: Prisma.StringFilter<"Report"> | string
   status?: Prisma.EnumReportStatusFilter<"Report"> | $Enums.ReportStatus
@@ -233,6 +241,7 @@ export type ReportWhereInput = {
   reporter?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   reportedAccount?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
   reportedJob?: Prisma.XOR<Prisma.JobNullableScalarRelationFilter, Prisma.JobWhereInput> | null
+  reportedTransaction?: Prisma.XOR<Prisma.TransactionNullableScalarRelationFilter, Prisma.TransactionWhereInput> | null
   resolvedBy?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
 }
 
@@ -241,6 +250,7 @@ export type ReportOrderByWithRelationInput = {
   reporterId?: Prisma.SortOrder
   reportedAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   reportedJobId?: Prisma.SortOrderInput | Prisma.SortOrder
+  reportedTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -251,6 +261,7 @@ export type ReportOrderByWithRelationInput = {
   reporter?: Prisma.AccountOrderByWithRelationInput
   reportedAccount?: Prisma.AccountOrderByWithRelationInput
   reportedJob?: Prisma.JobOrderByWithRelationInput
+  reportedTransaction?: Prisma.TransactionOrderByWithRelationInput
   resolvedBy?: Prisma.AccountOrderByWithRelationInput
 }
 
@@ -262,6 +273,7 @@ export type ReportWhereUniqueInput = Prisma.AtLeast<{
   reporterId?: Prisma.StringFilter<"Report"> | string
   reportedAccountId?: Prisma.StringNullableFilter<"Report"> | string | null
   reportedJobId?: Prisma.StringNullableFilter<"Report"> | string | null
+  reportedTransactionId?: Prisma.StringNullableFilter<"Report"> | string | null
   type?: Prisma.EnumReportTypeFilter<"Report"> | $Enums.ReportType
   description?: Prisma.StringFilter<"Report"> | string
   status?: Prisma.EnumReportStatusFilter<"Report"> | $Enums.ReportStatus
@@ -272,6 +284,7 @@ export type ReportWhereUniqueInput = Prisma.AtLeast<{
   reporter?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   reportedAccount?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
   reportedJob?: Prisma.XOR<Prisma.JobNullableScalarRelationFilter, Prisma.JobWhereInput> | null
+  reportedTransaction?: Prisma.XOR<Prisma.TransactionNullableScalarRelationFilter, Prisma.TransactionWhereInput> | null
   resolvedBy?: Prisma.XOR<Prisma.AccountNullableScalarRelationFilter, Prisma.AccountWhereInput> | null
 }, "id">
 
@@ -280,6 +293,7 @@ export type ReportOrderByWithAggregationInput = {
   reporterId?: Prisma.SortOrder
   reportedAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   reportedJobId?: Prisma.SortOrderInput | Prisma.SortOrder
+  reportedTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -300,6 +314,7 @@ export type ReportScalarWhereWithAggregatesInput = {
   reporterId?: Prisma.StringWithAggregatesFilter<"Report"> | string
   reportedAccountId?: Prisma.StringNullableWithAggregatesFilter<"Report"> | string | null
   reportedJobId?: Prisma.StringNullableWithAggregatesFilter<"Report"> | string | null
+  reportedTransactionId?: Prisma.StringNullableWithAggregatesFilter<"Report"> | string | null
   type?: Prisma.EnumReportTypeWithAggregatesFilter<"Report"> | $Enums.ReportType
   description?: Prisma.StringWithAggregatesFilter<"Report"> | string
   status?: Prisma.EnumReportStatusWithAggregatesFilter<"Report"> | $Enums.ReportStatus
@@ -320,6 +335,7 @@ export type ReportCreateInput = {
   reporter: Prisma.AccountCreateNestedOneWithoutReportsSubmittedInput
   reportedAccount?: Prisma.AccountCreateNestedOneWithoutReportsTargetInput
   reportedJob?: Prisma.JobCreateNestedOneWithoutReportsInput
+  reportedTransaction?: Prisma.TransactionCreateNestedOneWithoutReportsInput
   resolvedBy?: Prisma.AccountCreateNestedOneWithoutReportsResolvedInput
 }
 
@@ -328,6 +344,7 @@ export type ReportUncheckedCreateInput = {
   reporterId: string
   reportedAccountId?: string | null
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -348,6 +365,7 @@ export type ReportUpdateInput = {
   reporter?: Prisma.AccountUpdateOneRequiredWithoutReportsSubmittedNestedInput
   reportedAccount?: Prisma.AccountUpdateOneWithoutReportsTargetNestedInput
   reportedJob?: Prisma.JobUpdateOneWithoutReportsNestedInput
+  reportedTransaction?: Prisma.TransactionUpdateOneWithoutReportsNestedInput
   resolvedBy?: Prisma.AccountUpdateOneWithoutReportsResolvedNestedInput
 }
 
@@ -356,6 +374,7 @@ export type ReportUncheckedUpdateInput = {
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -370,6 +389,7 @@ export type ReportCreateManyInput = {
   reporterId: string
   reportedAccountId?: string | null
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -394,6 +414,7 @@ export type ReportUncheckedUpdateManyInput = {
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -418,6 +439,7 @@ export type ReportCountOrderByAggregateInput = {
   reporterId?: Prisma.SortOrder
   reportedAccountId?: Prisma.SortOrder
   reportedJobId?: Prisma.SortOrder
+  reportedTransactionId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -432,6 +454,7 @@ export type ReportMaxOrderByAggregateInput = {
   reporterId?: Prisma.SortOrder
   reportedAccountId?: Prisma.SortOrder
   reportedJobId?: Prisma.SortOrder
+  reportedTransactionId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -446,6 +469,7 @@ export type ReportMinOrderByAggregateInput = {
   reporterId?: Prisma.SortOrder
   reportedAccountId?: Prisma.SortOrder
   reportedJobId?: Prisma.SortOrder
+  reportedTransactionId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
@@ -631,6 +655,48 @@ export type EnumReportStatusFieldUpdateOperationsInput = {
   set?: $Enums.ReportStatus
 }
 
+export type ReportCreateNestedManyWithoutReportedTransactionInput = {
+  create?: Prisma.XOR<Prisma.ReportCreateWithoutReportedTransactionInput, Prisma.ReportUncheckedCreateWithoutReportedTransactionInput> | Prisma.ReportCreateWithoutReportedTransactionInput[] | Prisma.ReportUncheckedCreateWithoutReportedTransactionInput[]
+  connectOrCreate?: Prisma.ReportCreateOrConnectWithoutReportedTransactionInput | Prisma.ReportCreateOrConnectWithoutReportedTransactionInput[]
+  createMany?: Prisma.ReportCreateManyReportedTransactionInputEnvelope
+  connect?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+}
+
+export type ReportUncheckedCreateNestedManyWithoutReportedTransactionInput = {
+  create?: Prisma.XOR<Prisma.ReportCreateWithoutReportedTransactionInput, Prisma.ReportUncheckedCreateWithoutReportedTransactionInput> | Prisma.ReportCreateWithoutReportedTransactionInput[] | Prisma.ReportUncheckedCreateWithoutReportedTransactionInput[]
+  connectOrCreate?: Prisma.ReportCreateOrConnectWithoutReportedTransactionInput | Prisma.ReportCreateOrConnectWithoutReportedTransactionInput[]
+  createMany?: Prisma.ReportCreateManyReportedTransactionInputEnvelope
+  connect?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+}
+
+export type ReportUpdateManyWithoutReportedTransactionNestedInput = {
+  create?: Prisma.XOR<Prisma.ReportCreateWithoutReportedTransactionInput, Prisma.ReportUncheckedCreateWithoutReportedTransactionInput> | Prisma.ReportCreateWithoutReportedTransactionInput[] | Prisma.ReportUncheckedCreateWithoutReportedTransactionInput[]
+  connectOrCreate?: Prisma.ReportCreateOrConnectWithoutReportedTransactionInput | Prisma.ReportCreateOrConnectWithoutReportedTransactionInput[]
+  upsert?: Prisma.ReportUpsertWithWhereUniqueWithoutReportedTransactionInput | Prisma.ReportUpsertWithWhereUniqueWithoutReportedTransactionInput[]
+  createMany?: Prisma.ReportCreateManyReportedTransactionInputEnvelope
+  set?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  disconnect?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  delete?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  connect?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  update?: Prisma.ReportUpdateWithWhereUniqueWithoutReportedTransactionInput | Prisma.ReportUpdateWithWhereUniqueWithoutReportedTransactionInput[]
+  updateMany?: Prisma.ReportUpdateManyWithWhereWithoutReportedTransactionInput | Prisma.ReportUpdateManyWithWhereWithoutReportedTransactionInput[]
+  deleteMany?: Prisma.ReportScalarWhereInput | Prisma.ReportScalarWhereInput[]
+}
+
+export type ReportUncheckedUpdateManyWithoutReportedTransactionNestedInput = {
+  create?: Prisma.XOR<Prisma.ReportCreateWithoutReportedTransactionInput, Prisma.ReportUncheckedCreateWithoutReportedTransactionInput> | Prisma.ReportCreateWithoutReportedTransactionInput[] | Prisma.ReportUncheckedCreateWithoutReportedTransactionInput[]
+  connectOrCreate?: Prisma.ReportCreateOrConnectWithoutReportedTransactionInput | Prisma.ReportCreateOrConnectWithoutReportedTransactionInput[]
+  upsert?: Prisma.ReportUpsertWithWhereUniqueWithoutReportedTransactionInput | Prisma.ReportUpsertWithWhereUniqueWithoutReportedTransactionInput[]
+  createMany?: Prisma.ReportCreateManyReportedTransactionInputEnvelope
+  set?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  disconnect?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  delete?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  connect?: Prisma.ReportWhereUniqueInput | Prisma.ReportWhereUniqueInput[]
+  update?: Prisma.ReportUpdateWithWhereUniqueWithoutReportedTransactionInput | Prisma.ReportUpdateWithWhereUniqueWithoutReportedTransactionInput[]
+  updateMany?: Prisma.ReportUpdateManyWithWhereWithoutReportedTransactionInput | Prisma.ReportUpdateManyWithWhereWithoutReportedTransactionInput[]
+  deleteMany?: Prisma.ReportScalarWhereInput | Prisma.ReportScalarWhereInput[]
+}
+
 export type ReportCreateWithoutReporterInput = {
   id?: string
   type: $Enums.ReportType
@@ -641,6 +707,7 @@ export type ReportCreateWithoutReporterInput = {
   updatedAt?: Date | string
   reportedAccount?: Prisma.AccountCreateNestedOneWithoutReportsTargetInput
   reportedJob?: Prisma.JobCreateNestedOneWithoutReportsInput
+  reportedTransaction?: Prisma.TransactionCreateNestedOneWithoutReportsInput
   resolvedBy?: Prisma.AccountCreateNestedOneWithoutReportsResolvedInput
 }
 
@@ -648,6 +715,7 @@ export type ReportUncheckedCreateWithoutReporterInput = {
   id?: string
   reportedAccountId?: string | null
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -677,6 +745,7 @@ export type ReportCreateWithoutReportedAccountInput = {
   updatedAt?: Date | string
   reporter: Prisma.AccountCreateNestedOneWithoutReportsSubmittedInput
   reportedJob?: Prisma.JobCreateNestedOneWithoutReportsInput
+  reportedTransaction?: Prisma.TransactionCreateNestedOneWithoutReportsInput
   resolvedBy?: Prisma.AccountCreateNestedOneWithoutReportsResolvedInput
 }
 
@@ -684,6 +753,7 @@ export type ReportUncheckedCreateWithoutReportedAccountInput = {
   id?: string
   reporterId: string
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -714,6 +784,7 @@ export type ReportCreateWithoutResolvedByInput = {
   reporter: Prisma.AccountCreateNestedOneWithoutReportsSubmittedInput
   reportedAccount?: Prisma.AccountCreateNestedOneWithoutReportsTargetInput
   reportedJob?: Prisma.JobCreateNestedOneWithoutReportsInput
+  reportedTransaction?: Prisma.TransactionCreateNestedOneWithoutReportsInput
 }
 
 export type ReportUncheckedCreateWithoutResolvedByInput = {
@@ -721,6 +792,7 @@ export type ReportUncheckedCreateWithoutResolvedByInput = {
   reporterId: string
   reportedAccountId?: string | null
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -763,6 +835,7 @@ export type ReportScalarWhereInput = {
   reporterId?: Prisma.StringFilter<"Report"> | string
   reportedAccountId?: Prisma.StringNullableFilter<"Report"> | string | null
   reportedJobId?: Prisma.StringNullableFilter<"Report"> | string | null
+  reportedTransactionId?: Prisma.StringNullableFilter<"Report"> | string | null
   type?: Prisma.EnumReportTypeFilter<"Report"> | $Enums.ReportType
   description?: Prisma.StringFilter<"Report"> | string
   status?: Prisma.EnumReportStatusFilter<"Report"> | $Enums.ReportStatus
@@ -814,6 +887,7 @@ export type ReportCreateWithoutReportedJobInput = {
   updatedAt?: Date | string
   reporter: Prisma.AccountCreateNestedOneWithoutReportsSubmittedInput
   reportedAccount?: Prisma.AccountCreateNestedOneWithoutReportsTargetInput
+  reportedTransaction?: Prisma.TransactionCreateNestedOneWithoutReportsInput
   resolvedBy?: Prisma.AccountCreateNestedOneWithoutReportsResolvedInput
 }
 
@@ -821,6 +895,7 @@ export type ReportUncheckedCreateWithoutReportedJobInput = {
   id?: string
   reporterId: string
   reportedAccountId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -856,10 +931,65 @@ export type ReportUpdateManyWithWhereWithoutReportedJobInput = {
   data: Prisma.XOR<Prisma.ReportUpdateManyMutationInput, Prisma.ReportUncheckedUpdateManyWithoutReportedJobInput>
 }
 
+export type ReportCreateWithoutReportedTransactionInput = {
+  id?: string
+  type: $Enums.ReportType
+  description: string
+  status?: $Enums.ReportStatus
+  resolutionNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reporter: Prisma.AccountCreateNestedOneWithoutReportsSubmittedInput
+  reportedAccount?: Prisma.AccountCreateNestedOneWithoutReportsTargetInput
+  reportedJob?: Prisma.JobCreateNestedOneWithoutReportsInput
+  resolvedBy?: Prisma.AccountCreateNestedOneWithoutReportsResolvedInput
+}
+
+export type ReportUncheckedCreateWithoutReportedTransactionInput = {
+  id?: string
+  reporterId: string
+  reportedAccountId?: string | null
+  reportedJobId?: string | null
+  type: $Enums.ReportType
+  description: string
+  status?: $Enums.ReportStatus
+  resolvedById?: string | null
+  resolutionNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ReportCreateOrConnectWithoutReportedTransactionInput = {
+  where: Prisma.ReportWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReportCreateWithoutReportedTransactionInput, Prisma.ReportUncheckedCreateWithoutReportedTransactionInput>
+}
+
+export type ReportCreateManyReportedTransactionInputEnvelope = {
+  data: Prisma.ReportCreateManyReportedTransactionInput | Prisma.ReportCreateManyReportedTransactionInput[]
+  skipDuplicates?: boolean
+}
+
+export type ReportUpsertWithWhereUniqueWithoutReportedTransactionInput = {
+  where: Prisma.ReportWhereUniqueInput
+  update: Prisma.XOR<Prisma.ReportUpdateWithoutReportedTransactionInput, Prisma.ReportUncheckedUpdateWithoutReportedTransactionInput>
+  create: Prisma.XOR<Prisma.ReportCreateWithoutReportedTransactionInput, Prisma.ReportUncheckedCreateWithoutReportedTransactionInput>
+}
+
+export type ReportUpdateWithWhereUniqueWithoutReportedTransactionInput = {
+  where: Prisma.ReportWhereUniqueInput
+  data: Prisma.XOR<Prisma.ReportUpdateWithoutReportedTransactionInput, Prisma.ReportUncheckedUpdateWithoutReportedTransactionInput>
+}
+
+export type ReportUpdateManyWithWhereWithoutReportedTransactionInput = {
+  where: Prisma.ReportScalarWhereInput
+  data: Prisma.XOR<Prisma.ReportUpdateManyMutationInput, Prisma.ReportUncheckedUpdateManyWithoutReportedTransactionInput>
+}
+
 export type ReportCreateManyReporterInput = {
   id?: string
   reportedAccountId?: string | null
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -873,6 +1003,7 @@ export type ReportCreateManyReportedAccountInput = {
   id?: string
   reporterId: string
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -887,6 +1018,7 @@ export type ReportCreateManyResolvedByInput = {
   reporterId: string
   reportedAccountId?: string | null
   reportedJobId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -905,6 +1037,7 @@ export type ReportUpdateWithoutReporterInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reportedAccount?: Prisma.AccountUpdateOneWithoutReportsTargetNestedInput
   reportedJob?: Prisma.JobUpdateOneWithoutReportsNestedInput
+  reportedTransaction?: Prisma.TransactionUpdateOneWithoutReportsNestedInput
   resolvedBy?: Prisma.AccountUpdateOneWithoutReportsResolvedNestedInput
 }
 
@@ -912,6 +1045,7 @@ export type ReportUncheckedUpdateWithoutReporterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -925,6 +1059,7 @@ export type ReportUncheckedUpdateManyWithoutReporterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -944,6 +1079,7 @@ export type ReportUpdateWithoutReportedAccountInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.AccountUpdateOneRequiredWithoutReportsSubmittedNestedInput
   reportedJob?: Prisma.JobUpdateOneWithoutReportsNestedInput
+  reportedTransaction?: Prisma.TransactionUpdateOneWithoutReportsNestedInput
   resolvedBy?: Prisma.AccountUpdateOneWithoutReportsResolvedNestedInput
 }
 
@@ -951,6 +1087,7 @@ export type ReportUncheckedUpdateWithoutReportedAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -964,6 +1101,7 @@ export type ReportUncheckedUpdateManyWithoutReportedAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -984,6 +1122,7 @@ export type ReportUpdateWithoutResolvedByInput = {
   reporter?: Prisma.AccountUpdateOneRequiredWithoutReportsSubmittedNestedInput
   reportedAccount?: Prisma.AccountUpdateOneWithoutReportsTargetNestedInput
   reportedJob?: Prisma.JobUpdateOneWithoutReportsNestedInput
+  reportedTransaction?: Prisma.TransactionUpdateOneWithoutReportsNestedInput
 }
 
 export type ReportUncheckedUpdateWithoutResolvedByInput = {
@@ -991,6 +1130,7 @@ export type ReportUncheckedUpdateWithoutResolvedByInput = {
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -1004,6 +1144,7 @@ export type ReportUncheckedUpdateManyWithoutResolvedByInput = {
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -1016,6 +1157,7 @@ export type ReportCreateManyReportedJobInput = {
   id?: string
   reporterId: string
   reportedAccountId?: string | null
+  reportedTransactionId?: string | null
   type: $Enums.ReportType
   description: string
   status?: $Enums.ReportStatus
@@ -1035,6 +1177,7 @@ export type ReportUpdateWithoutReportedJobInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reporter?: Prisma.AccountUpdateOneRequiredWithoutReportsSubmittedNestedInput
   reportedAccount?: Prisma.AccountUpdateOneWithoutReportsTargetNestedInput
+  reportedTransaction?: Prisma.TransactionUpdateOneWithoutReportsNestedInput
   resolvedBy?: Prisma.AccountUpdateOneWithoutReportsResolvedNestedInput
 }
 
@@ -1042,6 +1185,7 @@ export type ReportUncheckedUpdateWithoutReportedJobInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -1055,6 +1199,63 @@ export type ReportUncheckedUpdateManyWithoutReportedJobInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   reporterId?: Prisma.StringFieldUpdateOperationsInput | string
   reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+  resolvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resolutionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ReportCreateManyReportedTransactionInput = {
+  id?: string
+  reporterId: string
+  reportedAccountId?: string | null
+  reportedJobId?: string | null
+  type: $Enums.ReportType
+  description: string
+  status?: $Enums.ReportStatus
+  resolvedById?: string | null
+  resolutionNotes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ReportUpdateWithoutReportedTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+  resolutionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reporter?: Prisma.AccountUpdateOneRequiredWithoutReportsSubmittedNestedInput
+  reportedAccount?: Prisma.AccountUpdateOneWithoutReportsTargetNestedInput
+  reportedJob?: Prisma.JobUpdateOneWithoutReportsNestedInput
+  resolvedBy?: Prisma.AccountUpdateOneWithoutReportsResolvedNestedInput
+}
+
+export type ReportUncheckedUpdateWithoutReportedTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reporterId?: Prisma.StringFieldUpdateOperationsInput | string
+  reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
+  resolvedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resolutionNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ReportUncheckedUpdateManyWithoutReportedTransactionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  reporterId?: Prisma.StringFieldUpdateOperationsInput | string
+  reportedAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reportedJobId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumReportTypeFieldUpdateOperationsInput | $Enums.ReportType
   description?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumReportStatusFieldUpdateOperationsInput | $Enums.ReportStatus
@@ -1071,6 +1272,7 @@ export type ReportSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   reporterId?: boolean
   reportedAccountId?: boolean
   reportedJobId?: boolean
+  reportedTransactionId?: boolean
   type?: boolean
   description?: boolean
   status?: boolean
@@ -1081,6 +1283,7 @@ export type ReportSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   reporter?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   reportedAccount?: boolean | Prisma.Report$reportedAccountArgs<ExtArgs>
   reportedJob?: boolean | Prisma.Report$reportedJobArgs<ExtArgs>
+  reportedTransaction?: boolean | Prisma.Report$reportedTransactionArgs<ExtArgs>
   resolvedBy?: boolean | Prisma.Report$resolvedByArgs<ExtArgs>
 }, ExtArgs["result"]["report"]>
 
@@ -1089,6 +1292,7 @@ export type ReportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   reporterId?: boolean
   reportedAccountId?: boolean
   reportedJobId?: boolean
+  reportedTransactionId?: boolean
   type?: boolean
   description?: boolean
   status?: boolean
@@ -1099,6 +1303,7 @@ export type ReportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   reporter?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   reportedAccount?: boolean | Prisma.Report$reportedAccountArgs<ExtArgs>
   reportedJob?: boolean | Prisma.Report$reportedJobArgs<ExtArgs>
+  reportedTransaction?: boolean | Prisma.Report$reportedTransactionArgs<ExtArgs>
   resolvedBy?: boolean | Prisma.Report$resolvedByArgs<ExtArgs>
 }, ExtArgs["result"]["report"]>
 
@@ -1107,6 +1312,7 @@ export type ReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   reporterId?: boolean
   reportedAccountId?: boolean
   reportedJobId?: boolean
+  reportedTransactionId?: boolean
   type?: boolean
   description?: boolean
   status?: boolean
@@ -1117,6 +1323,7 @@ export type ReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   reporter?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   reportedAccount?: boolean | Prisma.Report$reportedAccountArgs<ExtArgs>
   reportedJob?: boolean | Prisma.Report$reportedJobArgs<ExtArgs>
+  reportedTransaction?: boolean | Prisma.Report$reportedTransactionArgs<ExtArgs>
   resolvedBy?: boolean | Prisma.Report$resolvedByArgs<ExtArgs>
 }, ExtArgs["result"]["report"]>
 
@@ -1125,6 +1332,7 @@ export type ReportSelectScalar = {
   reporterId?: boolean
   reportedAccountId?: boolean
   reportedJobId?: boolean
+  reportedTransactionId?: boolean
   type?: boolean
   description?: boolean
   status?: boolean
@@ -1134,23 +1342,26 @@ export type ReportSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reporterId" | "reportedAccountId" | "reportedJobId" | "type" | "description" | "status" | "resolvedById" | "resolutionNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["report"]>
+export type ReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reporterId" | "reportedAccountId" | "reportedJobId" | "reportedTransactionId" | "type" | "description" | "status" | "resolvedById" | "resolutionNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["report"]>
 export type ReportInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   reportedAccount?: boolean | Prisma.Report$reportedAccountArgs<ExtArgs>
   reportedJob?: boolean | Prisma.Report$reportedJobArgs<ExtArgs>
+  reportedTransaction?: boolean | Prisma.Report$reportedTransactionArgs<ExtArgs>
   resolvedBy?: boolean | Prisma.Report$resolvedByArgs<ExtArgs>
 }
 export type ReportIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   reportedAccount?: boolean | Prisma.Report$reportedAccountArgs<ExtArgs>
   reportedJob?: boolean | Prisma.Report$reportedJobArgs<ExtArgs>
+  reportedTransaction?: boolean | Prisma.Report$reportedTransactionArgs<ExtArgs>
   resolvedBy?: boolean | Prisma.Report$resolvedByArgs<ExtArgs>
 }
 export type ReportIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reporter?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   reportedAccount?: boolean | Prisma.Report$reportedAccountArgs<ExtArgs>
   reportedJob?: boolean | Prisma.Report$reportedJobArgs<ExtArgs>
+  reportedTransaction?: boolean | Prisma.Report$reportedTransactionArgs<ExtArgs>
   resolvedBy?: boolean | Prisma.Report$resolvedByArgs<ExtArgs>
 }
 
@@ -1160,6 +1371,7 @@ export type $ReportPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     reporter: Prisma.$AccountPayload<ExtArgs>
     reportedAccount: Prisma.$AccountPayload<ExtArgs> | null
     reportedJob: Prisma.$JobPayload<ExtArgs> | null
+    reportedTransaction: Prisma.$TransactionPayload<ExtArgs> | null
     resolvedBy: Prisma.$AccountPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1167,6 +1379,7 @@ export type $ReportPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     reporterId: string
     reportedAccountId: string | null
     reportedJobId: string | null
+    reportedTransactionId: string | null
     type: $Enums.ReportType
     description: string
     status: $Enums.ReportStatus
@@ -1571,6 +1784,7 @@ export interface Prisma__ReportClient<T, Null = never, ExtArgs extends runtime.T
   reporter<T extends Prisma.AccountDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AccountDefaultArgs<ExtArgs>>): Prisma.Prisma__AccountClient<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   reportedAccount<T extends Prisma.Report$reportedAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Report$reportedAccountArgs<ExtArgs>>): Prisma.Prisma__AccountClient<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reportedJob<T extends Prisma.Report$reportedJobArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Report$reportedJobArgs<ExtArgs>>): Prisma.Prisma__JobClient<runtime.Types.Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  reportedTransaction<T extends Prisma.Report$reportedTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Report$reportedTransactionArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   resolvedBy<T extends Prisma.Report$resolvedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Report$resolvedByArgs<ExtArgs>>): Prisma.Prisma__AccountClient<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1605,6 +1819,7 @@ export interface ReportFieldRefs {
   readonly reporterId: Prisma.FieldRef<"Report", 'String'>
   readonly reportedAccountId: Prisma.FieldRef<"Report", 'String'>
   readonly reportedJobId: Prisma.FieldRef<"Report", 'String'>
+  readonly reportedTransactionId: Prisma.FieldRef<"Report", 'String'>
   readonly type: Prisma.FieldRef<"Report", 'ReportType'>
   readonly description: Prisma.FieldRef<"Report", 'String'>
   readonly status: Prisma.FieldRef<"Report", 'ReportStatus'>
@@ -2048,6 +2263,25 @@ export type Report$reportedJobArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.JobInclude<ExtArgs> | null
   where?: Prisma.JobWhereInput
+}
+
+/**
+ * Report.reportedTransaction
+ */
+export type Report$reportedTransactionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Transaction
+   */
+  select?: Prisma.TransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Transaction
+   */
+  omit?: Prisma.TransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionInclude<ExtArgs> | null
+  where?: Prisma.TransactionWhereInput
 }
 
 /**

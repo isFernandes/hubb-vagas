@@ -29,11 +29,15 @@ export type AggregateUser = {
 export type UserAvgAggregateOutputType = {
   averageRating: number | null
   reviewCount: number | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type UserSumAggregateOutputType = {
   averageRating: number | null
   reviewCount: number | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -47,6 +51,8 @@ export type UserMinAggregateOutputType = {
   reviewCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -60,6 +66,8 @@ export type UserMaxAggregateOutputType = {
   reviewCount: number | null
   createdAt: Date | null
   updatedAt: Date | null
+  latitude: number | null
+  longitude: number | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -73,6 +81,8 @@ export type UserCountAggregateOutputType = {
   reviewCount: number
   createdAt: number
   updatedAt: number
+  latitude: number
+  longitude: number
   _all: number
 }
 
@@ -80,11 +90,15 @@ export type UserCountAggregateOutputType = {
 export type UserAvgAggregateInputType = {
   averageRating?: true
   reviewCount?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type UserSumAggregateInputType = {
   averageRating?: true
   reviewCount?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -98,6 +112,8 @@ export type UserMinAggregateInputType = {
   reviewCount?: true
   createdAt?: true
   updatedAt?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -111,6 +127,8 @@ export type UserMaxAggregateInputType = {
   reviewCount?: true
   createdAt?: true
   updatedAt?: true
+  latitude?: true
+  longitude?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -124,6 +142,8 @@ export type UserCountAggregateInputType = {
   reviewCount?: true
   createdAt?: true
   updatedAt?: true
+  latitude?: true
+  longitude?: true
   _all?: true
 }
 
@@ -224,6 +244,8 @@ export type UserGroupByOutputType = {
   reviewCount: number
   createdAt: Date
   updatedAt: Date
+  latitude: number | null
+  longitude: number | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -260,6 +282,8 @@ export type UserWhereInput = {
   reviewCount?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  latitude?: Prisma.FloatNullableFilter<"User"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"User"> | number | null
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   applications?: Prisma.ApplicationListRelationFilter
   userApplications?: Prisma.UserApplicationsListRelationFilter
@@ -276,6 +300,8 @@ export type UserOrderByWithRelationInput = {
   reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   account?: Prisma.AccountOrderByWithRelationInput
   applications?: Prisma.ApplicationOrderByRelationAggregateInput
   userApplications?: Prisma.UserApplicationsOrderByRelationAggregateInput
@@ -295,6 +321,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   reviewCount?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  latitude?: Prisma.FloatNullableFilter<"User"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"User"> | number | null
   account?: Prisma.XOR<Prisma.AccountScalarRelationFilter, Prisma.AccountWhereInput>
   applications?: Prisma.ApplicationListRelationFilter
   userApplications?: Prisma.UserApplicationsListRelationFilter
@@ -311,6 +339,8 @@ export type UserOrderByWithAggregationInput = {
   reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -332,6 +362,8 @@ export type UserScalarWhereWithAggregatesInput = {
   reviewCount?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"User"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"User"> | number | null
 }
 
 export type UserCreateInput = {
@@ -344,6 +376,8 @@ export type UserCreateInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   account: Prisma.AccountCreateNestedOneWithoutUserInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutUserInput
@@ -360,6 +394,8 @@ export type UserUncheckedCreateInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -374,6 +410,8 @@ export type UserUpdateInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   account?: Prisma.AccountUpdateOneRequiredWithoutUserNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutUserNestedInput
@@ -390,6 +428,8 @@ export type UserUncheckedUpdateInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -405,6 +445,8 @@ export type UserCreateManyInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -417,6 +459,8 @@ export type UserUpdateManyMutationInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -430,6 +474,8 @@ export type UserUncheckedUpdateManyInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
 }
 
 export type UserNullableScalarRelationFilter = {
@@ -448,11 +494,15 @@ export type UserCountOrderByAggregateInput = {
   reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
   averageRating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -466,6 +516,8 @@ export type UserMaxOrderByAggregateInput = {
   reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -479,11 +531,15 @@ export type UserMinOrderByAggregateInput = {
   reviewCount?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
   averageRating?: Prisma.SortOrder
   reviewCount?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -543,6 +599,14 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type UserCreateNestedOneWithoutUserApplicationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutUserApplicationsInput, Prisma.UserUncheckedCreateWithoutUserApplicationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserApplicationsInput
@@ -581,6 +645,8 @@ export type UserCreateWithoutAccountInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutUserInput
 }
@@ -595,6 +661,8 @@ export type UserUncheckedCreateWithoutAccountInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutUserInput
 }
@@ -625,6 +693,8 @@ export type UserUpdateWithoutAccountInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutUserNestedInput
 }
@@ -639,6 +709,8 @@ export type UserUncheckedUpdateWithoutAccountInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -653,6 +725,8 @@ export type UserCreateWithoutUserApplicationsInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   account: Prisma.AccountCreateNestedOneWithoutUserInput
   applications?: Prisma.ApplicationCreateNestedManyWithoutUserInput
 }
@@ -668,6 +742,8 @@ export type UserUncheckedCreateWithoutUserApplicationsInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   applications?: Prisma.ApplicationUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -697,6 +773,8 @@ export type UserUpdateWithoutUserApplicationsInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   account?: Prisma.AccountUpdateOneRequiredWithoutUserNestedInput
   applications?: Prisma.ApplicationUpdateManyWithoutUserNestedInput
 }
@@ -712,6 +790,8 @@ export type UserUncheckedUpdateWithoutUserApplicationsInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   applications?: Prisma.ApplicationUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -725,6 +805,8 @@ export type UserCreateWithoutApplicationsInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   account: Prisma.AccountCreateNestedOneWithoutUserInput
   userApplications?: Prisma.UserApplicationsCreateNestedManyWithoutUserInput
 }
@@ -740,6 +822,8 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   reviewCount?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  latitude?: number | null
+  longitude?: number | null
   userApplications?: Prisma.UserApplicationsUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -769,6 +853,8 @@ export type UserUpdateWithoutApplicationsInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   account?: Prisma.AccountUpdateOneRequiredWithoutUserNestedInput
   userApplications?: Prisma.UserApplicationsUpdateManyWithoutUserNestedInput
 }
@@ -784,6 +870,8 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   reviewCount?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   userApplications?: Prisma.UserApplicationsUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -838,6 +926,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   userApplications?: boolean | Prisma.User$userApplicationsArgs<ExtArgs>
@@ -855,6 +945,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -869,6 +961,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -883,9 +977,11 @@ export type UserSelectScalar = {
   reviewCount?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  latitude?: boolean
+  longitude?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cpf" | "bio" | "account_id" | "averageRating" | "reviewCount" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "avatarUrl" | "cpf" | "bio" | "account_id" | "averageRating" | "reviewCount" | "createdAt" | "updatedAt" | "latitude" | "longitude", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   account?: boolean | Prisma.AccountDefaultArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
@@ -917,6 +1013,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     reviewCount: number
     createdAt: Date
     updatedAt: Date
+    latitude: number | null
+    longitude: number | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1353,6 +1451,8 @@ export interface UserFieldRefs {
   readonly reviewCount: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly latitude: Prisma.FieldRef<"User", 'Float'>
+  readonly longitude: Prisma.FieldRef<"User", 'Float'>
 }
     
 

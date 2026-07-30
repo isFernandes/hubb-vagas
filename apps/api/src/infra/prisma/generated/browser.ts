@@ -77,3 +77,8 @@ export type GlobalConfig = Prisma.GlobalConfigModel
  * 
  */
 export type Review = Prisma.ReviewModel
+/**
+ * Model Transaction
+ * 
+ */
+export type Transaction = Prisma.TransactionModel
