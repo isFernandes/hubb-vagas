@@ -13,7 +13,7 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 |---|---|---|---|
 | 1 | **Item 12.7: Vagas Múltiplas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-positions-available.md) | [x] Concluído |
 | 2 | **Item 12.10: Conflito de Agenda** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-schedule-conflict-validator.md) | [x] Concluído |
-| 3 | **Item 12.11: Busca por Geolocalização** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [ ] Não Iniciado |
+| 3 | **Item 12.11: Busca por Geolocalização** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [x] Concluído |
 | 4 | **Item 12.9: Política de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [ ] Não Iniciado |
 | 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [ ] Não Iniciado |
 | 6 | **Item 13.5: Gestão Financeira e Disputas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md) | [ ] Não Iniciado |
@@ -43,14 +43,14 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
     - [x] Task 4: Frontend datetime inputs, job card details, and helper warnings
 
 ### 3. Item 12.11: Busca por Geolocalização (Raio de Atuação)
-*   **Status:** [ ] Não Iniciado
+*   **Status:** [x] Concluído
 *   **Design Spec:** [2026-07-29-geolocation-search-design.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/specs/2026-07-29-geolocation-search-design.md)
 *   **Plano de Implementação:** [2026-07-29-geolocation-search.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md)
 *   **Tarefas Principais:**
-    - [ ] Task 1: Database Migration (`latitude`, `longitude` on User and Job)
-    - [ ] Task 2: Repository raw query integration with Haversine formula in PostgreSQL
-    - [ ] Task 3: Fallback Nominatim backend `GeocodingService`
-    - [ ] Task 4: Frontend autocomplete addresses, browser GPS filters
+    - [x] Task 1: Database Migration (`latitude`, `longitude` on User and Job)
+    - [x] Task 2: Repository raw query integration with Haversine formula in PostgreSQL
+    - [x] Task 3: Fallback Nominatim backend `GeocodingService` (Not applicable, coordinates supplied by frontend)
+    - [x] Task 4: Frontend autocomplete addresses, browser GPS filters
 
 ### 4. Item 12.9: Política de Cancelamento (No-Show) com Punição
 *   **Status:** [ ] Não Iniciado
