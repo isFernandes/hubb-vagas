@@ -27,6 +27,22 @@ export class PaymentsController {
         });
 
         if (job) {
+          const config = await this.prisma.globalConfig.findFirst();
+          const feePct = config ? config.platformFeePercentage : 10.0;
+          const totalAmountCents = job.paymentAmountCents;
+          const feeCents = Math.round((totalAmountCents * feePct) / 100);
+
+          await this.prisma.transaction.create({
+            data: {
+              jobId,
+              applicationId: appId,
+              amountCents: totalAmountCents,
+              feeCents,
+              status: 'APPROVED',
+              paymentId: body.data.id.toString(),
+            },
+          });
+
           // Emit application_approved event, which JobClosureWorker will handle
           this.client.emit('application_approved', {
             jobId,

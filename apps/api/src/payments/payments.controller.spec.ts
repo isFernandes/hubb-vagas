@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
 import { PrismaService } from '../infra/prisma/prisma.service';
@@ -7,25 +8,31 @@ describe('PaymentsController', () => {
   let controller: PaymentsController;
   let paymentsService: PaymentsService;
   let prismaService: PrismaService;
-  let rmqClientEmit: jest.Mock;
+  let rmqClientEmit: any;
 
   beforeEach(async () => {
-    rmqClientEmit = jest.fn();
+    rmqClientEmit = vi.fn();
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PaymentsController],
       providers: [
         {
           provide: PaymentsService,
           useValue: {
-            verifyPayment: jest.fn(),
+            verifyPayment: vi.fn(),
           },
         },
         {
           provide: PrismaService,
           useValue: {
             job: {
-              findUnique: jest.fn(),
+              findUnique: vi.fn(),
             },
+            globalConfig: {
+              findFirst: vi.fn(),
+            },
+            transaction: {
+              create: vi.fn(),
+            }
           },
         },
         {
@@ -53,13 +60,13 @@ describe('PaymentsController', () => {
         data: { id: 'payment-123' },
       };
 
-      jest.spyOn(paymentsService, 'verifyPayment').mockResolvedValue({
+      vi.spyOn(paymentsService, 'verifyPayment').mockResolvedValue({
         approved: true,
         jobId: 'job-123',
         appId: 'app-456',
       });
 
-      jest.spyOn(prismaService.job, 'findUnique').mockResolvedValue({
+      vi.spyOn(prismaService.job, 'findUnique').mockResolvedValue({
         id: 'job-123',
         companyId: 'company-789',
       } as any);
@@ -78,13 +85,49 @@ describe('PaymentsController', () => {
       expect(result).toEqual({ received: true });
     });
 
+    it('should create a Transaction entry with correct fee calculations upon webhook approval', async () => {
+      const webhookBody = {
+        type: 'payment',
+        data: { id: 'payment-123' },
+      };
+
+      vi.spyOn(paymentsService, 'verifyPayment').mockResolvedValue({
+        approved: true,
+        jobId: 'job-123',
+        appId: 'app-456',
+      });
+
+      vi.spyOn(prismaService.job, 'findUnique').mockResolvedValue({
+        id: 'job-123',
+        companyId: 'company-789',
+        paymentAmountCents: 10000,
+      } as any);
+
+      vi.spyOn(prismaService.globalConfig, 'findFirst').mockResolvedValue({
+        platformFeePercentage: 15.0,
+      } as any);
+
+      const result = await controller.handleWebhook(webhookBody);
+
+      expect(prismaService.transaction.create).toHaveBeenCalledWith({
+        data: {
+          jobId: 'job-123',
+          applicationId: 'app-456',
+          amountCents: 10000,
+          feeCents: 1500, // 15% of 10000
+          status: 'APPROVED',
+          paymentId: 'payment-123',
+        },
+      });
+    });
+
     it('should not emit application_approved when payment verification fails', async () => {
       const webhookBody = {
         type: 'payment',
         data: { id: 'payment-123' },
       };
 
-      jest.spyOn(paymentsService, 'verifyPayment').mockResolvedValue(null);
+      vi.spyOn(paymentsService, 'verifyPayment').mockResolvedValue(null);
 
       const result = await controller.handleWebhook(webhookBody);
 
