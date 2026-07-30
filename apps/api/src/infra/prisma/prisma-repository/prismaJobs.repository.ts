@@ -42,7 +42,7 @@ export class PrismaJobsRepository implements JobsRepository {
         ];
       }
 
-      if (filters.latitude && filters.longitude && filters.radius) {
+      if (filters.latitude !== undefined && filters.longitude !== undefined && filters.radius !== undefined) {
         const lat = parseFloat(filters.latitude as any);
         const lng = parseFloat(filters.longitude as any);
         const radiusKm = parseFloat(filters.radius as any);
@@ -52,10 +52,10 @@ export class PrismaJobsRepository implements JobsRepository {
           const matchingJobs: { id: string }[] = await this.prisma.$queryRaw`
             SELECT id FROM jobs
             WHERE latitude IS NOT NULL AND longitude IS NOT NULL
-              AND (6371 * acos(
+              AND (6371 * acos(LEAST(1.0, 
                 cos(radians(${lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians(${lng})) + 
                 sin(radians(${lat})) * sin(radians(latitude))
-              )) <= ${radiusKm}
+              ))) <= ${radiusKm}
           `;
 
           const ids = matchingJobs.map(j => j.id);

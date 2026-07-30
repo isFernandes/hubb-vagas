@@ -23,7 +23,7 @@ export default function JobsList() {
       let endpoint = `/jobs?`;
       const params = new URLSearchParams();
       if (search) params.append('search', search);
-      if (radius > 0 && latitude && longitude) {
+      if (radius > 0 && latitude !== null && longitude !== null) {
         params.append('radius', radius.toString());
         params.append('latitude', latitude.toString());
         params.append('longitude', longitude.toString());
@@ -90,10 +90,10 @@ export default function JobsList() {
             disabled={isLocating}
           >
             <Navigation className={`mr-2 h-4 w-4 ${isLocating ? 'animate-spin' : ''}`} />
-            {isLocating ? 'Localizando...' : latitude ? 'Localização Ativa' : 'Buscar Próximas a Mim'}
+            {isLocating ? 'Localizando...' : (latitude !== null) ? 'Localização Ativa' : 'Buscar Próximas a Mim'}
           </Button>
 
-          {latitude && longitude && (
+          {latitude !== null && longitude !== null && (
             <div className="flex-1 flex items-center gap-3 w-full">
               <span className="text-sm text-slate-400 whitespace-nowrap">Raio: {radius}km</span>
               <input 

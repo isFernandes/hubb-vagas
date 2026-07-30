@@ -73,7 +73,12 @@ export class JobsService {
     longitude?: number;
     radius?: number;
   }) {
-    const filterString = filters ? JSON.stringify(filters) : '{}';
+    const sortedFilters = filters ? Object.keys(filters).sort().reduce((acc: any, key) => {
+      acc[key] = (filters as any)[key];
+      return acc;
+    }, {}) : {};
+    
+    const filterString = JSON.stringify(sortedFilters);
     const filtersHash = Buffer.from(filterString).toString('base64');
     const cacheKey = `job:list:${filtersHash}`;
 

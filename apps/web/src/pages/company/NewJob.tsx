@@ -66,7 +66,7 @@ export default function NewJob() {
       positionsAvailable: parseInt(positionsAvailable, 10)
     };
 
-    if (latitude && longitude) {
+    if (latitude !== '' && longitude !== '') {
       payload.latitude = parseFloat(latitude);
       payload.longitude = parseFloat(longitude);
     }
