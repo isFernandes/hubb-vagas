@@ -123,6 +123,63 @@ export class JobClosureWorker {
           });
           console.log(`[JobClosureWorker] Application ${appId} approved. Job ${jobId} remains PUBLISHED.`);
         }
+
+        // --- Task 3: Automatic rejection of overlapping pending gigs ---
+        if (job.executionDate && job.durationHours) {
+          const targetApp = await this.prisma.application.findUnique({
+            where: { id: appId },
+          });
+          
+          if (targetApp) {
+            const targetStart = job.executionDate.getTime();
+            const targetEnd = targetStart + job.durationHours * 60 * 60 * 1000;
+
+            const otherPendingApps = await this.prisma.application.findMany({
+              where: {
+                userId: targetApp.userId,
+                id: { not: appId },
+                status: { in: ['APPLIED', 'SCREENING'] },
+                job: {
+                  executionDate: { not: null },
+                  durationHours: { not: null },
+                },
+              },
+              include: { job: true, user: { include: { account: true } } },
+            });
+
+            const appsToCancel = [];
+            for (const app of otherPendingApps) {
+              if (!app.job.executionDate || !app.job.durationHours) continue;
+              const appStart = app.job.executionDate.getTime();
+              const appEnd = appStart + app.job.durationHours * 60 * 60 * 1000;
+
+              const startConflict = targetStart < appEnd + 3600000;
+              const endConflict = appStart < targetEnd + 3600000;
+
+              if (startConflict && endConflict) {
+                appsToCancel.push(app);
+              }
+            }
+
+            if (appsToCancel.length > 0) {
+              await this.prisma.application.updateMany({
+                where: { id: { in: appsToCancel.map((a) => a.id) } },
+                data: { status: 'REJECTED' },
+              });
+              
+              for (const app of appsToCancel) {
+                this.client.emit('application_rejected', {
+                  email: app.user.account.email,
+                  jobTitle: app.job.title,
+                  companyName: 'Bico conflitante (Cancelado)',
+                });
+                console.log(`[JobClosureWorker] Overlapping application ${app.id} for job ${app.jobId} was rejected automatically.`);
+              }
+            }
+          }
+        }
+        // -------------------------------------------------------------
+
       }
     } catch (e) {
       console.error(`[JobClosureWorker] Error closing job ${jobId}:`, e);
