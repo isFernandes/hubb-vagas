@@ -15,26 +15,44 @@ export class AccountsService {
   ) {}
 
   async create(createAccountDto: CreateAccountDto) {
-    const { email, password, role, name, bio, cnpj, contact } =
-      createAccountDto;
+    const { email, password, role, name, bio, cnpj, contact, cpf } = createAccountDto;
 
     const existingAccount = await this.accountsRepository.findByEmail(email);
     if (existingAccount) {
       throw new ConflictException('Este e-mail já está em uso.');
     }
 
-    const accountToCreate = {
-      email,
-      role,
-      password: this.authService.passwordEncripty(password),
-    };
+    const hashedPassword = this.authService.passwordEncripty(password);
+    let account;
 
-    const account = await this.accountsRepository.create(accountToCreate);
+    if (role === 'USER') {
+      account = await this.accountsRepository.createUserAccount({
+        email,
+        password: hashedPassword,
+        name,
+        cpf,
+        bio,
+      });
+    } else if (role === 'COMPANY') {
+      account = await this.accountsRepository.createCompanyAccount({
+        email,
+        password: hashedPassword,
+        name,
+        cnpj,
+        contact,
+      });
+    } else {
+      account = await this.accountsRepository.create({
+        email,
+        password: hashedPassword,
+        role,
+      });
+    }
 
     this.client.emit('account_created', {
       role,
       account_id: account.id,
-      profileData: { name, bio, cnpj, contact },
+      profileData: { name, bio, cnpj, contact, cpf },
     });
 
     return account;

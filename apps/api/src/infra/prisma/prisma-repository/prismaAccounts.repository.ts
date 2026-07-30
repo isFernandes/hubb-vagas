@@ -10,6 +10,40 @@ export class PrismaAccountsRepository implements AccountsRepository {
     return this.prisma.account.create({ data });
   }
 
+  async createUserAccount(data: any): Promise<any> {
+    return this.prisma.account.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        role: 'USER',
+        user: {
+          create: {
+            name: data.name,
+            cpf: data.cpf,
+            bio: data.bio,
+          },
+        },
+      },
+    });
+  }
+
+  async createCompanyAccount(data: any): Promise<any> {
+    return this.prisma.account.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        role: 'COMPANY',
+        company: {
+          create: {
+            name: data.name,
+            cnpj: data.cnpj,
+            contact: data.contact,
+          },
+        },
+      },
+    });
+  }
+
   async findAll(): Promise<any[]> {
     return this.prisma.account.findMany();
   }
