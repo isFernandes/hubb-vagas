@@ -23,6 +23,8 @@ export default function NewJob() {
   const [executionDate, setExecutionDate] = useState('');
   const [executionTime, setExecutionTime] = useState('');
   const [durationHours, setDurationHours] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
 
   const createJobMutation = useMutation({
     mutationFn: async (payload: any) => {
@@ -63,6 +65,11 @@ export default function NewJob() {
       paymentAmountCents,
       positionsAvailable: parseInt(positionsAvailable, 10)
     };
+
+    if (latitude && longitude) {
+      payload.latitude = parseFloat(latitude);
+      payload.longitude = parseFloat(longitude);
+    }
 
     const hasAnyExecField = executionDate || executionTime || durationHours;
     const hasAllExecFields = executionDate && executionTime && durationHours;
@@ -209,6 +216,33 @@ export default function NewJob() {
                     value={durationHours} 
                     onChange={(e) => setDurationHours(e.target.value)} 
                     className="bg-slate-950/50 border-slate-700 text-white" 
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-800 pt-6 mt-6">
+                <div className="space-y-2">
+                  <Label htmlFor="latitude" className="text-slate-300">Latitude (Opcional)</Label>
+                  <Input 
+                    id="latitude" 
+                    type="number" 
+                    step="any"
+                    value={latitude} 
+                    onChange={(e) => setLatitude(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white" 
+                    placeholder="Ex: -23.55052"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="longitude" className="text-slate-300">Longitude (Opcional)</Label>
+                  <Input 
+                    id="longitude" 
+                    type="number" 
+                    step="any"
+                    value={longitude} 
+                    onChange={(e) => setLongitude(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white" 
+                    placeholder="Ex: -46.633308"
                   />
                 </div>
               </div>
