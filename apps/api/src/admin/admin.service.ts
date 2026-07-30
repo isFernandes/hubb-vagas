@@ -26,12 +26,21 @@ export class AdminService {
     if (cached) return JSON.parse(cached);
 
     try {
-      const [totalUsers, totalCompanies, totalJobs, totalApplications] =
+      const [totalUsers, totalCompanies, totalJobs, totalApplications, transactionsSum] =
         await Promise.all([
           this.prisma.user.count(),
           this.prisma.company.count(),
           this.prisma.job.count(),
           this.prisma.application.count(),
+          this.prisma.transaction.aggregate({
+            _sum: {
+              amountCents: true,
+              feeCents: true,
+            },
+            where: {
+              status: 'APPROVED',
+            },
+          }),
         ]);
 
       const metrics = {
@@ -39,6 +48,8 @@ export class AdminService {
         totalCompanies,
         totalJobs,
         totalApplications,
+        totalGmvCents: transactionsSum._sum.amountCents || 0,
+        totalFeeRevenueCents: transactionsSum._sum.feeCents || 0,
         usersOverTime: [
           { name: 'Week 1', count: 10 },
           { name: 'Week 2', count: 15 },
@@ -61,6 +72,8 @@ export class AdminService {
         totalCompanies: 0,
         totalJobs: 0,
         totalApplications: 0,
+        totalGmvCents: 0,
+        totalFeeRevenueCents: 0,
         usersOverTime: [],
         jobsOverTime: [],
       };

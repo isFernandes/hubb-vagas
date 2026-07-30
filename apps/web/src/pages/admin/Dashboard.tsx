@@ -65,13 +65,13 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <h2 className="text-gray-500 text-sm font-medium">Total Users</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalUsers || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium">Total Companies</h2>
+          <h2 className="text-gray-500 text-sm font-medium">Companies</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalCompanies || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
@@ -79,10 +79,23 @@ export default function AdminDashboard() {
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalJobs || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium">Total Applications</h2>
+          <h2 className="text-gray-500 text-sm font-medium">Applications</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalApplications || 0}</p>
         </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <h2 className="text-gray-500 text-sm font-medium">GMV</h2>
+          <p className="text-3xl font-bold text-gray-900 mt-2">
+            {(data?.totalGmvCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || 'R$ 0,00'}
+          </p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-green-100">
+          <h2 className="text-green-600 text-sm font-bold">Receita (Taxas)</h2>
+          <p className="text-3xl font-bold text-green-700 mt-2">
+            {(data?.totalFeeRevenueCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) || 'R$ 0,00'}
+          </p>
+        </div>
       </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">

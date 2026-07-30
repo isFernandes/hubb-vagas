@@ -28,6 +28,12 @@ export const AdminLayout = () => {
             Moderation
           </Link>
           <Link
+            to="/admin/disputes"
+            className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
+          >
+            Disputes
+          </Link>
+          <Link
             to="/admin/settings"
             className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
