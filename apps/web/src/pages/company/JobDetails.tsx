@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase, Star } from 'lucide-react';
+import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase, Star, Calendar, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { ReviewModal } from '@/components/ReviewModal';
 
@@ -68,9 +68,17 @@ export default function JobDetails() {
                 Vagas disponíveis: {Math.max(0, job.positionsAvailable - (job.applications?.filter((a: any) => a.status === 'APPROVED').length || 0))}
               </div>
               
-              <div className="flex flex-wrap gap-4 text-slate-400 mb-8">
-                <div className="flex items-center"><MapPin className="mr-2 h-4 w-4"/> {job.location}</div>
-                <div className="flex items-center"><Briefcase className="mr-2 h-4 w-4"/> {job.contractType}</div>
+              <div className="flex flex-wrap gap-4 text-slate-300 mb-8">
+                <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><MapPin className="mr-2 h-4 w-4 text-indigo-500"/> {job.location}</div>
+                <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Briefcase className="mr-2 h-4 w-4 text-indigo-500"/> {job.contractType}</div>
+                <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Calendar className="mr-2 h-4 w-4 text-indigo-500"/> Expira em: {new Date(job.expirationDate || job.expiresAt).toLocaleDateString()}</div>
+                {job.executionDate && (
+                  <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md border border-indigo-500/30">
+                    <Clock className="mr-2 h-4 w-4 text-indigo-400"/> 
+                    Execução: {new Date(job.executionDate).toLocaleDateString()} às {new Date(job.executionDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} 
+                    {job.durationHours ? ` - Duração: ${job.durationHours}h` : ''}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-6 text-slate-300 leading-relaxed">

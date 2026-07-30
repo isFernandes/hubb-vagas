@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle, Star } from 'lucide-react';
+import { ArrowLeft, MapPin, Briefcase, Calendar, CheckCircle, Star, Clock } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { ReviewModal } from '@/components/ReviewModal';
 
@@ -72,6 +72,13 @@ export default function JobDetailsCandidate() {
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><MapPin className="mr-2 h-4 w-4 text-indigo-500"/> {job.location}</div>
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Briefcase className="mr-2 h-4 w-4 text-indigo-500"/> {job.contractType}</div>
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Calendar className="mr-2 h-4 w-4 text-indigo-500"/> Expira em: {new Date(job.expirationDate || job.expiresAt).toLocaleDateString()}</div>
+              {job.executionDate && (
+                <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md border border-indigo-500/30">
+                  <Clock className="mr-2 h-4 w-4 text-indigo-400"/> 
+                  Execução: {new Date(job.executionDate).toLocaleDateString()} às {new Date(job.executionDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} 
+                  {job.durationHours ? ` - Duração: ${job.durationHours}h` : ''}
+                </div>
+              )}
               {job.paymentAmountCents > 0 && (
                 <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md font-bold text-emerald-400">
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(job.paymentAmountCents / 100)}

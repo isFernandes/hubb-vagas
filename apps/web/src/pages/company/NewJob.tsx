@@ -20,6 +20,9 @@ export default function NewJob() {
   const [expirationDate, setExpirationDate] = useState('');
   const [paymentAmount, setPaymentAmount] = useState('');
   const [positionsAvailable, setPositionsAvailable] = useState('1');
+  const [executionDate, setExecutionDate] = useState('');
+  const [executionTime, setExecutionTime] = useState('');
+  const [durationHours, setDurationHours] = useState('');
 
   const createJobMutation = useMutation({
     mutationFn: async (payload: any) => {
@@ -50,7 +53,7 @@ export default function NewJob() {
     const amountStr = paymentAmount.replace(',', '.');
     const paymentAmountCents = Math.round(parseFloat(amountStr) * 100);
 
-    createJobMutation.mutate({
+    const payload: any = {
       title,
       description,
       requirements,
@@ -59,7 +62,14 @@ export default function NewJob() {
       expiresAt: new Date(expirationDate).toISOString(),
       paymentAmountCents,
       positionsAvailable: parseInt(positionsAvailable, 10)
-    });
+    };
+
+    if (executionDate && executionTime && durationHours) {
+      payload.executionDate = new Date(`${executionDate}T${executionTime}`).toISOString();
+      payload.durationHours = parseInt(durationHours, 10);
+    }
+
+    createJobMutation.mutate(payload);
   };
 
   return (
@@ -156,6 +166,40 @@ export default function NewJob() {
                     required 
                     value={positionsAvailable} 
                     onChange={(e) => setPositionsAvailable(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white" 
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-800 pt-6 mt-6">
+                <div className="space-y-2">
+                  <Label htmlFor="execDate" className="text-slate-300">Data de Execução (Opcional)</Label>
+                  <Input 
+                    id="execDate" 
+                    type="date" 
+                    value={executionDate} 
+                    onChange={(e) => setExecutionDate(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white [color-scheme:dark]" 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="execTime" className="text-slate-300">Horário</Label>
+                  <Input 
+                    id="execTime" 
+                    type="time" 
+                    value={executionTime} 
+                    onChange={(e) => setExecutionTime(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white [color-scheme:dark]" 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="duration" className="text-slate-300">Duração (Horas)</Label>
+                  <Input 
+                    id="duration" 
+                    type="number" 
+                    min="1" 
+                    value={durationHours} 
+                    onChange={(e) => setDurationHours(e.target.value)} 
                     className="bg-slate-950/50 border-slate-700 text-white" 
                   />
                 </div>
