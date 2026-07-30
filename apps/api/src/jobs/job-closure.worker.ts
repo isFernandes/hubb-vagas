@@ -36,71 +36,88 @@ export class JobClosureWorker {
     try {
       const job = await this.jobsRepository.findById(jobId);
       if (job && job.status === JobStatus.PUBLISHED) {
-        // Update Job Status
-        await this.jobsRepository.update(jobId, {
-          status: JobStatus.CLOSED_HIRED,
+        const approvedCount = await this.prisma.application.count({
+          where: { jobId, status: 'APPROVED' },
         });
 
-        // Update Applications (APPROVE the selected one, REJECT others)
-        await this.prisma.application.update({
-          where: { id: appId },
-          data: { status: 'APPROVED' },
-        });
-        await this.prisma.application.updateMany({
-          where: { jobId, id: { not: appId } },
-          data: { status: 'REJECTED' },
-        });
+        const isFullyStaffed = approvedCount + 1 >= job.positionsAvailable;
 
-        // Fetch rejected applications to emit events
-        const rejectedApps = await this.prisma.application.findMany({
-          where: { jobId, status: 'REJECTED' },
-          include: { user: { include: { account: true } } },
-        });
+        if (isFullyStaffed) {
+          // Update Job Status
+          await this.jobsRepository.update(jobId, {
+            status: JobStatus.CLOSED_HIRED,
+          });
 
-        // The job object from jobsRepository doesn't have company relation joined here,
-        // so let's fetch it from Prisma to get the company name for the email.
-        const jobWithCompany = await this.prisma.job.findUnique({
-          where: { id: jobId },
-          include: { company: true },
-        });
+          // Update Applications (APPROVE the selected one, REJECT others)
+          await this.prisma.application.update({
+            where: { id: appId },
+            data: { status: 'APPROVED' },
+          });
+          await this.prisma.application.updateMany({
+            where: {
+              jobId,
+              id: { not: appId },
+              status: { in: ['APPLIED', 'SCREENING'] },
+            },
+            data: { status: 'REJECTED' },
+          });
 
-        if (jobWithCompany) {
-          for (const app of rejectedApps) {
-            this.client.emit('application_rejected', {
-              email: app.user.account.email,
-              jobTitle: jobWithCompany.title,
-              companyName: jobWithCompany.company.name,
+          // Fetch rejected applications to emit events
+          const rejectedApps = await this.prisma.application.findMany({
+            where: { jobId, status: 'REJECTED' },
+            include: { user: { include: { account: true } } },
+          });
+
+          const jobWithCompany = await this.prisma.job.findUnique({
+            where: { id: jobId },
+            include: { company: true },
+          });
+
+          if (jobWithCompany) {
+            for (const app of rejectedApps) {
+              this.client.emit('application_rejected', {
+                email: app.user.account.email,
+                jobTitle: jobWithCompany.title,
+                companyName: jobWithCompany.company.name,
+              });
+            }
+          }
+
+          // Record history
+          const account = await this.prisma.company.findUnique({
+            where: { id: data.companyId },
+          });
+          if (account) {
+            await this.statusHistoryRepository.create({
+              jobId,
+              status: JobStatus.CLOSED_HIRED,
+              changedById: account.account_id,
+              reason: 'Fechado automaticamente por aprovação de candidato',
             });
           }
-        }
 
-        // Record history
-        const account = await this.prisma.company.findUnique({
-          where: { id: data.companyId },
-        });
-        if (account) {
-          await this.statusHistoryRepository.create({
-            jobId,
-            status: JobStatus.CLOSED_HIRED,
-            changedById: account.account_id,
-            reason: 'Fechado automaticamente por aprovação de candidato',
+          // Emit final event
+          this.client.emit('job_closed', { jobId, hiredAppId: appId });
+
+          // Invalidate detail cache
+          try {
+            await this.redis.del(`job:detail:${jobId}`);
+          } catch (e) {
+            console.error(
+              `[Redis Error] Failed to invalidate cache for job:detail:${jobId}`,
+              e,
+            );
+          }
+
+          console.log(`[JobClosureWorker] Job ${jobId} successfully closed.`);
+        } else {
+          // Just approve this one, job remains PUBLISHED
+          await this.prisma.application.update({
+            where: { id: appId },
+            data: { status: 'APPROVED' },
           });
+          console.log(`[JobClosureWorker] Application ${appId} approved. Job ${jobId} remains PUBLISHED.`);
         }
-
-        // Emit final event
-        this.client.emit('job_closed', { jobId, hiredAppId: appId });
-
-        // Invalidate detail cache
-        try {
-          await this.redis.del(`job:detail:${jobId}`);
-        } catch (e) {
-          console.error(
-            `[Redis Error] Failed to invalidate cache for job:detail:${jobId}`,
-            e,
-          );
-        }
-
-        console.log(`[JobClosureWorker] Job ${jobId} successfully closed.`);
       }
     } catch (e) {
       console.error(`[JobClosureWorker] Error closing job ${jobId}:`, e);
