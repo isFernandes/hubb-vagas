@@ -48,4 +48,6 @@ export const CreateAccountSchema = z
     }
   });
 
-export type CreateAccountDto = z.infer<typeof CreateAccountSchema>;
+import { createZodDto } from 'nestjs-zod';
+
+export class CreateAccountDto extends createZodDto(CreateAccountSchema) {}

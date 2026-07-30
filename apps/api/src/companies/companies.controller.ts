@@ -26,10 +26,7 @@ import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
-  @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companiesService.create(createCompanyDto);
-  }
+
 
   @Get()
   @Roles(Role.Admin)

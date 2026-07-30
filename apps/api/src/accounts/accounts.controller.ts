@@ -11,7 +11,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import { type CreateAccountDto } from './dto/create-account.dto';
+import { CreateAccountDto } from './dto/create-account.dto';
 import { type UpdateAccountDto } from './dto/update-account.dto';
 import {
   type UpdatePasswordDto,
