@@ -130,6 +130,50 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden mt-6">
+        <div className="p-4 border-b border-gray-200">
+          <h2 className="text-lg font-bold text-gray-800">Transações Recentes</h2>
+        </div>
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vaga</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Taxa</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data?.recentTransactions?.map((tx: any) => (
+              <tr key={tx.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{tx.id.substring(0, 8)}...</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{tx.jobTitle}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(tx.createdAt).toLocaleDateString('pt-BR')}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{(tx.amountCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">{(tx.feeCents / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                    tx.status === 'APPROVED' ? 'bg-green-100 text-green-800' :
+                    tx.status === 'DISPUTED' ? 'bg-red-100 text-red-800' :
+                    tx.status === 'REFUNDED' ? 'bg-gray-100 text-gray-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {tx.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+            {(!data?.recentTransactions || data.recentTransactions.length === 0) && (
+              <tr>
+                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">Nenhuma transação encontrada.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

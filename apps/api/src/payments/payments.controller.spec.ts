@@ -31,7 +31,7 @@ describe('PaymentsController', () => {
               findFirst: vi.fn(),
             },
             transaction: {
-              create: vi.fn(),
+              upsert: vi.fn(),
             }
           },
         },
@@ -109,12 +109,14 @@ describe('PaymentsController', () => {
 
       const result = await controller.handleWebhook(webhookBody);
 
-      expect(prismaService.transaction.create).toHaveBeenCalledWith({
-        data: {
+      expect(prismaService.transaction.upsert).toHaveBeenCalledWith({
+        where: { paymentId: 'payment-123' },
+        update: {},
+        create: {
           jobId: 'job-123',
           applicationId: 'app-456',
           amountCents: 10000,
-          feeCents: 1500, // 15% of 10000
+          feeCents: 1500,
           status: 'APPROVED',
           paymentId: 'payment-123',
         },

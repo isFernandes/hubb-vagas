@@ -34,6 +34,7 @@ export class DisputesService {
         data: {
           reporterId: companyAccountId,
           reportedJobId: transaction.jobId,
+          reportedTransactionId: transactionId,
           type: 'OTHER',
           description: `Disputa financeira aberta para transação ${transactionId}. Motivo: ${reason}`,
         },
@@ -67,11 +68,31 @@ export class DisputesService {
       throw new BadRequestException('Ação inválida. Use REFUND ou RELEASE.');
     }
 
-    const updatedTx = await this.prisma.transaction.update({
-      where: { id: transactionId },
-      data: { status: newStatus },
+    const result = await this.prisma.$transaction(async (tx) => {
+      const updatedTx = await tx.transaction.update({
+        where: { id: transactionId },
+        data: { status: newStatus },
+      });
+
+      // Find the associated report to resolve it
+      const reports = await tx.report.findMany({
+        where: { reportedTransactionId: transactionId, status: 'PENDING' },
+      });
+
+      if (reports.length > 0) {
+        await tx.report.update({
+          where: { id: reports[0].id },
+          data: {
+            status: 'RESOLVED',
+            resolvedById: adminId,
+            resolutionNotes: `Resolvido via ação administrativa financeira: ${action}`,
+          },
+        });
+      }
+
+      return updatedTx;
     });
 
-    return updatedTx;
+    return result;
   }
 }

@@ -32,8 +32,10 @@ export class PaymentsController {
           const totalAmountCents = job.paymentAmountCents;
           const feeCents = Math.round((totalAmountCents * feePct) / 100);
 
-          await this.prisma.transaction.create({
-            data: {
+          await this.prisma.transaction.upsert({
+            where: { paymentId: body.data.id.toString() },
+            update: {},
+            create: {
               jobId,
               applicationId: appId,
               amountCents: totalAmountCents,

@@ -83,7 +83,7 @@ export default function AdminDisputes() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {data?.data?.filter((r: any) => r.description?.includes('Disputa financeira')).map((report: any) => (
+              {data?.data?.filter((r: any) => r.type === 'OTHER' && r.reportedTransactionId).map((report: any) => (
                 <tr key={report.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {report.id.substring(0, 8)}...
@@ -105,11 +105,8 @@ export default function AdminDisputes() {
                           size="sm" 
                           variant="destructive"
                           onClick={() => {
-                            // Extract transaction ID from description as a hack for this mockup
-                            // "Disputa financeira aberta para transação <id>. Motivo:"
-                            const txIdMatch = report.description.match(/transação (.*?)\./);
-                            if (txIdMatch) {
-                              resolveMutation.mutate({ id: txIdMatch[1], action: 'REFUND' });
+                            if (report.reportedTransactionId) {
+                              resolveMutation.mutate({ id: report.reportedTransactionId, action: 'REFUND' });
                             }
                           }}
                         >
@@ -119,9 +116,8 @@ export default function AdminDisputes() {
                           size="sm" 
                           className="bg-green-600 hover:bg-green-700 text-white"
                           onClick={() => {
-                            const txIdMatch = report.description.match(/transação (.*?)\./);
-                            if (txIdMatch) {
-                              resolveMutation.mutate({ id: txIdMatch[1], action: 'RELEASE' });
+                            if (report.reportedTransactionId) {
+                              resolveMutation.mutate({ id: report.reportedTransactionId, action: 'RELEASE' });
                             }
                           }}
                         >
@@ -132,7 +128,7 @@ export default function AdminDisputes() {
                   </td>
                 </tr>
               ))}
-              {(!data?.data || data.data.filter((r: any) => r.description?.includes('Disputa financeira')).length === 0) && (
+              {(!data?.data || data.data.filter((r: any) => r.type === 'OTHER' && r.reportedTransactionId).length === 0) && (
                 <tr>
                   <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
                     Nenhuma disputa encontrada.

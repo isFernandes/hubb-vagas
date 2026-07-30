@@ -8,7 +8,8 @@ import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase, Star, Calendar, 
 import { toast } from 'sonner';
 import { ReviewModal } from '@/components/ReviewModal';
 import { ReportModal } from '@/components/ReportModal';
-import { AlertTriangle } from 'lucide-react';
+import { DisputeModal } from '@/components/DisputeModal';
+import { AlertTriangle, ShieldAlert } from 'lucide-react';
 
 export default function JobDetails() {
   const { id } = useParams();
@@ -18,6 +19,8 @@ export default function JobDetails() {
   const [selectedAppId, setSelectedAppId] = useState<string>('');
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [reportedAccountId, setReportedAccountId] = useState<string>('');
+  const [isDisputeOpen, setIsDisputeOpen] = useState(false);
+  const [disputedTransactionId, setDisputedTransactionId] = useState<string>('');
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job-details', id],
@@ -149,6 +152,22 @@ export default function JobDetails() {
                             <AlertTriangle className="mr-2 h-4 w-4" />
                             Reportar Faltoso (No-Show)
                           </Button>
+                          
+                          {/* Botão de Disputa se houver transação */}
+                          {job.transactions?.find((tx: any) => tx.applicationId === app.id && tx.status === 'APPROVED') && (
+                            <Button 
+                              variant="outline"
+                              onClick={() => {
+                                const tx = job.transactions.find((t: any) => t.applicationId === app.id && t.status === 'APPROVED');
+                                setDisputedTransactionId(tx.id);
+                                setIsDisputeOpen(true);
+                              }}
+                              className="w-full bg-orange-600/10 text-orange-400 hover:bg-orange-600/20 border-orange-500/30 hover:text-orange-300"
+                            >
+                              <ShieldAlert className="mr-2 h-4 w-4" />
+                              Abrir Disputa Financeira
+                            </Button>
+                          )}
                         </div>
                       )}
                     </CardContent>
@@ -197,6 +216,12 @@ export default function JobDetails() {
           reportedAccountId={reportedAccountId} 
           reportedJobId={id!} 
           onClose={() => setIsReportOpen(false)} 
+        />
+      )}
+      {isDisputeOpen && (
+        <DisputeModal
+          transactionId={disputedTransactionId}
+          onClose={() => setIsDisputeOpen(false)}
         />
       )}
     </div>

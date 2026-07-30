@@ -208,6 +208,8 @@ model Report {
   reportedAccount   Account?     @relation("ReportTarget", fields: [reportedAccountId], references: [id])
   reportedJobId     String?
   reportedJob       Job?         @relation(fields: [reportedJobId], references: [id])
+  reportedTransactionId String?
+  reportedTransaction   Transaction? @relation(fields: [reportedTransactionId], references: [id])
   type              ReportType
   description       String
   status            ReportStatus @default(PENDING)
@@ -268,6 +270,7 @@ model Transaction {
   paymentId       String?           @unique
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
+  reports         Report[]
 
   @@map("transactions")
 }
