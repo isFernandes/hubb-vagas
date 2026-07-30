@@ -87,6 +87,7 @@ model Job {
   contractType       String
   expiresAt          DateTime
   paymentAmountCents Int                @default(0)
+  positionsAvailable Int                @default(1)
   status             JobStatus          @default(DRAFT)
   createdAt          DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
