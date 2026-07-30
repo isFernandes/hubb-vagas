@@ -16,7 +16,7 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
 | 3 | **Item 12.11: Busca por Geolocalização** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [x] Concluído |
 | 4 | **Item 12.9: Política de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [x] Concluído |
 | 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [x] Concluído |
-| 6 | **Item 13.5: Gestão Financeira e Disputas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md) | [ ] Não Iniciado |
+| 6 | **Item 13.5: Gestão Financeira e Disputas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md) | [x] Concluído |
 
 ---
 
@@ -74,12 +74,12 @@ Quando iniciar a codificação, você pode orientar o agente a ler este rastread
     - [x] Task 4: Frontend Toggle and Standby Views
 
 ### 6. Item 13.5: Gestão Financeira e Disputas
-*   **Status:** [ ] Não Iniciado
+*   **Status:** [x] Concluído
 *   **Design Spec:** [2026-07-29-financial-management-disputes-design.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/specs/2026-07-29-financial-management-disputes-design.md)
 *   **Plano de Implementação:** [2026-07-29-financial-management-disputes.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md)
 *   **Tarefas Principais:**
-    - [ ] Task 1: Database Migration (`Transaction` model and status enum)
-    - [ ] Task 2: Webhook ledger recording and fee calculations in cents
-    - [ ] Task 3: Dispute endpoints and admin resolution logic (Release / Refund options)
-    - [ ] Task 4: Settlement Cron Job to finalize escrow after 24h
-    - [ ] Task 5: Admin financial dashboard and dispute moderation page, company dispute buttons
+    - [x] Task 1: Database Migration (`Transaction` model and status enum)
+    - [x] Task 2: Webhook ledger recording and fee calculations in cents
+    - [x] Task 3: Dispute endpoints and admin resolution logic (Release / Refund options)
+    - [x] Task 4: Settlement Cron Job to finalize escrow after 24h
+    - [x] Task 5: Admin financial dashboard and dispute moderation page, company dispute buttons
