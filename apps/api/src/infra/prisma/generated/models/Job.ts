@@ -28,10 +28,12 @@ export type AggregateJob = {
 
 export type JobAvgAggregateOutputType = {
   paymentAmountCents: number | null
+  positionsAvailable: number | null
 }
 
 export type JobSumAggregateOutputType = {
   paymentAmountCents: number | null
+  positionsAvailable: number | null
 }
 
 export type JobMinAggregateOutputType = {
@@ -44,6 +46,7 @@ export type JobMinAggregateOutputType = {
   contractType: string | null
   expiresAt: Date | null
   paymentAmountCents: number | null
+  positionsAvailable: number | null
   status: $Enums.JobStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +62,7 @@ export type JobMaxAggregateOutputType = {
   contractType: string | null
   expiresAt: Date | null
   paymentAmountCents: number | null
+  positionsAvailable: number | null
   status: $Enums.JobStatus | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -74,6 +78,7 @@ export type JobCountAggregateOutputType = {
   contractType: number
   expiresAt: number
   paymentAmountCents: number
+  positionsAvailable: number
   status: number
   createdAt: number
   updatedAt: number
@@ -83,10 +88,12 @@ export type JobCountAggregateOutputType = {
 
 export type JobAvgAggregateInputType = {
   paymentAmountCents?: true
+  positionsAvailable?: true
 }
 
 export type JobSumAggregateInputType = {
   paymentAmountCents?: true
+  positionsAvailable?: true
 }
 
 export type JobMinAggregateInputType = {
@@ -99,6 +106,7 @@ export type JobMinAggregateInputType = {
   contractType?: true
   expiresAt?: true
   paymentAmountCents?: true
+  positionsAvailable?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -114,6 +122,7 @@ export type JobMaxAggregateInputType = {
   contractType?: true
   expiresAt?: true
   paymentAmountCents?: true
+  positionsAvailable?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -129,6 +138,7 @@ export type JobCountAggregateInputType = {
   contractType?: true
   expiresAt?: true
   paymentAmountCents?: true
+  positionsAvailable?: true
   status?: true
   createdAt?: true
   updatedAt?: true
@@ -231,6 +241,7 @@ export type JobGroupByOutputType = {
   contractType: string
   expiresAt: Date
   paymentAmountCents: number
+  positionsAvailable: number
   status: $Enums.JobStatus
   createdAt: Date
   updatedAt: Date
@@ -269,6 +280,7 @@ export type JobWhereInput = {
   contractType?: Prisma.StringFilter<"Job"> | string
   expiresAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   paymentAmountCents?: Prisma.IntFilter<"Job"> | number
+  positionsAvailable?: Prisma.IntFilter<"Job"> | number
   status?: Prisma.EnumJobStatusFilter<"Job"> | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
@@ -288,6 +300,7 @@ export type JobOrderByWithRelationInput = {
   contractType?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -310,6 +323,7 @@ export type JobWhereUniqueInput = Prisma.AtLeast<{
   contractType?: Prisma.StringFilter<"Job"> | string
   expiresAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   paymentAmountCents?: Prisma.IntFilter<"Job"> | number
+  positionsAvailable?: Prisma.IntFilter<"Job"> | number
   status?: Prisma.EnumJobStatusFilter<"Job"> | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
@@ -329,6 +343,7 @@ export type JobOrderByWithAggregationInput = {
   contractType?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -352,6 +367,7 @@ export type JobScalarWhereWithAggregatesInput = {
   contractType?: Prisma.StringWithAggregatesFilter<"Job"> | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
   paymentAmountCents?: Prisma.IntWithAggregatesFilter<"Job"> | number
+  positionsAvailable?: Prisma.IntWithAggregatesFilter<"Job"> | number
   status?: Prisma.EnumJobStatusWithAggregatesFilter<"Job"> | $Enums.JobStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Job"> | Date | string
@@ -366,6 +382,7 @@ export type JobCreateInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -385,6 +402,7 @@ export type JobUncheckedCreateInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -402,6 +420,7 @@ export type JobUpdateInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -421,6 +440,7 @@ export type JobUncheckedUpdateInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -439,6 +459,7 @@ export type JobCreateManyInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -453,6 +474,7 @@ export type JobUpdateManyMutationInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -468,6 +490,7 @@ export type JobUncheckedUpdateManyInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -493,6 +516,7 @@ export type JobCountOrderByAggregateInput = {
   contractType?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -500,6 +524,7 @@ export type JobCountOrderByAggregateInput = {
 
 export type JobAvgOrderByAggregateInput = {
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
 }
 
 export type JobMaxOrderByAggregateInput = {
@@ -512,6 +537,7 @@ export type JobMaxOrderByAggregateInput = {
   contractType?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -527,6 +553,7 @@ export type JobMinOrderByAggregateInput = {
   contractType?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -534,6 +561,7 @@ export type JobMinOrderByAggregateInput = {
 
 export type JobSumOrderByAggregateInput = {
   paymentAmountCents?: Prisma.SortOrder
+  positionsAvailable?: Prisma.SortOrder
 }
 
 export type JobScalarRelationFilter = {
@@ -645,6 +673,7 @@ export type JobCreateWithoutCompanyInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -662,6 +691,7 @@ export type JobUncheckedCreateWithoutCompanyInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -709,6 +739,7 @@ export type JobScalarWhereInput = {
   contractType?: Prisma.StringFilter<"Job"> | string
   expiresAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   paymentAmountCents?: Prisma.IntFilter<"Job"> | number
+  positionsAvailable?: Prisma.IntFilter<"Job"> | number
   status?: Prisma.EnumJobStatusFilter<"Job"> | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFilter<"Job"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Job"> | Date | string
@@ -723,6 +754,7 @@ export type JobCreateWithoutApplicationsInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -741,6 +773,7 @@ export type JobUncheckedCreateWithoutApplicationsInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -773,6 +806,7 @@ export type JobUpdateWithoutApplicationsInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -791,6 +825,7 @@ export type JobUncheckedUpdateWithoutApplicationsInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -807,6 +842,7 @@ export type JobCreateWithoutStatusHistoryInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -825,6 +861,7 @@ export type JobUncheckedCreateWithoutStatusHistoryInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -857,6 +894,7 @@ export type JobUpdateWithoutStatusHistoryInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -875,6 +913,7 @@ export type JobUncheckedUpdateWithoutStatusHistoryInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -891,6 +930,7 @@ export type JobCreateWithoutReportsInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -909,6 +949,7 @@ export type JobUncheckedCreateWithoutReportsInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -941,6 +982,7 @@ export type JobUpdateWithoutReportsInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -959,6 +1001,7 @@ export type JobUncheckedUpdateWithoutReportsInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -975,6 +1018,7 @@ export type JobCreateManyCompanyInput = {
   contractType: string
   expiresAt: Date | string
   paymentAmountCents?: number
+  positionsAvailable?: number
   status?: $Enums.JobStatus
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -989,6 +1033,7 @@ export type JobUpdateWithoutCompanyInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1006,6 +1051,7 @@ export type JobUncheckedUpdateWithoutCompanyInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1023,6 +1069,7 @@ export type JobUncheckedUpdateManyWithoutCompanyInput = {
   contractType?: Prisma.StringFieldUpdateOperationsInput | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paymentAmountCents?: Prisma.IntFieldUpdateOperationsInput | number
+  positionsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumJobStatusFieldUpdateOperationsInput | $Enums.JobStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1087,6 +1134,7 @@ export type JobSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   contractType?: boolean
   expiresAt?: boolean
   paymentAmountCents?: boolean
+  positionsAvailable?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1107,6 +1155,7 @@ export type JobSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   contractType?: boolean
   expiresAt?: boolean
   paymentAmountCents?: boolean
+  positionsAvailable?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1123,6 +1172,7 @@ export type JobSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   contractType?: boolean
   expiresAt?: boolean
   paymentAmountCents?: boolean
+  positionsAvailable?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1139,12 +1189,13 @@ export type JobSelectScalar = {
   contractType?: boolean
   expiresAt?: boolean
   paymentAmountCents?: boolean
+  positionsAvailable?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type JobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "requirements" | "companyId" | "location" | "contractType" | "expiresAt" | "paymentAmountCents" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
+export type JobOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "requirements" | "companyId" | "location" | "contractType" | "expiresAt" | "paymentAmountCents" | "positionsAvailable" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["job"]>
 export type JobInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
   applications?: boolean | Prisma.Job$applicationsArgs<ExtArgs>
@@ -1177,6 +1228,7 @@ export type $JobPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     contractType: string
     expiresAt: Date
     paymentAmountCents: number
+    positionsAvailable: number
     status: $Enums.JobStatus
     createdAt: Date
     updatedAt: Date
@@ -1616,6 +1668,7 @@ export interface JobFieldRefs {
   readonly contractType: Prisma.FieldRef<"Job", 'String'>
   readonly expiresAt: Prisma.FieldRef<"Job", 'DateTime'>
   readonly paymentAmountCents: Prisma.FieldRef<"Job", 'Int'>
+  readonly positionsAvailable: Prisma.FieldRef<"Job", 'Int'>
   readonly status: Prisma.FieldRef<"Job", 'JobStatus'>
   readonly createdAt: Prisma.FieldRef<"Job", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Job", 'DateTime'>

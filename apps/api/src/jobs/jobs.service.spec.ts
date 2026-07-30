@@ -100,6 +100,7 @@ describe('JobsService', () => {
       location: 'Remote',
       contractType: 'CLT',
       expiresAt: new Date().toISOString(),
+      positionsAvailable: 2,
     };
 
     await service.create(data, 'company-1', 'account-1');

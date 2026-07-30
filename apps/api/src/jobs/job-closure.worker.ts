@@ -48,11 +48,22 @@ export class JobClosureWorker {
             status: JobStatus.CLOSED_HIRED,
           });
 
-          // Update Applications (APPROVE the selected one, REJECT others)
+          // Update Applications (APPROVE the selected one)
           await this.prisma.application.update({
             where: { id: appId },
             data: { status: 'APPROVED' },
           });
+
+          // Fetch applications that will be rejected to emit events
+          const appsToReject = await this.prisma.application.findMany({
+            where: {
+              jobId,
+              id: { not: appId },
+              status: { in: ['APPLIED', 'SCREENING'] },
+            },
+            include: { user: { include: { account: true } } },
+          });
+
           await this.prisma.application.updateMany({
             where: {
               jobId,
@@ -62,19 +73,13 @@ export class JobClosureWorker {
             data: { status: 'REJECTED' },
           });
 
-          // Fetch rejected applications to emit events
-          const rejectedApps = await this.prisma.application.findMany({
-            where: { jobId, status: 'REJECTED' },
-            include: { user: { include: { account: true } } },
-          });
-
           const jobWithCompany = await this.prisma.job.findUnique({
             where: { id: jobId },
             include: { company: true },
           });
 
           if (jobWithCompany) {
-            for (const app of rejectedApps) {
+            for (const app of appsToReject) {
               this.client.emit('application_rejected', {
                 email: app.user.account.email,
                 jobTitle: jobWithCompany.title,

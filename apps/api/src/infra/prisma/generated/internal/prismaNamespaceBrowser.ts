@@ -148,6 +148,7 @@ export const JobScalarFieldEnum = {
   contractType: 'contractType',
   expiresAt: 'expiresAt',
   paymentAmountCents: 'paymentAmountCents',
+  positionsAvailable: 'positionsAvailable',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

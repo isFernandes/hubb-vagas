@@ -65,7 +65,7 @@ export default function JobDetails() {
               </div>
 
               <div className="mb-6 inline-block bg-indigo-500/20 border border-indigo-500/50 text-indigo-300 px-4 py-1.5 rounded-full font-semibold text-sm">
-                Vagas disponíveis: {job.positionsAvailable - (job.applications?.filter((a: any) => a.status === 'APPROVED').length || 0)}
+                Vagas disponíveis: {Math.max(0, job.positionsAvailable - (job.applications?.filter((a: any) => a.status === 'APPROVED').length || 0))}
               </div>
               
               <div className="flex flex-wrap gap-4 text-slate-400 mb-8">
