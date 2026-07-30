@@ -197,7 +197,7 @@ export class JobClosureWorker {
               include: { job: true, user: { include: { account: true } } },
             });
 
-            const appsToCancel = [];
+            const appsToCancel: any[] = [];
             for (const app of otherPendingApps) {
               if (!app.job.executionDate || !app.job.durationHours) continue;
               const appStart = app.job.executionDate.getTime();

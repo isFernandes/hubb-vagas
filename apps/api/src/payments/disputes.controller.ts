@@ -3,7 +3,7 @@ import { DisputesService } from './disputes.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
-import { Role } from '../infra/prisma/generated/client';
+import { Role } from '../decorators/role.enum';
 
 @Controller()
 export class DisputesController {
@@ -11,7 +11,7 @@ export class DisputesController {
 
   @Post('disputes')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.COMPANY)
+  @Roles(Role.Company)
   async createDispute(
     @Request() req: any,
     @Body('transactionId') transactionId: string,
@@ -23,7 +23,7 @@ export class DisputesController {
 
   @Post('admin/disputes/:id/resolve')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
+  @Roles(Role.Admin)
   async resolveDispute(
     @Request() req: any,
     @Param('id') id: string,
