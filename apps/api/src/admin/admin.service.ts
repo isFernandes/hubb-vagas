@@ -8,12 +8,14 @@ import Redis from 'ioredis';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { AccountStatus } from '../infra/prisma/generated/client';
 import * as bcrypt from 'bcrypt';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AdminService {
   constructor(
     private readonly prisma: PrismaService,
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
+    @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
   ) {}
 
   async getDashboardMetrics() {
@@ -150,7 +152,7 @@ export class AdminService {
     const report = await this.prisma.report.findUnique({ where: { id } });
     if (!report) throw new NotFoundException('Report not found');
 
-    return this.prisma.report.update({
+    const updated = await this.prisma.report.update({
       where: { id },
       data: {
         status: status as any,
@@ -158,6 +160,61 @@ export class AdminService {
         resolvedById: adminId,
       },
     });
+
+    if (status === 'RESOLVED' && report.type === 'NO_SHOW' && report.reportedAccountId && report.reportedJobId) {
+      const user = await this.prisma.user.findUnique({ where: { account_id: report.reportedAccountId }});
+      if (user) {
+        const app = await this.prisma.application.findFirst({
+          where: { jobId: report.reportedJobId, userId: user.id },
+        });
+
+        if (app) {
+          await this.prisma.review.upsert({
+            where: {
+              applicationId_direction: {
+                applicationId: app.id,
+                direction: 'COMPANY_TO_USER',
+              },
+            },
+            update: { rating: 1, comment: 'Penalidade automática por ausência (No-Show)' },
+            create: {
+              applicationId: app.id,
+              direction: 'COMPANY_TO_USER',
+              rating: 1,
+              comment: 'Penalidade automática por ausência (No-Show)',
+            },
+          });
+
+          this.client.emit('review_created', { applicationId: app.id, direction: 'COMPANY_TO_USER' });
+          
+          const activeNoShows = await this.prisma.report.count({
+            where: {
+              reportedAccountId: report.reportedAccountId,
+              type: 'NO_SHOW',
+              status: 'RESOLVED',
+            },
+          });
+          
+          if (activeNoShows >= 3) {
+            await this.prisma.account.update({
+              where: { id: report.reportedAccountId },
+              data: { status: 'SUSPENDED' },
+            });
+            await this.prisma.accountAuditLog.create({
+              data: {
+                accountId: report.reportedAccountId,
+                adminId,
+                previousStatus: 'ACTIVE',
+                newStatus: 'SUSPENDED',
+                reason: 'Suspensão automática: 3 ou mais denúncias de No-Show confirmadas.',
+              },
+            });
+          }
+        }
+      }
+    }
+
+    return updated;
   }
 
   async getSettings() {
