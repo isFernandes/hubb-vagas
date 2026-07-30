@@ -135,6 +135,18 @@ export class JobsService {
       );
     }
 
+    if (data.positionsAvailable !== undefined) {
+      const approvedCount = await this.prisma.application.count({
+        where: { jobId: id, status: 'APPROVED' },
+      });
+
+      if (data.positionsAvailable < approvedCount) {
+        throw new BadRequestException(
+          'Não é possível reduzir o número de vagas abaixo do total de contratações existentes.',
+        );
+      }
+    }
+
     const updatedJob = await this.jobsRepository.update(id, data);
 
     if (data.status && data.status !== job.status) {

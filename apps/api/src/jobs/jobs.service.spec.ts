@@ -11,6 +11,7 @@ describe('JobsService', () => {
   let service: JobsService;
   let repository: jest.Mocked<JobsRepository>;
   let statusHistoryRepository: jest.Mocked<JobStatusHistoryRepository>;
+  let prismaService: PrismaService;
 
   const mockJob = {
     id: 'job-1',
@@ -64,6 +65,9 @@ describe('JobsService', () => {
         {
           provide: PrismaService,
           useValue: {
+            application: {
+              count: jest.fn(),
+            },
             globalConfig: {
               findFirst: jest
                 .fn()
@@ -83,6 +87,7 @@ describe('JobsService', () => {
     service = module.get<JobsService>(JobsService);
     repository = module.get(JobsRepository);
     statusHistoryRepository = module.get(JobStatusHistoryRepository);
+    prismaService = module.get(PrismaService);
   });
 
   it('should create a job with PUBLISHED status and log status history', async () => {
@@ -205,5 +210,17 @@ describe('JobsService', () => {
 
     await service.remove('job-1', 'company-1');
     expect(repository.remove).toHaveBeenCalledWith('job-1');
+  });
+
+  it('should throw BadRequestException on update if positionsAvailable is less than approved applications', async () => {
+    repository.findById.mockResolvedValue({
+      ...mockJob,
+      positionsAvailable: 3,
+    });
+    jest.spyOn(prismaService.application, 'count').mockResolvedValue(2);
+
+    await expect(
+      service.update('job-1', { positionsAvailable: 1 }, 'company-1', 'account-1')
+    ).rejects.toThrow(require('@nestjs/common').BadRequestException);
   });
 });
