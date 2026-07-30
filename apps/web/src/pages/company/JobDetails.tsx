@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, CheckCircle, UserCircle, MapPin, Briefcase, Star, Calendar, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { ReviewModal } from '@/components/ReviewModal';
+import { ReportModal } from '@/components/ReportModal';
+import { AlertTriangle } from 'lucide-react';
 
 export default function JobDetails() {
   const { id } = useParams();
@@ -14,6 +16,8 @@ export default function JobDetails() {
   const queryClient = useQueryClient();
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [selectedAppId, setSelectedAppId] = useState<string>('');
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [reportedAccountId, setReportedAccountId] = useState<string>('');
 
   const { data: job, isLoading } = useQuery({
     queryKey: ['job-details', id],
@@ -123,16 +127,29 @@ export default function JobDetails() {
                       )}
 
                       {job.status === 'CLOSED_HIRED' && app.status === 'APPROVED' && (
-                        <Button 
-                          onClick={() => {
-                            setSelectedAppId(app.id);
-                            setIsReviewOpen(true);
-                          }}
-                          className="w-full bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30 border border-indigo-500/30"
-                        >
-                          <Star className="mr-2 h-4 w-4" />
-                          Avaliar Candidato
-                        </Button>
+                        <div className="flex flex-col gap-2">
+                          <Button 
+                            onClick={() => {
+                              setSelectedAppId(app.id);
+                              setIsReviewOpen(true);
+                            }}
+                            className="w-full bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600/30 border border-indigo-500/30"
+                          >
+                            <Star className="mr-2 h-4 w-4" />
+                            Avaliar Candidato
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            onClick={() => {
+                              setReportedAccountId(app.user.account_id);
+                              setIsReportOpen(true);
+                            }}
+                            className="w-full bg-red-600/10 text-red-400 hover:bg-red-600/20 border-red-500/30 hover:text-red-300"
+                          >
+                            <AlertTriangle className="mr-2 h-4 w-4" />
+                            Reportar Faltoso (No-Show)
+                          </Button>
+                        </div>
                       )}
                     </CardContent>
                   </Card>
@@ -146,6 +163,13 @@ export default function JobDetails() {
         <ReviewModal 
           applicationId={selectedAppId} 
           onClose={() => setIsReviewOpen(false)} 
+        />
+      )}
+      {isReportOpen && (
+        <ReportModal 
+          reportedAccountId={reportedAccountId} 
+          reportedJobId={id!} 
+          onClose={() => setIsReportOpen(false)} 
         />
       )}
     </div>

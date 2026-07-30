@@ -230,7 +230,9 @@ export default function AdminModeration() {
                       >
                         <option value="PENDING">Pending</option>
                         <option value="INVESTIGATING">Investigating</option>
-                        <option value="RESOLVED">Resolved (Action Taken)</option>
+                        <option value="RESOLVED">
+                          {selectedReport.type === 'NO_SHOW' ? 'Resolved (Aprovar e Punir No-Show)' : 'Resolved (Action Taken)'}
+                        </option>
                         <option value="DISMISSED">Dismissed (No Action)</option>
                       </select>
                     </div>
