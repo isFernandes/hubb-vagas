@@ -95,9 +95,10 @@ model Job {
   latitude           Float?
   longitude          Float?
   status             JobStatus          @default(DRAFT)
+  enableStandby      Boolean            @default(false)
   createdAt          DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
-  applications  Application[]
+  updatedAt          DateTime           @updatedAt
+  applications       Application[]
   statusHistory JobStatusHistory[]
   reports       Report[]
 
@@ -147,6 +148,7 @@ enum ApplicationStatus {
   SCREENING
   APPROVED
   REJECTED
+  STANDBY
 }
 
 model JobStatusHistory {
