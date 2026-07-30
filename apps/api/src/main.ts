@@ -4,6 +4,7 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { JsonLoggerService } from './infra/logger/json-logger.service';
 import { LoggingInterceptor } from './infra/logger/logging.interceptor';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -11,6 +12,7 @@ async function bootstrap() {
   });
   app.useLogger(new JsonLoggerService());
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalPipes(new ZodValidationPipe());
 
   const configService = app.get(ConfigService);
 
