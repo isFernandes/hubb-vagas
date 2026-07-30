@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
-import { type UpdateAccountDto } from './dto/update-account.dto';
+import { UpdateAccountDto } from './dto/update-account.dto';
 import {
   type UpdatePasswordDto,
   updatePasswordSchema,

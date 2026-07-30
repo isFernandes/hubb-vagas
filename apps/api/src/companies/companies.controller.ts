@@ -13,7 +13,7 @@ import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import {
   UpdateCompanyDto,
-  type UpdateCompanyProfileDto,
+  UpdateCompanyProfileDto,
   updateCompanyProfileSchema,
 } from './dto/update-company.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';

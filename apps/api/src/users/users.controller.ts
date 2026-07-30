@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
   UpdateUserDto,
-  type UpdateUserProfileDto,
+  UpdateUserProfileDto,
   updateUserProfileSchema,
 } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
