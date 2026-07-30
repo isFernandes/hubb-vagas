@@ -44,6 +44,9 @@ export class JobsController {
     @Query('contractType') contractType?: string,
     @Query('companyId') companyId?: string,
     @Query('search') search?: string,
+    @Query('latitude') latitude?: number,
+    @Query('longitude') longitude?: number,
+    @Query('radius') radius?: number,
     @Request() req?,
   ) {
     let status: JobStatus | undefined = JobStatus.PUBLISHED; // default for Candidates / User
@@ -73,6 +76,9 @@ export class JobsController {
       companyId,
       search,
       status,
+      latitude,
+      longitude,
+      radius,
     });
   }
 

@@ -69,6 +69,9 @@ export class JobsService {
     companyId?: string;
     search?: string;
     status?: any;
+    latitude?: number;
+    longitude?: number;
+    radius?: number;
   }) {
     const filterString = filters ? JSON.stringify(filters) : '{}';
     const filtersHash = Buffer.from(filterString).toString('base64');
