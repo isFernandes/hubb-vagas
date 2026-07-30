@@ -64,6 +64,10 @@ export default function JobDetailsCandidate() {
             <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2">{job.title}</h1>
             <p className="text-xl text-indigo-400 font-medium mb-6">{job.company?.name || 'Empresa Confidencial'}</p>
 
+            <div className="mb-6 inline-block bg-indigo-500/20 border border-indigo-500/50 text-indigo-300 px-4 py-1.5 rounded-full font-semibold text-sm">
+              Vagas disponíveis: {job.positionsAvailable - (job.applications?.filter((a: any) => a.status === 'APPROVED').length || 0)}
+            </div>
+
             <div className="flex flex-wrap gap-4 text-slate-300 mb-8 pb-8 border-b border-slate-800">
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><MapPin className="mr-2 h-4 w-4 text-indigo-500"/> {job.location}</div>
               <div className="flex items-center bg-slate-950/50 px-3 py-1.5 rounded-md"><Briefcase className="mr-2 h-4 w-4 text-indigo-500"/> {job.contractType}</div>

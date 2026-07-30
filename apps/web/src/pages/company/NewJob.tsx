@@ -19,6 +19,7 @@ export default function NewJob() {
   const [contractType, setContractType] = useState('Diária');
   const [expirationDate, setExpirationDate] = useState('');
   const [paymentAmount, setPaymentAmount] = useState('');
+  const [positionsAvailable, setPositionsAvailable] = useState('1');
 
   const createJobMutation = useMutation({
     mutationFn: async (payload: any) => {
@@ -56,7 +57,8 @@ export default function NewJob() {
       location,
       contractType,
       expiresAt: new Date(expirationDate).toISOString(),
-      paymentAmountCents
+      paymentAmountCents,
+      positionsAvailable: parseInt(positionsAvailable, 10)
     });
   };
 
@@ -139,6 +141,21 @@ export default function NewJob() {
                     placeholder="Ex: 150.00"
                     value={paymentAmount} 
                     onChange={(e) => setPaymentAmount(e.target.value)} 
+                    className="bg-slate-950/50 border-slate-700 text-white" 
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="positionsAvailable" className="text-slate-300">Vagas Disponíveis</Label>
+                  <Input 
+                    id="positionsAvailable" 
+                    type="number" 
+                    min="1" 
+                    required 
+                    value={positionsAvailable} 
+                    onChange={(e) => setPositionsAvailable(e.target.value)} 
                     className="bg-slate-950/50 border-slate-700 text-white" 
                   />
                 </div>
