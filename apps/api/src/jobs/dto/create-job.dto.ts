@@ -9,6 +9,8 @@ export const createJobSchema = z.object({
   expiresAt: z.string().datetime(), // ISO 8601
   paymentAmountCents: z.number().int().positive(),
   positionsAvailable: z.number().int().positive().optional(),
+  executionDate: z.string().datetime().optional(),
+  durationHours: z.number().int().positive().optional(),
 });
 
 export type CreateJobDto = z.infer<typeof createJobSchema>;

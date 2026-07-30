@@ -4,11 +4,13 @@ import { ApplicationsRepository } from '../repositories/applications.repository'
 import { JobsRepository } from '../repositories/jobs.repository';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { JobStatus } from '../infra/prisma/generated/client';
+import { PrismaService } from '../infra/prisma/prisma.service';
 
 describe('ApplicationsService', () => {
   let service: ApplicationsService;
   let applicationsRepository: jest.Mocked<ApplicationsRepository>;
   let jobsRepository: jest.Mocked<JobsRepository>;
+  let prisma: any;
 
   beforeEach(async () => {
     const mockApplicationsRepository = {
@@ -40,12 +42,24 @@ describe('ApplicationsService', () => {
             emit: jest.fn(),
           },
         },
+        {
+          provide: PrismaService,
+          useValue: {
+            application: {
+              findMany: jest.fn().mockResolvedValue([]),
+            },
+            job: {
+              findUnique: jest.fn(),
+            },
+          },
+        },
       ],
     }).compile();
 
     service = module.get<ApplicationsService>(ApplicationsService);
     applicationsRepository = module.get(ApplicationsRepository);
     jobsRepository = module.get(JobsRepository);
+    prisma = module.get(PrismaService);
   });
 
   it('should be defined', () => {
@@ -120,5 +134,33 @@ describe('ApplicationsService', () => {
       userId: 'user-1',
       jobId: 'job-1',
     });
+  });
+
+  it('should throw BadRequestException if candidate is already approved for a job overlapping the new job', async () => {
+    jobsRepository.findById.mockResolvedValue({
+      id: 'job-new',
+      status: JobStatus.PUBLISHED,
+      executionDate: new Date('2026-08-01T10:00:00Z'),
+      durationHours: 2,
+    } as any);
+
+    prisma.application.findMany.mockResolvedValue([
+      {
+        id: 'app-existing',
+        job: {
+          id: 'job-existing',
+          executionDate: new Date('2026-08-01T11:30:00Z'),
+          durationHours: 2,
+        },
+      },
+    ]);
+
+    applicationsRepository.findByUserAndJob.mockResolvedValue(null);
+
+    await expect(service.apply('job-new', 'user-1')).rejects.toThrow(
+      new BadRequestException(
+        'Conflito de agenda: você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).'
+      ),
+    );
   });
 });
