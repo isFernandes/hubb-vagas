@@ -159,7 +159,7 @@ describe('ApplicationsService', () => {
 
     await expect(service.apply('job-new', 'user-1')).rejects.toThrow(
       new BadRequestException(
-        'Conflito de agenda: você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).'
+        'Conflito de agenda: você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).',
       ),
     );
   });

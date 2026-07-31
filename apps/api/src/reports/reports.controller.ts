@@ -10,10 +10,7 @@ export class ReportsController {
   constructor(private readonly reportsService: ReportsService) {}
 
   @Post()
-  createReport(
-    @Request() req: any,
-    @Body() body: CreateReportDto,
-  ) {
+  createReport(@Request() req: any, @Body() body: CreateReportDto) {
     return this.reportsService.createReport(
       req.user.id,
       body.type,

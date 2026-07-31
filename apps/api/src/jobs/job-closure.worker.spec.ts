@@ -28,7 +28,7 @@ describe('JobClosureWorker', () => {
 
     statusHistoryRepository = {
       create: jest.fn(),
-    } as any;
+    };
 
     prisma = {
       application: {
@@ -69,7 +69,7 @@ describe('JobClosureWorker', () => {
       status: JobStatus.PUBLISHED,
       positionsAvailable: 2,
     } as any);
-    
+
     prisma.application.count.mockResolvedValue(0);
 
     await worker.handleApplicationApproved({
@@ -81,7 +81,7 @@ describe('JobClosureWorker', () => {
     expect(jobsRepository.update).not.toHaveBeenCalledWith('job-1', {
       status: JobStatus.CLOSED_HIRED,
     });
-    
+
     expect(prisma.application.update).toHaveBeenCalledWith({
       where: { id: 'app-1' },
       data: { status: 'APPROVED' },

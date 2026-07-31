@@ -26,8 +26,6 @@ import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}
 
-
-
   @Get()
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)

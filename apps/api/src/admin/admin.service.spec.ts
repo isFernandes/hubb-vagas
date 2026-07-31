@@ -44,7 +44,12 @@ describe('AdminService', () => {
     standbyPromotionService = {
       promoteNextStandby: vi.fn(),
     };
-    service = new AdminService(prisma, redis, rmqClient, standbyPromotionService);
+    service = new AdminService(
+      prisma,
+      redis,
+      rmqClient,
+      standbyPromotionService,
+    );
   });
 
   it('should be defined', () => {
@@ -61,13 +66,13 @@ describe('AdminService', () => {
 
     prisma.user.findUnique.mockResolvedValue({
       id: 'user-1',
-      account: { status: 'ACTIVE' }
+      account: { status: 'ACTIVE' },
     });
 
     prisma.application.findFirst.mockResolvedValue({
       id: 'app-1',
       userId: 'user-1',
-      jobId: 'job-1'
+      jobId: 'job-1',
     });
 
     prisma.report.update.mockResolvedValue({ status: 'RESOLVED' });
@@ -75,17 +80,24 @@ describe('AdminService', () => {
 
     await service.resolveReport('report-123', 'RESOLVED', 'Valid', 'admin-1');
 
-    expect(prisma.review.upsert).toHaveBeenCalledWith(expect.objectContaining({
-      where: {
-        applicationId_direction: {
-          applicationId: 'app-1',
-          direction: 'COMPANY_TO_USER',
-        }
-      },
-      update: expect.objectContaining({ rating: 1 }),
-      create: expect.objectContaining({ rating: 1 }),
-    }));
-    expect(rmqClient.emit).toHaveBeenCalledWith('review_created', { applicationId: 'app-1', direction: 'COMPANY_TO_USER' });
-    expect(standbyPromotionService.promoteNextStandby).toHaveBeenCalledWith('job-1');
+    expect(prisma.review.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          applicationId_direction: {
+            applicationId: 'app-1',
+            direction: 'COMPANY_TO_USER',
+          },
+        },
+        update: expect.objectContaining({ rating: 1 }),
+        create: expect.objectContaining({ rating: 1 }),
+      }),
+    );
+    expect(rmqClient.emit).toHaveBeenCalledWith('review_created', {
+      applicationId: 'app-1',
+      direction: 'COMPANY_TO_USER',
+    });
+    expect(standbyPromotionService.promoteNextStandby).toHaveBeenCalledWith(
+      'job-1',
+    );
   });
 });

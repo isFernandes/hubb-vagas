@@ -45,12 +45,12 @@ export default function AdminModeration() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Report resolved successfully');
+      toast.success('Denúncia resolvida com sucesso');
       queryClient.invalidateQueries({ queryKey: ['admin-reports'] });
       closeModal();
     },
     onError: () => {
-      toast.error('Failed to resolve report');
+      toast.error('Falha ao resolver denúncia');
     }
   });
 
@@ -69,14 +69,14 @@ export default function AdminModeration() {
   const handleResolve = (e: React.FormEvent) => {
     e.preventDefault();
     if (!resolutionNotes.trim() && (newStatus === 'RESOLVED' || newStatus === 'DISMISSED')) {
-      toast.error('Resolution notes are required for this status');
+      toast.error('Anotações de resolução são obrigatórias para este status');
       return;
     }
     mutation.mutate();
   };
 
   if (isError) {
-    toast.error('Failed to load reports');
+    toast.error('Falha ao carregar denúncias');
   }
 
   const getStatusColor = (status: string) => {
@@ -92,18 +92,18 @@ export default function AdminModeration() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Moderation & Reports</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Moderação & Denúncias</h1>
         <div>
           <select
             className="border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
-            <option value="">All Statuses</option>
-            <option value="PENDING">Pending</option>
-            <option value="INVESTIGATING">Investigating</option>
-            <option value="RESOLVED">Resolved</option>
-            <option value="DISMISSED">Dismissed</option>
+            <option value="">Todos os Status</option>
+            <option value="PENDING">Pendente</option>
+            <option value="INVESTIGATING">Investigando</option>
+            <option value="RESOLVED">Resolvido</option>
+            <option value="DISMISSED">Descartado</option>
           </select>
         </div>
       </div>
@@ -113,24 +113,24 @@ export default function AdminModeration() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reporter</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type / Target</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Denunciante</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo / Alvo</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">Loading...</td>
+                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">Carregando...</td>
                 </tr>
               ) : data?.data.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center space-y-2">
                       <AlertCircle className="w-8 h-8 text-gray-400" />
-                      <p>No reports found.</p>
+                      <p>Nenhuma denúncia encontrada.</p>
                     </div>
                   </td>
                 </tr>
@@ -143,11 +143,11 @@ export default function AdminModeration() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm font-bold text-gray-900">
-                        {report.type?.replace('_', ' ') || 'Unknown'}
+                        {report.type?.replace('_', ' ') || 'Desconhecido'}
                       </div>
                       <div className="text-sm text-gray-500 truncate max-w-xs">
-                        {report.reportedAccount ? `User: ${report.reportedAccount.email}` : ''}
-                        {report.reportedJob ? `Job: ${report.reportedJob.title}` : ''}
+                        {report.reportedAccount ? `Usuário: ${report.reportedAccount.email}` : ''}
+                        {report.reportedJob ? `Vaga: ${report.reportedJob.title}` : ''}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -163,7 +163,7 @@ export default function AdminModeration() {
                         onClick={() => openModal(report)}
                         className="text-blue-600 hover:text-blue-900"
                       >
-                        Review
+                        Analisar
                       </button>
                     </td>
                   </tr>
@@ -180,14 +180,14 @@ export default function AdminModeration() {
               disabled={page === 1}
               className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400"
             >
-              Previous
+              Anterior
             </button>
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={!data || data.data.length < 10}
               className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400"
             >
-              Next
+              Próximo
             </button>
           </div>
         </div>
@@ -202,46 +202,46 @@ export default function AdminModeration() {
               <form onSubmit={handleResolve}>
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                    Review Report
+                    Analisar Denúncia
                   </h3>
                   
                   <div className="mt-4 border rounded-md p-4 bg-gray-50 text-sm text-gray-700 space-y-2">
-                    <p><strong>Reporter:</strong> {selectedReport.reporter.email} ({selectedReport.reporter.role})</p>
-                    <p><strong>Type:</strong> {selectedReport.type}</p>
+                    <p><strong>Denunciante:</strong> {selectedReport.reporter.email} ({selectedReport.reporter.role})</p>
+                    <p><strong>Tipo:</strong> {selectedReport.type}</p>
                     {selectedReport.reportedAccount && (
-                      <p><strong>Target Account:</strong> {selectedReport.reportedAccount.email}</p>
+                      <p><strong>Conta Alvo:</strong> {selectedReport.reportedAccount.email}</p>
                     )}
                     {selectedReport.reportedJob && (
-                      <p><strong>Target Job:</strong> {selectedReport.reportedJob.title}</p>
+                      <p><strong>Vaga Alvo:</strong> {selectedReport.reportedJob.title}</p>
                     )}
                     <div className="mt-2">
-                      <strong>Description:</strong>
+                      <strong>Descrição:</strong>
                       <p className="mt-1 p-2 bg-white border rounded italic">{selectedReport.description}</p>
                     </div>
                   </div>
 
                   <div className="mt-6 space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Update Status</label>
+                      <label className="block text-sm font-medium text-gray-700">Atualizar Status</label>
                       <select
                         className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border"
                         value={newStatus}
                         onChange={(e) => setNewStatus(e.target.value as any)}
                       >
-                        <option value="PENDING">Pending</option>
-                        <option value="INVESTIGATING">Investigating</option>
+                        <option value="PENDING">Pendente</option>
+                        <option value="INVESTIGATING">Investigando</option>
                         <option value="RESOLVED">
-                          {selectedReport.type === 'NO_SHOW' ? 'Resolved (Aprovar e Punir No-Show)' : 'Resolved (Action Taken)'}
+                          {selectedReport.type === 'NO_SHOW' ? 'Resolvido (Aprovar e Punir No-Show)' : 'Resolvido (Ação Tomada)'}
                         </option>
-                        <option value="DISMISSED">Dismissed (No Action)</option>
+                        <option value="DISMISSED">Descartado (Sem Ação)</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Resolution Notes (Required for Resolved/Dismissed)</label>
+                      <label className="block text-sm font-medium text-gray-700">Anotações (Obrigatório para Resolvido/Descartado)</label>
                       <textarea
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         rows={3}
-                        placeholder="Detail the actions taken..."
+                        placeholder="Detalhe as ações tomadas..."
                         value={resolutionNotes}
                         onChange={(e) => setResolutionNotes(e.target.value)}
                       ></textarea>
@@ -254,14 +254,14 @@ export default function AdminModeration() {
                     disabled={mutation.isPending}
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-blue-400"
                   >
-                    {mutation.isPending ? 'Saving...' : 'Save Resolution'}
+                    {mutation.isPending ? 'Salvando...' : 'Salvar Resolução'}
                   </button>
                   <button
                     type="button"
                     onClick={closeModal}
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </form>

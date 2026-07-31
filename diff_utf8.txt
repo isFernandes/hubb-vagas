@@ -1,0 +1,354 @@
+﻿diff --git a/apps/api/src/applications/applications.module.ts b/apps/api/src/applications/applications.module.ts
+index 2caf2ba..897c620 100644
+--- a/apps/api/src/applications/applications.module.ts
++++ b/apps/api/src/applications/applications.module.ts
+@@ -1,5 +1,6 @@
+ import { Module } from '@nestjs/common';
+ import { ApplicationsService } from './applications.service';
++import { StandbyPromotionService } from './standby-promotion.service';
+ import { ApplicationsController } from './applications.controller';
+ import { JobsModule } from '../jobs/jobs.module';
+ import { MessagingModule } from '../infra/messaging/messaging.module';
+@@ -7,6 +8,7 @@ import { MessagingModule } from '../infra/messaging/messaging.module';
+ @Module({
+   imports: [JobsModule, MessagingModule],
+   controllers: [ApplicationsController],
+-  providers: [ApplicationsService],
++  providers: [ApplicationsService, StandbyPromotionService],
++  exports: [StandbyPromotionService],
+ })
+ export class ApplicationsModule {}
+diff --git a/apps/api/src/applications/standby-promotion.service.spec.ts b/apps/api/src/applications/standby-promotion.service.spec.ts
+new file mode 100644
+index 0000000..cd2a6ba
+--- /dev/null
++++ b/apps/api/src/applications/standby-promotion.service.spec.ts
+@@ -0,0 +1,79 @@
++import { describe, it, expect, vi, beforeEach } from 'vitest';
++import { StandbyPromotionService } from './standby-promotion.service';
++import { JobStatus } from '../infra/prisma/generated/client';
++
++describe('StandbyPromotionService', () => {
++  let service: StandbyPromotionService;
++  let prisma: any;
++  let rmqClient: any;
++
++  beforeEach(() => {
++    prisma = {
++      job: {
++        update: vi.fn(),
++      },
++      application: {
++        findFirst: vi.fn(),
++        update: vi.fn(),
++      }
++    };
++    rmqClient = {
++      emit: vi.fn(),
++    };
++    service = new StandbyPromotionService(prisma, rmqClient);
++  });
++
++  it('should reopen job to PUBLISHED even if no standby candidate exists', async () => {
++    prisma.application.findFirst.mockResolvedValue(null);
++
++    await service.promoteNextStandby('job-1');
++
++    expect(prisma.job.update).toHaveBeenCalledWith({
++      where: { id: 'job-1' },
++      data: { status: JobStatus.PUBLISHED },
++    });
++    expect(prisma.application.update).not.toHaveBeenCalled();
++    expect(rmqClient.emit).not.toHaveBeenCalled();
++  });
++
++  it('should promote the oldest standby candidate to SCREENING and emit event', async () => {
++    prisma.application.findFirst.mockResolvedValue({
++      id: 'app-standby-1',
++      jobId: 'job-1',
++      status: 'STANDBY',
++      job: {
++        title: 'Vaga Teste',
++        company: {
++          account: {
++            email: 'company@example.com'
++          }
++        }
++      }
++    });
++
++    await service.promoteNextStandby('job-1');
++
++    expect(prisma.job.update).toHaveBeenCalledWith({
++      where: { id: 'job-1' },
++      data: { status: JobStatus.PUBLISHED },
++    });
++
++    expect(prisma.application.findFirst).toHaveBeenCalledWith({
++      where: { jobId: 'job-1', status: 'STANDBY' },
++      orderBy: { createdAt: 'asc' },
++      include: { job: { include: { company: { include: { account: true } } } } },
++    });
++
++    expect(prisma.application.update).toHaveBeenCalledWith({
++      where: { id: 'app-standby-1' },
++      data: { status: 'SCREENING' },
++    });
++
++    expect(rmqClient.emit).toHaveBeenCalledWith('standby_candidate_promoted_to_screening', {
++      companyEmail: 'company@example.com',
++      jobId: 'job-1',
++      jobTitle: 'Vaga Teste',
++      applicationId: 'app-standby-1',
++    });
++  });
++});
+diff --git a/apps/api/src/applications/standby-promotion.service.ts b/apps/api/src/applications/standby-promotion.service.ts
+new file mode 100644
+index 0000000..28a0d2d
+--- /dev/null
++++ b/apps/api/src/applications/standby-promotion.service.ts
+@@ -0,0 +1,39 @@
++import { Injectable, Inject } from '@nestjs/common';
++import { PrismaService } from '../infra/prisma/prisma.service';
++import { ClientProxy } from '@nestjs/microservices';
++import { JobStatus } from '../infra/prisma/generated/client';
++
++@Injectable()
++export class StandbyPromotionService {
++  constructor(
++    private readonly prisma: PrismaService,
++    @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
++  ) {}
++
++  async promoteNextStandby(jobId: string) {
++    await this.prisma.job.update({
++      where: { id: jobId },
++      data: { status: JobStatus.PUBLISHED },
++    });
++
++    const nextStandby = await this.prisma.application.findFirst({
++      where: { jobId, status: 'STANDBY' },
++      orderBy: { createdAt: 'asc' },
++      include: { job: { include: { company: { include: { account: true } } } } },
++    });
++
++    if (nextStandby) {
++      await this.prisma.application.update({
++        where: { id: nextStandby.id },
++        data: { status: 'SCREENING' },
++      });
++
++      this.client.emit('standby_candidate_promoted_to_screening', {
++        companyEmail: nextStandby.job.company.account.email,
++        jobId,
++        jobTitle: nextStandby.job.title,
++        applicationId: nextStandby.id,
++      });
++    }
++  }
++}
+diff --git a/apps/api/src/infra/prisma/schema.prisma b/apps/api/src/infra/prisma/schema.prisma
+index ba417d1..8178e66 100644
+--- a/apps/api/src/infra/prisma/schema.prisma
++++ b/apps/api/src/infra/prisma/schema.prisma
+@@ -95,9 +95,10 @@ model Job {
+   latitude           Float?
+   longitude          Float?
+   status             JobStatus          @default(DRAFT)
++  enableStandby      Boolean            @default(false)
+   createdAt          DateTime           @default(now())
+-  updatedAt     DateTime           @updatedAt
+-  applications  Application[]
++  updatedAt          DateTime           @updatedAt
++  applications       Application[]
+   statusHistory JobStatusHistory[]
+   reports       Report[]
+ 
+@@ -147,6 +148,7 @@ enum ApplicationStatus {
+   SCREENING
+   APPROVED
+   REJECTED
++  STANDBY
+ }
+ 
+ model JobStatusHistory {
+diff --git a/apps/api/src/jobs/job-closure.worker.ts b/apps/api/src/jobs/job-closure.worker.ts
+index b54f624..c3b0032 100644
+--- a/apps/api/src/jobs/job-closure.worker.ts
++++ b/apps/api/src/jobs/job-closure.worker.ts
+@@ -104,7 +104,7 @@ export class JobClosureWorker {
+             data: { status: 'APPROVED' },
+           });
+ 
+-          // Fetch applications that will be rejected to emit events
++          // Fetch applications that will be rejected/standby to emit events
+           const appsToReject = await this.prisma.application.findMany({
+             where: {
+               jobId,
+@@ -114,27 +114,31 @@ export class JobClosureWorker {
+             include: { user: { include: { account: true } } },
+           });
+ 
++          const nextStatus = job.enableStandby ? 'STANDBY' : 'REJECTED';
++
+           await this.prisma.application.updateMany({
+             where: {
+               jobId,
+               id: { not: appId },
+               status: { in: ['APPLIED', 'SCREENING'] },
+             },
+-            data: { status: 'REJECTED' },
++            data: { status: nextStatus },
+           });
+ 
+-          const jobWithCompany = await this.prisma.job.findUnique({
+-            where: { id: jobId },
+-            include: { company: true },
+-          });
++          if (!job.enableStandby) {
++            const jobWithCompany = await this.prisma.job.findUnique({
++              where: { id: jobId },
++              include: { company: true },
++            });
+ 
+-          if (jobWithCompany) {
+-            for (const app of appsToReject) {
+-              this.client.emit('application_rejected', {
+-                email: app.user.account.email,
+-                jobTitle: jobWithCompany.title,
+-                companyName: jobWithCompany.company.name,
+-              });
++            if (jobWithCompany) {
++              for (const app of appsToReject) {
++                this.client.emit('application_rejected', {
++                  email: app.user.account.email,
++                  jobTitle: jobWithCompany.title,
++                  companyName: jobWithCompany.company.name,
++                });
++              }
+             }
+           }
+ 
+diff --git a/apps/web/src/pages/company/JobDetails.tsx b/apps/web/src/pages/company/JobDetails.tsx
+index e8399d9..be35158 100644
+--- a/apps/web/src/pages/company/JobDetails.tsx
++++ b/apps/web/src/pages/company/JobDetails.tsx
+@@ -104,7 +104,7 @@ export default function JobDetails() {
+               {job.applications?.length === 0 ? (
+                 <p className="text-slate-400 text-sm">Nenhum candidato at├® o momento.</p>
+               ) : (
+-                job.applications?.map((app: any) => (
++                job.applications?.filter((a: any) => a.status !== 'STANDBY').map((app: any) => (
+                   <Card key={app.id} className="bg-slate-900 border-slate-800">
+                     <CardHeader className="p-4 pb-2">
+                       <CardTitle className="text-md flex items-center gap-2 text-white">
+@@ -156,6 +156,33 @@ export default function JobDetails() {
+                 ))
+               )}
+             </div>
++
++            {job.applications?.some((a: any) => a.status === 'STANDBY') && (
++              <div className="mt-8">
++                <h3 className="text-lg font-bold text-slate-300 mb-4">Fila de Espera (Standby)</h3>
++                <div className="space-y-4">
++                  {job.applications
++                    ?.filter((a: any) => a.status === 'STANDBY')
++                    .sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
++                    .map((app: any, index: number) => (
++                      <Card key={app.id} className="bg-slate-900 border-slate-800">
++                        <CardHeader className="p-4 pb-2">
++                          <CardTitle className="text-md flex items-center justify-between text-white">
++                            <div className="flex items-center gap-2">
++                              <UserCircle className="h-5 w-5 text-slate-400"/>
++                              {app.user?.name || 'Candidato'}
++                            </div>
++                            <span className="text-sm text-slate-500 font-normal">#{index + 1} na fila</span>
++                          </CardTitle>
++                        </CardHeader>
++                        <CardContent className="p-4 pt-0 space-y-4">
++                          <p className="text-sm text-slate-400 truncate">Status: <span className="font-medium text-amber-400/80">{app.status}</span></p>
++                        </CardContent>
++                      </Card>
++                    ))}
++                </div>
++              </div>
++            )}
+           </div>
+         </div>
+       </div>
+diff --git a/apps/web/src/pages/company/NewJob.tsx b/apps/web/src/pages/company/NewJob.tsx
+index 93b003f..4e119cf 100644
+--- a/apps/web/src/pages/company/NewJob.tsx
++++ b/apps/web/src/pages/company/NewJob.tsx
+@@ -25,6 +25,7 @@ export default function NewJob() {
+   const [durationHours, setDurationHours] = useState('');
+   const [latitude, setLatitude] = useState('');
+   const [longitude, setLongitude] = useState('');
++  const [enableStandby, setEnableStandby] = useState(false);
+ 
+   const createJobMutation = useMutation({
+     mutationFn: async (payload: any) => {
+@@ -63,7 +64,8 @@ export default function NewJob() {
+       contractType,
+       expiresAt: new Date(expirationDate).toISOString(),
+       paymentAmountCents,
+-      positionsAvailable: parseInt(positionsAvailable, 10)
++      positionsAvailable: parseInt(positionsAvailable, 10),
++      enableStandby
+     };
+ 
+     if (latitude !== '' && longitude !== '') {
+@@ -247,6 +249,19 @@ export default function NewJob() {
+                 </div>
+               </div>
+ 
++              <div className="flex items-center space-x-2 border-t border-slate-800 pt-6 mt-6">
++                <input 
++                  type="checkbox" 
++                  id="enableStandby" 
++                  checked={enableStandby} 
++                  onChange={(e) => setEnableStandby(e.target.checked)} 
++                  className="w-4 h-4 rounded bg-slate-950/50 border-slate-700 text-indigo-600 focus:ring-indigo-500"
++                />
++                <Label htmlFor="enableStandby" className="text-slate-300 cursor-pointer">
++                  Ativar fila de espera (Standby) - Manter suplentes em caso de desist├¬ncias
++                </Label>
++              </div>
++
+               <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={createJobMutation.isPending}>
+                 {createJobMutation.isPending ? 'Publicando...' : 'Publicar Vaga'}
+               </Button>
+diff --git a/docs/superpowers/feat_tracker.md b/docs/superpowers/feat_tracker.md
+index b1bebdc..0873a20 100644
+--- a/docs/superpowers/feat_tracker.md
++++ b/docs/superpowers/feat_tracker.md
+@@ -15,7 +15,7 @@ Quando iniciar a codifica├º├úo, voc├¬ pode orientar o agente a ler este rastread
+ | 2 | **Item 12.10: Conflito de Agenda** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-schedule-conflict-validator.md) | [x] Conclu├¡do |
+ | 3 | **Item 12.11: Busca por Geolocaliza├º├úo** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-geolocation-search.md) | [x] Conclu├¡do |
+ | 4 | **Item 12.9: Pol├¡tica de Cancelamento (No-Show)** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-no-show-penalty.md) | [x] Conclu├¡do |
+-| 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [ ] N├úo Iniciado |
++| 5 | **Item 14.1: Fila de Espera / Reservas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md) | [x] Conclu├¡do |
+ | 6 | **Item 13.5: Gest├úo Financeira e Disputas** | [Ver Plano](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-financial-management-disputes.md) | [ ] N├úo Iniciado |
+ 
+ ---
+@@ -64,14 +64,14 @@ Quando iniciar a codifica├º├úo, voc├¬ pode orientar o agente a ler este rastread
+     - [x] Task 5: Frontend company reporting controls, candidate defense dashboard, and admin moderation views
+ 
+ ### 5. Item 14.1: Fila de Espera / Reservas (Standby)
+-*   **Status:** [ ] N├úo Iniciado
++*   **Status:** [x] Conclu├¡do
+ *   **Design Spec:** [2026-07-29-waiting-list-design.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/specs/2026-07-29-waiting-list-design.md)
+ *   **Plano de Implementa├º├úo:** [2026-07-29-waiting-list.md](file:///C:/Users/User/Desktop/projects/hubb-vagas/docs/superpowers/plans/2026-07-29-waiting-list.md)
+ *   **Tarefas Principais:**
+-    - [ ] Task 1: Database Migration (`STANDBY` application status, `enableStandby` on `Job`)
+-    - [ ] Task 2: Standby Promotion Service logic (SCREENING status promotion and job reopening)
+-    - [ ] Task 3: Conditional conversion of pending candidates to standby in `JobClosureWorker`
+-    - [ ] Task 4: Frontend standby enable checkboxes and standby candidates queue views
++    - [x] Task 1: Database Updates (Status and Job config)
++    - [x] Task 2: Service Logic for Standby Promotion & Job Reopening
++    - [x] Task 3: Hook Standby Conversion on Job Closure Worker
++    - [x] Task 4: Frontend Toggle and Standby Views
+ 
+ ### 6. Item 13.5: Gest├úo Financeira e Disputas
+ *   **Status:** [ ] N├úo Iniciado

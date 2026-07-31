@@ -81,7 +81,9 @@ export class JobClosureWorker {
               where: { id: appId },
               data: { status: 'REJECTED' },
             });
-            console.log(`[JobClosureWorker] Application ${appId} was rejected due to an overlapping APPROVED job.`);
+            console.log(
+              `[JobClosureWorker] Application ${appId} was rejected due to an overlapping APPROVED job.`,
+            );
             return;
           }
         }
@@ -175,7 +177,9 @@ export class JobClosureWorker {
             where: { id: appId },
             data: { status: 'APPROVED' },
           });
-          console.log(`[JobClosureWorker] Application ${appId} approved. Job ${jobId} remains PUBLISHED.`);
+          console.log(
+            `[JobClosureWorker] Application ${appId} approved. Job ${jobId} remains PUBLISHED.`,
+          );
         }
 
         // --- Task 3: Automatic rejection of overlapping pending gigs ---
@@ -213,20 +217,21 @@ export class JobClosureWorker {
                 where: { id: { in: appsToCancel.map((a) => a.id) } },
                 data: { status: 'REJECTED' },
               });
-              
+
               for (const app of appsToCancel) {
                 this.client.emit('application_rejected', {
                   email: app.user.account.email,
                   jobTitle: app.job.title,
                   companyName: 'Bico conflitante (Cancelado)',
                 });
-                console.log(`[JobClosureWorker] Overlapping application ${app.id} for job ${app.jobId} was rejected automatically.`);
+                console.log(
+                  `[JobClosureWorker] Overlapping application ${app.id} for job ${app.jobId} was rejected automatically.`,
+                );
               }
             }
           }
         }
         // -------------------------------------------------------------
-
       }
     } catch (e) {
       console.error(`[JobClosureWorker] Error closing job ${jobId}:`, e);

@@ -34,6 +34,7 @@ export class AccountsController {
       try {
         const res = await fetch(
           `https://brasilapi.com.br/api/cnpj/v1/${cleanCnpj}`,
+          { headers: { 'User-Agent': 'HubbVagas/1.0' } },
         );
         if (!res.ok) {
           throw new BadRequestException(

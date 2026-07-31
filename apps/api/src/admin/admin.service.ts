@@ -26,29 +26,71 @@ export class AdminService {
     if (cached) return JSON.parse(cached);
 
     try {
-      const [totalUsers, totalCompanies, totalJobs, totalApplications, transactionsSum, recentTransactions] =
-        await Promise.all([
-          this.prisma.user.count(),
-          this.prisma.company.count(),
-          this.prisma.job.count(),
-          this.prisma.application.count(),
-          this.prisma.transaction.aggregate({
-            _sum: {
-              amountCents: true,
-              feeCents: true,
-            },
+      const last7Days = Array.from({ length: 7 }).map((_, i) => {
+        const d = new Date();
+        d.setDate(d.getDate() - (6 - i));
+        const start = new Date(d.setHours(0, 0, 0, 0));
+        const end = new Date(d.setHours(23, 59, 59, 999));
+        return { start, end };
+      });
+
+      const [
+        totalUsers,
+        totalCompanies,
+        totalJobs,
+        totalApplications,
+        transactionsSum,
+        recentTransactions,
+        ...timeSeriesData
+      ] = await Promise.all([
+        this.prisma.user.count(),
+        this.prisma.company.count(),
+        this.prisma.job.count(),
+        this.prisma.application.count(),
+        this.prisma.transaction.aggregate({
+          _sum: {
+            amountCents: true,
+            feeCents: true,
+          },
+          where: {
+            status: 'APPROVED',
+          },
+        }),
+        this.prisma.transaction.findMany({
+          orderBy: { createdAt: 'desc' },
+          take: 5,
+          include: {
+            job: true,
+          },
+        }),
+        // Users over time (cumulative)
+        ...last7Days.map((day) =>
+          this.prisma.account.count({
             where: {
-              status: 'APPROVED',
+              role: 'USER',
+              created_at: { lte: day.end },
             },
           }),
-          this.prisma.transaction.findMany({
-            orderBy: { createdAt: 'desc' },
-            take: 5,
-            include: {
-              job: true,
+        ),
+        // Jobs over time (new per day)
+        ...last7Days.map((day) =>
+          this.prisma.job.count({
+            where: {
+              createdAt: { gte: day.start, lte: day.end },
             },
           }),
-        ]);
+        ),
+      ]);
+
+      const usersOverTime = last7Days.map((day, i) => ({
+        name: `${String(day.start.getDate()).padStart(2, '0')}/${String(day.start.getMonth() + 1).padStart(2, '0')}`,
+        count: timeSeriesData[i],
+      }));
+
+      const jobsOverTime = last7Days.map((day, i) => ({
+        name: `${String(day.start.getDate()).padStart(2, '0')}/${String(day.start.getMonth() + 1).padStart(2, '0')}`,
+        count: timeSeriesData[7 + i],
+      }));
 
       const metrics = {
         totalUsers,
@@ -57,7 +99,7 @@ export class AdminService {
         totalApplications,
         totalGmvCents: transactionsSum._sum.amountCents || 0,
         totalFeeRevenueCents: transactionsSum._sum.feeCents || 0,
-        recentTransactions: recentTransactions.map(tx => ({
+        recentTransactions: recentTransactions.map((tx) => ({
           id: tx.id,
           amountCents: tx.amountCents,
           feeCents: tx.feeCents,
@@ -65,21 +107,11 @@ export class AdminService {
           createdAt: tx.createdAt,
           jobTitle: tx.job.title,
         })),
-        usersOverTime: [
-          { name: 'Week 1', count: 10 },
-          { name: 'Week 2', count: 15 },
-          { name: 'Week 3', count: 25 },
-          { name: 'Week 4', count: 42 },
-        ],
-        jobsOverTime: [
-          { name: 'Week 1', count: 5 },
-          { name: 'Week 2', count: 8 },
-          { name: 'Week 3', count: 12 },
-          { name: 'Week 4', count: 20 },
-        ],
+        usersOverTime,
+        jobsOverTime,
       };
 
-      await this.redis.setex(cacheKey, 300, JSON.stringify(metrics)); // 300 seconds = 5 mins
+      await this.redis.setex(cacheKey, 30, JSON.stringify(metrics)); // Temporarily 30 seconds
       return metrics;
     } catch {
       return {
@@ -183,12 +215,18 @@ export class AdminService {
     const report = await this.prisma.report.findUnique({ where: { id } });
     if (!report) throw new NotFoundException('Report not found');
 
-    if (status === 'RESOLVED' && report.status !== 'RESOLVED' && report.type === 'NO_SHOW' && report.reportedAccountId && report.reportedJobId) {
-      const user = await this.prisma.user.findUnique({ 
+    if (
+      status === 'RESOLVED' &&
+      report.status !== 'RESOLVED' &&
+      report.type === 'NO_SHOW' &&
+      report.reportedAccountId &&
+      report.reportedJobId
+    ) {
+      const user = await this.prisma.user.findUnique({
         where: { account_id: report.reportedAccountId },
-        include: { account: true }
+        include: { account: true },
       });
-      
+
       if (user) {
         const app = await this.prisma.application.findFirst({
           where: { jobId: report.reportedJobId, userId: user.id },
@@ -202,8 +240,9 @@ export class AdminService {
               status: 'RESOLVED',
             },
           });
-          
-          const needsSuspension = activeNoShows + 1 >= 3 && user.account.status !== 'SUSPENDED';
+
+          const needsSuspension =
+            activeNoShows + 1 >= 3 && user.account.status !== 'SUSPENDED';
 
           await this.prisma.$transaction(async (tx) => {
             await tx.report.update({
@@ -222,7 +261,10 @@ export class AdminService {
                   direction: 'COMPANY_TO_USER',
                 },
               },
-              update: { rating: 1, comment: 'Penalidade automática por ausência (No-Show)' },
+              update: {
+                rating: 1,
+                comment: 'Penalidade automática por ausência (No-Show)',
+              },
               create: {
                 applicationId: app.id,
                 direction: 'COMPANY_TO_USER',
@@ -242,15 +284,21 @@ export class AdminService {
                   adminId,
                   previousStatus: user.account.status,
                   newStatus: 'SUSPENDED',
-                  reason: 'Suspensão automática: 3 ou mais denúncias de No-Show confirmadas.',
+                  reason:
+                    'Suspensão automática: 3 ou mais denúncias de No-Show confirmadas.',
                 },
               });
             }
           });
 
-          this.client.emit('review_created', { applicationId: app.id, direction: 'COMPANY_TO_USER' });
-          
-          await this.standbyPromotionService.promoteNextStandby(report.reportedJobId!);
+          this.client.emit('review_created', {
+            applicationId: app.id,
+            direction: 'COMPANY_TO_USER',
+          });
+
+          await this.standbyPromotionService.promoteNextStandby(
+            report.reportedJobId,
+          );
 
           return this.prisma.report.findUnique({ where: { id } });
         }

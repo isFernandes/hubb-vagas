@@ -13,31 +13,31 @@ export const AdminLayout = () => {
             to="/admin"
             className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
-            Dashboard
+            Painel
           </Link>
           <Link
             to="/admin/users"
             className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
-            Users
+            Usuários
           </Link>
           <Link
             to="/admin/moderation"
             className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
-            Moderation
+            Moderação
           </Link>
           <Link
             to="/admin/disputes"
             className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
-            Disputes
+            Disputas
           </Link>
           <Link
             to="/admin/settings"
             className="block px-4 py-2 rounded bg-gray-800 hover:bg-gray-700"
           >
-            Settings
+            Configurações
           </Link>
         </nav>
       </aside>

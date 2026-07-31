@@ -15,7 +15,9 @@ export class ReportsService {
   ) {
     if (type === ReportType.NO_SHOW) {
       if (!reportedAccountId || !reportedJobId) {
-        throw new BadRequestException('Reporte de NO_SHOW requer candidato e vaga identificados.');
+        throw new BadRequestException(
+          'Reporte de NO_SHOW requer candidato e vaga identificados.',
+        );
       }
 
       const user = await this.prisma.user.findUnique({
@@ -34,7 +36,9 @@ export class ReportsService {
       });
 
       if (!application || application.status !== 'APPROVED') {
-        throw new BadRequestException('Este candidato não foi contratado para esta vaga.');
+        throw new BadRequestException(
+          'Este candidato não foi contratado para esta vaga.',
+        );
       }
     }
 

@@ -1,4 +1,11 @@
-import { Controller, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { DisputesService } from './disputes.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
@@ -18,7 +25,11 @@ export class DisputesController {
     @Body('reason') reason: string,
   ) {
     const companyAccountId = req.user.accountId;
-    return this.disputesService.createDispute(transactionId, reason, companyAccountId);
+    return this.disputesService.createDispute(
+      transactionId,
+      reason,
+      companyAccountId,
+    );
   }
 
   @Post('admin/disputes/:id/resolve')
@@ -33,5 +44,3 @@ export class DisputesController {
     return this.disputesService.resolveDispute(id, action, adminId);
   }
 }
-
-

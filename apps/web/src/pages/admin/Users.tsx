@@ -48,12 +48,12 @@ export default function AdminUsers() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Status updated successfully');
+      toast.success('Status atualizado com sucesso');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       closeStatusModal();
     },
     onError: () => {
-      toast.error('Failed to update status');
+      toast.error('Falha ao atualizar o status');
     }
   });
 
@@ -66,14 +66,14 @@ export default function AdminUsers() {
       return response.data;
     },
     onSuccess: () => {
-      toast.success('Admin created successfully');
+      toast.success('Administrador criado com sucesso');
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       setIsAdminModalOpen(false);
       setAdminEmail('');
       setAdminPassword('');
     },
     onError: (err: any) => {
-      toast.error(err.response?.data?.message || 'Failed to create admin');
+      toast.error(err.response?.data?.message || 'Falha ao criar administrador');
     }
   });
 
@@ -92,14 +92,14 @@ export default function AdminUsers() {
   const handleStatusChange = (e: React.FormEvent) => {
     e.preventDefault();
     if (!reason.trim()) {
-      toast.error('Reason is required');
+      toast.error('O motivo é obrigatório');
       return;
     }
     mutation.mutate();
   };
 
   if (isError) {
-    toast.error('Failed to load users');
+    toast.error('Falha ao carregar usuários');
   }
 
   const getStatusColor = (status: string) => {
@@ -120,11 +120,11 @@ export default function AdminUsers() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Users</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Usuários</h1>
         <div className="flex space-x-4">
           <input
             type="text"
-            placeholder="Search email, name or document..."
+            placeholder="Pesquisar por email, nome ou documento..."
             className="border rounded-md px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -133,7 +133,7 @@ export default function AdminUsers() {
             onClick={() => setIsAdminModalOpen(true)}
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-sm"
           >
-            Create Admin
+            Criar Administrador
           </button>
         </div>
       </div>
@@ -143,21 +143,21 @@ export default function AdminUsers() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name / Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome / Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de Entrada</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">Loading...</td>
+                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">Carregando...</td>
                 </tr>
               ) : data?.data.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">No users found.</td>
+                  <td colSpan={5} className="px-6 py-4 text-center text-gray-500">Nenhum usuário encontrado.</td>
                 </tr>
               ) : (
                 data?.data.map((account: Account) => (
@@ -182,7 +182,7 @@ export default function AdminUsers() {
                         onClick={() => openStatusModal(account)}
                         className="text-blue-600 hover:text-blue-900"
                       >
-                        Manage Status
+                        Gerenciar Status
                       </button>
                     </td>
                   </tr>
@@ -200,14 +200,14 @@ export default function AdminUsers() {
               disabled={page === 1}
               className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400"
             >
-              Previous
+              Anterior
             </button>
             <button
               onClick={() => setPage(p => p + 1)}
               disabled={!data || data.data.length < 10}
               className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400"
             >
-              Next
+              Próximo
             </button>
           </div>
         </div>
@@ -227,27 +227,27 @@ export default function AdminUsers() {
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                       <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                        Change Status for {selectedAccount.email}
+                        Alterar Status de {selectedAccount.email}
                       </h3>
                       <div className="mt-4 space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">New Status</label>
+                          <label className="block text-sm font-medium text-gray-700">Novo Status</label>
                           <select
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md border"
                             value={newStatus}
                             onChange={(e) => setNewStatus(e.target.value as any)}
                           >
-                            <option value="ACTIVE">Active</option>
-                            <option value="SUSPENDED">Suspended</option>
-                            <option value="BANNED">Banned</option>
+                            <option value="ACTIVE">Ativo</option>
+                            <option value="SUSPENDED">Suspenso</option>
+                            <option value="BANNED">Banido</option>
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Reason (Required for Audit Log)</label>
+                          <label className="block text-sm font-medium text-gray-700">Motivo (Obrigatório para Log de Auditoria)</label>
                           <textarea
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             rows={3}
-                            placeholder="Explain why this action was taken..."
+                            placeholder="Explique o motivo desta ação..."
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
                             required
@@ -263,14 +263,14 @@ export default function AdminUsers() {
                     disabled={mutation.isPending}
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-blue-400"
                   >
-                    {mutation.isPending ? 'Saving...' : 'Save Changes'}
+                    {mutation.isPending ? 'Salvando...' : 'Salvar Alterações'}
                   </button>
                   <button
                     type="button"
                     onClick={closeStatusModal}
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </form>
@@ -288,11 +288,11 @@ export default function AdminUsers() {
               <form onSubmit={(e) => { e.preventDefault(); adminMutation.mutate(); }}>
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                    Create New Admin
+                    Criar Novo Administrador
                   </h3>
                   <div className="mt-4 space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Email Address</label>
+                      <label className="block text-sm font-medium text-gray-700">Endereço de Email</label>
                       <input
                         type="email"
                         required
@@ -302,7 +302,7 @@ export default function AdminUsers() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Temporary Password</label>
+                      <label className="block text-sm font-medium text-gray-700">Senha Temporária</label>
                       <input
                         type="password"
                         required
@@ -320,14 +320,14 @@ export default function AdminUsers() {
                     disabled={adminMutation.isPending}
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-blue-400"
                   >
-                    {adminMutation.isPending ? 'Creating...' : 'Create Admin'}
+                    {adminMutation.isPending ? 'Criando...' : 'Criar Administrador'}
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsAdminModalOpen(false)}
                     className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </form>

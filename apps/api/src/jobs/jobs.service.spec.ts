@@ -4,7 +4,7 @@ import { JobsRepository } from '../repositories/jobs.repository';
 import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { JobStatus } from '../infra/prisma/generated/client';
 import { PrismaService } from '../infra/prisma/prisma.service';
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PaymentsService } from '../payments/payments.service';
 
 describe('JobsService', () => {
@@ -221,7 +221,12 @@ describe('JobsService', () => {
     jest.spyOn(prismaService.application, 'count').mockResolvedValue(2);
 
     await expect(
-      service.update('job-1', { positionsAvailable: 1 }, 'company-1', 'account-1')
-    ).rejects.toThrow(require('@nestjs/common').BadRequestException);
+      service.update(
+        'job-1',
+        { positionsAvailable: 1 },
+        'company-1',
+        'account-1',
+      ),
+    ).rejects.toThrow(BadRequestException);
   });
 });

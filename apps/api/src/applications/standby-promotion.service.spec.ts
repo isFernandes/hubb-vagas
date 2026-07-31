@@ -15,7 +15,7 @@ describe('StandbyPromotionService', () => {
       application: {
         findFirst: vi.fn(),
         update: vi.fn(),
-      }
+      },
     };
     rmqClient = {
       emit: vi.fn(),
@@ -45,10 +45,10 @@ describe('StandbyPromotionService', () => {
         title: 'Vaga Teste',
         company: {
           account: {
-            email: 'company@example.com'
-          }
-        }
-      }
+            email: 'company@example.com',
+          },
+        },
+      },
     });
 
     await service.promoteNextStandby('job-1');
@@ -61,7 +61,9 @@ describe('StandbyPromotionService', () => {
     expect(prisma.application.findFirst).toHaveBeenCalledWith({
       where: { jobId: 'job-1', status: 'STANDBY' },
       orderBy: { createdAt: 'asc' },
-      include: { job: { include: { company: { include: { account: true } } } } },
+      include: {
+        job: { include: { company: { include: { account: true } } } },
+      },
     });
 
     expect(prisma.application.update).toHaveBeenCalledWith({
@@ -69,11 +71,14 @@ describe('StandbyPromotionService', () => {
       data: { status: 'SCREENING' },
     });
 
-    expect(rmqClient.emit).toHaveBeenCalledWith('standby_candidate_promoted_to_screening', {
-      companyEmail: 'company@example.com',
-      jobId: 'job-1',
-      jobTitle: 'Vaga Teste',
-      applicationId: 'app-standby-1',
-    });
+    expect(rmqClient.emit).toHaveBeenCalledWith(
+      'standby_candidate_promoted_to_screening',
+      {
+        companyEmail: 'company@example.com',
+        jobId: 'job-1',
+        jobTitle: 'Vaga Teste',
+        applicationId: 'app-standby-1',
+      },
+    );
   });
 });

@@ -42,7 +42,11 @@ export class PrismaJobsRepository implements JobsRepository {
         ];
       }
 
-      if (filters.latitude !== undefined && filters.longitude !== undefined && filters.radius !== undefined) {
+      if (
+        filters.latitude !== undefined &&
+        filters.longitude !== undefined &&
+        filters.radius !== undefined
+      ) {
         const lat = parseFloat(filters.latitude as any);
         const lng = parseFloat(filters.longitude as any);
         const radiusKm = parseFloat(filters.radius as any);
@@ -58,7 +62,7 @@ export class PrismaJobsRepository implements JobsRepository {
               ))) <= ${radiusKm}
           `;
 
-          const ids = matchingJobs.map(j => j.id);
+          const ids = matchingJobs.map((j) => j.id);
           where.id = { in: ids };
         }
       }

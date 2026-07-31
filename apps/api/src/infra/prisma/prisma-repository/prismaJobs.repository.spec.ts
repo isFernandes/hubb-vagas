@@ -13,7 +13,7 @@ describe('PrismaJobsRepository', () => {
       },
       $queryRaw: vi.fn(),
     };
-    repository = new PrismaJobsRepository(prisma as unknown as PrismaService);
+    repository = new PrismaJobsRepository(prisma);
   });
 
   describe('findAll with geolocation', () => {
@@ -25,7 +25,7 @@ describe('PrismaJobsRepository', () => {
       ]);
 
       const result = await repository.findAll({
-        latitude: -23.550520,
+        latitude: -23.55052,
         longitude: -46.633308,
         radius: 10,
       });

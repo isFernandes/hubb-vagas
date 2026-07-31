@@ -14,8 +14,11 @@ import JobDetails from './pages/company/JobDetails';
 import JobsList from './pages/candidate/JobsList';
 import JobDetailsCandidate from './pages/candidate/JobDetailsCandidate';
 import CandidateSettings from './pages/candidate/Settings';
+import MyApplications from './pages/candidate/MyApplications';
 import CompanySettings from './pages/company/Settings';
 import { AdminLayout } from './layouts/AdminLayout';
+import { CandidateLayout } from './layouts/CandidateLayout';
+import { CompanyLayout } from './layouts/CompanyLayout';
 import { AdminRouteGuard } from './guards/AdminRouteGuard';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUsers from './pages/admin/Users';
@@ -44,15 +47,20 @@ export function AppRoutes() {
       <Route path="/register" element={<Register />} />
       
       {/* Rotas Candidato */}
-      <Route path="/jobs" element={<PrivateRoute allowedRoles={['USER', 'ADMIN']}><JobsList /></PrivateRoute>} />
-      <Route path="/jobs/:id" element={<PrivateRoute allowedRoles={['USER', 'ADMIN']}><JobDetailsCandidate /></PrivateRoute>} />
-      <Route path="/settings" element={<PrivateRoute allowedRoles={['USER']}><CandidateSettings /></PrivateRoute>} />
+      <Route element={<PrivateRoute allowedRoles={['USER', 'ADMIN']}><CandidateLayout /></PrivateRoute>}>
+        <Route path="/jobs" element={<JobsList />} />
+        <Route path="/jobs/:id" element={<JobDetailsCandidate />} />
+        <Route path="/my-applications" element={<MyApplications />} />
+        <Route path="/settings" element={<CandidateSettings />} />
+      </Route>
       
       {/* Rotas Empresa */}
-      <Route path="/dashboard" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><Dashboard /></PrivateRoute>} />
-      <Route path="/dashboard/jobs/new" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><NewJob /></PrivateRoute>} />
-      <Route path="/dashboard/jobs/:id" element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><JobDetails /></PrivateRoute>} />
-      <Route path="/dashboard/settings" element={<PrivateRoute allowedRoles={['COMPANY']}><CompanySettings /></PrivateRoute>} />
+      <Route element={<PrivateRoute allowedRoles={['COMPANY', 'ADMIN']}><CompanyLayout /></PrivateRoute>}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/jobs/new" element={<NewJob />} />
+        <Route path="/dashboard/jobs/:id" element={<JobDetails />} />
+        <Route path="/dashboard/settings" element={<CompanySettings />} />
+      </Route>
       
       {/* Rotas Admin */}
       <Route path="/admin" element={<AdminRouteGuard><AdminLayout /></AdminRouteGuard>}>

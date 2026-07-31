@@ -26,8 +26,6 @@ import { ZodValidationPipe } from '../infra/pipes/zod-validation.pipe';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-
-
   @Get()
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -49,6 +47,7 @@ export class UsersController {
     @Body(new ZodValidationPipe(updateUserProfileSchema))
     updateDto: UpdateUserProfileDto,
   ) {
+    console.log(updateDto);
     return this.usersService.update(req.user.profileId, updateDto);
   }
 

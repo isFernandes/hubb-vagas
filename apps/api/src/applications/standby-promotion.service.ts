@@ -19,7 +19,9 @@ export class StandbyPromotionService {
     const nextStandby = await this.prisma.application.findFirst({
       where: { jobId, status: 'STANDBY' },
       orderBy: { createdAt: 'asc' },
-      include: { job: { include: { company: { include: { account: true } } } } },
+      include: {
+        job: { include: { company: { include: { account: true } } } },
+      },
     });
 
     if (nextStandby) {

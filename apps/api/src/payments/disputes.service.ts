@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  Inject,
+} from '@nestjs/common';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { TransactionStatus } from '../infra/prisma/generated/client';
 
@@ -6,7 +11,11 @@ import { TransactionStatus } from '../infra/prisma/generated/client';
 export class DisputesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createDispute(transactionId: string, reason: string, companyAccountId: string) {
+  async createDispute(
+    transactionId: string,
+    reason: string,
+    companyAccountId: string,
+  ) {
     const transaction = await this.prisma.transaction.findUnique({
       where: { id: transactionId },
       include: { job: { include: { company: true } } },
@@ -14,12 +23,16 @@ export class DisputesService {
 
     if (!transaction) throw new NotFoundException('Transaction not found');
     if (transaction.status !== 'APPROVED') {
-      throw new BadRequestException('Somente transações aprovadas podem ser disputadas.');
+      throw new BadRequestException(
+        'Somente transações aprovadas podem ser disputadas.',
+      );
     }
 
     // Verify company owns the job
     if (transaction.job.company.account_id !== companyAccountId) {
-      throw new BadRequestException('Apenas o criador da vaga pode abrir uma disputa.');
+      throw new BadRequestException(
+        'Apenas o criador da vaga pode abrir uma disputa.',
+      );
     }
 
     const result = await this.prisma.$transaction(async (tx) => {
@@ -46,7 +59,11 @@ export class DisputesService {
     return result;
   }
 
-  async resolveDispute(transactionId: string, action: 'REFUND' | 'RELEASE', adminId: string) {
+  async resolveDispute(
+    transactionId: string,
+    action: 'REFUND' | 'RELEASE',
+    adminId: string,
+  ) {
     const transaction = await this.prisma.transaction.findUnique({
       where: { id: transactionId },
     });
@@ -57,7 +74,7 @@ export class DisputesService {
     }
 
     let newStatus: TransactionStatus;
-    
+
     if (action === 'REFUND') {
       // In a real scenario we would call MercadoPago refund API here
       // await this.mercadoPagoService.refundPayment(transaction.paymentId);

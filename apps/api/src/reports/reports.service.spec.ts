@@ -20,31 +20,40 @@ describe('ReportsService', () => {
         findFirst: vi.fn(),
       },
     };
-    service = new ReportsService(prisma as unknown as PrismaService);
+    service = new ReportsService(prisma);
   });
-
-
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
   it('should throw BadRequestException if candidate was not approved for the job when reporting NO_SHOW', async () => {
-    prisma.user.findUnique.mockResolvedValue({ id: 'user-id', account_id: 'target-account' });
+    prisma.user.findUnique.mockResolvedValue({
+      id: 'user-id',
+      account_id: 'target-account',
+    });
     prisma.application.findFirst.mockResolvedValue(null); // Not found or not approved
 
-    await expect(service.createReport(
-      'company-account',
-      ReportType.NO_SHOW,
-      'Candidate did not show up',
-      'target-account',
-      'job-123'
-    )).rejects.toThrow(BadRequestException);
+    await expect(
+      service.createReport(
+        'company-account',
+        ReportType.NO_SHOW,
+        'Candidate did not show up',
+        'target-account',
+        'job-123',
+      ),
+    ).rejects.toThrow(BadRequestException);
   });
 
   it('should create NO_SHOW report if candidate was approved', async () => {
-    prisma.user.findUnique.mockResolvedValue({ id: 'user-id', account_id: 'target-account' });
-    prisma.application.findFirst.mockResolvedValue({ id: 'app-id', status: 'APPROVED' });
+    prisma.user.findUnique.mockResolvedValue({
+      id: 'user-id',
+      account_id: 'target-account',
+    });
+    prisma.application.findFirst.mockResolvedValue({
+      id: 'app-id',
+      status: 'APPROVED',
+    });
     prisma.report.create.mockResolvedValue({ id: 'report-id' });
 
     const result = await service.createReport(
@@ -52,7 +61,7 @@ describe('ReportsService', () => {
       ReportType.NO_SHOW,
       'Candidate did not show up',
       'target-account',
-      'job-123'
+      'job-123',
     );
 
     expect(result).toEqual({ id: 'report-id' });

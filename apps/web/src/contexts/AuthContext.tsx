@@ -42,7 +42,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     // Ensure case-insensitivity since Prisma returns 'Company' while TS type is 'COMPANY'
     const userRole = String(loggedUser.role).toUpperCase();
-    navigate(userRole === 'COMPANY' ? '/dashboard' : '/jobs');
+    if (userRole === 'ADMIN') {
+      navigate('/admin');
+    } else if (userRole === 'COMPANY') {
+      navigate('/dashboard');
+    } else {
+      navigate('/jobs');
+    }
   };
 
   const logout = () => {

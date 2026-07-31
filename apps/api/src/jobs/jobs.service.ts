@@ -73,11 +73,15 @@ export class JobsService {
     longitude?: number;
     radius?: number;
   }) {
-    const sortedFilters = filters ? Object.keys(filters).sort().reduce((acc: any, key) => {
-      acc[key] = (filters as any)[key];
-      return acc;
-    }, {}) : {};
-    
+    const sortedFilters = filters
+      ? Object.keys(filters)
+          .sort()
+          .reduce((acc: any, key) => {
+            acc[key] = (filters as any)[key];
+            return acc;
+          }, {})
+      : {};
+
     const filterString = JSON.stringify(sortedFilters);
     const filtersHash = Buffer.from(filterString).toString('base64');
     const cacheKey = `job:list:${filtersHash}`;
@@ -94,7 +98,7 @@ export class JobsService {
     const data = await this.jobsRepository.findAll(filters);
 
     try {
-      await this.redis.setex(cacheKey, 180, JSON.stringify(data)); // 3 minutes TTL
+      await this.redis.setex(cacheKey, 30, JSON.stringify(data)); // Temporarily 30 seconds
     } catch (e) {
       console.error(`[Redis Error] Failed to set cache for ${cacheKey}`, e);
     }
@@ -120,7 +124,7 @@ export class JobsService {
     }
 
     try {
-      await this.redis.setex(cacheKey, 3600, JSON.stringify(job)); // 1 hour TTL
+      await this.redis.setex(cacheKey, 30, JSON.stringify(job)); // Temporarily 30 seconds
     } catch (e) {
       console.error(`[Redis Error] Failed to set cache for ${cacheKey}`, e);
     }

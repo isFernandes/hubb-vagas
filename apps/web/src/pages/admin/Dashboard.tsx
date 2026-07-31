@@ -26,7 +26,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (isError) {
-      toast.error('Failed to load metrics. Please try again.');
+      toast.error('Falha ao carregar as métricas. Tente novamente.');
     }
   }, [isError]);
 
@@ -50,12 +50,12 @@ export default function AdminDashboard() {
   if (isError) {
     return (
       <div className="p-8">
-        <p className="text-red-500 mb-4">Error loading dashboard metrics.</p>
+        <p className="text-red-500 mb-4">Erro ao carregar as métricas do painel.</p>
         <button
           onClick={() => refetch()}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
-          Retry
+          Tentar Novamente
         </button>
       </div>
     );
@@ -63,23 +63,23 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-gray-800">Painel</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium">Total Users</h2>
+          <h2 className="text-gray-500 text-sm font-medium">Total de Usuários</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalUsers || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium">Companies</h2>
+          <h2 className="text-gray-500 text-sm font-medium">Empresas</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalCompanies || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium">Active Jobs</h2>
+          <h2 className="text-gray-500 text-sm font-medium">Vagas Ativas</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalJobs || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-500 text-sm font-medium">Applications</h2>
+          <h2 className="text-gray-500 text-sm font-medium">Candidaturas</h2>
           <p className="text-3xl font-bold text-gray-900 mt-2">{data?.totalApplications || 0}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
@@ -99,7 +99,7 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-700 font-bold mb-6">Users Over Time</h2>
+          <h2 className="text-gray-700 font-bold mb-6">Usuários ao longo do tempo</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data?.usersOverTime || []}>
@@ -108,14 +108,14 @@ export default function AdminDashboard() {
                 <YAxis axisLine={false} tickLine={false} />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="count" name="Users" stroke="#4F46E5" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                <Line type="monotone" dataKey="count" name="Usuários" stroke="#4F46E5" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-          <h2 className="text-gray-700 font-bold mb-6">Jobs Over Time</h2>
+          <h2 className="text-gray-700 font-bold mb-6">Vagas ao longo do tempo</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data?.jobsOverTime || []}>
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
                 <YAxis axisLine={false} tickLine={false} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="count" name="Jobs" fill="#10B981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="count" name="Vagas" fill="#10B981" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

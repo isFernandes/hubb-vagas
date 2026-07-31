@@ -32,7 +32,7 @@ describe('PaymentsController', () => {
             },
             transaction: {
               upsert: vi.fn(),
-            }
+            },
           },
         },
         {

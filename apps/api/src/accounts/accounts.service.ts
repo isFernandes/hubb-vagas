@@ -15,7 +15,8 @@ export class AccountsService {
   ) {}
 
   async create(createAccountDto: CreateAccountDto) {
-    const { email, password, role, name, bio, cnpj, contact, cpf } = createAccountDto;
+    const { email, password, role, name, bio, cnpj, contact, cpf } =
+      createAccountDto;
 
     const existingAccount = await this.accountsRepository.findByEmail(email);
     if (existingAccount) {

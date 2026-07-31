@@ -11,6 +11,7 @@ import { ClientProxy } from '@nestjs/microservices';
 
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { hasTimeConflict } from '../utils/time-conflict.util';
+import { Redis } from 'ioredis';
 
 @Injectable()
 export class ApplicationsService {
@@ -19,6 +20,7 @@ export class ApplicationsService {
     private readonly jobsRepository: JobsRepository,
     private readonly prisma: PrismaService,
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
+    @Inject('REDIS_CLIENT') private readonly redis: Redis,
   ) {}
 
   async apply(jobId: string, userId: string) {
@@ -85,10 +87,22 @@ export class ApplicationsService {
       userId,
     });
 
+    try {
+      await this.redis.del(`job:detail:${jobId}`);
+    } catch (e) {
+      console.error(
+        `[Redis Error] Failed to invalidate cache for job:detail:${jobId}`,
+        e,
+      );
+    }
+
     return application;
   }
 
-  async checkConflicts(jobId: string, userId: string): Promise<{ hasConflict: boolean; message?: string }> {
+  async checkConflicts(
+    jobId: string,
+    userId: string,
+  ): Promise<{ hasConflict: boolean; message?: string }> {
     const job = await this.jobsRepository.findById(jobId);
     if (!job || !job.executionDate || !job.durationHours) {
       return { hasConflict: false };
@@ -115,13 +129,28 @@ export class ApplicationsService {
       const appEnd = appStart + app.job.durationHours * 60 * 60 * 1000;
 
       if (hasTimeConflict(targetStart, targetEnd, appStart, appEnd)) {
-        return { 
-          hasConflict: true, 
-          message: 'Você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).' 
+        return {
+          hasConflict: true,
+          message:
+            'Você já possui um bico aprovado neste horário (respeitando o intervalo mínimo de 1 hora).',
         };
       }
     }
 
     return { hasConflict: false };
+  }
+
+  async getUserApplications(userId: string) {
+    return this.prisma.application.findMany({
+      where: { userId },
+      include: {
+        job: {
+          include: {
+            company: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 }
