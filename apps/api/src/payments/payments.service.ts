@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 
 @Injectable()
@@ -40,7 +40,7 @@ export class PaymentsService {
       return result.init_point!;
     } catch (e: any) {
       console.error('[MercadoPago] Error creating preference:', e.message || e);
-      throw new import('@nestjs/common').BadRequestException('Falha na integração com MercadoPago. Verifique as credenciais.');
+      throw new BadRequestException('Falha na integração com MercadoPago. Verifique as credenciais.');
     }
   }
 

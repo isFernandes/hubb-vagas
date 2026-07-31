@@ -4,7 +4,11 @@ import { JobsRepository } from '../repositories/jobs.repository';
 import { JobStatusHistoryRepository } from '../repositories/jobStatusHistory.repository';
 import { JobStatus } from '../infra/prisma/generated/client';
 import { PrismaService } from '../infra/prisma/prisma.service';
-import { ForbiddenException, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PaymentsService } from '../payments/payments.service';
 
 describe('JobsService', () => {
