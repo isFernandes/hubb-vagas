@@ -12,6 +12,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
   app.enableCors();
+  app.enableShutdownHooks();
   app.useLogger(new JsonLoggerService());
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ZodValidationPipe());

@@ -4,12 +4,12 @@ import { api } from '@/lib/api';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link, useSearchParams } from 'react-router-dom';
-import { LogOut, PlusCircle, Briefcase } from 'lucide-react';
+import { PlusCircle, Briefcase } from 'lucide-react';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -47,9 +47,6 @@ export default function Dashboard() {
               <PlusCircle className="mr-2 h-4 w-4" /> Nova Vaga
             </Button>
           </Link>
-          <Button variant="outline" onClick={logout} className="border-slate-800 hover:bg-slate-900 text-red-400 hover:text-red-300">
-            <LogOut className="mr-2 h-4 w-4" /> Sair
-          </Button>
         </div>
       </header>
 

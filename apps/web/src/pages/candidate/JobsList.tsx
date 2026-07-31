@@ -6,11 +6,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
-import { LogOut, Search, MapPin, Briefcase, Navigation } from 'lucide-react';
+import { Search, MapPin, Briefcase, Navigation } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function JobsList() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [radius, setRadius] = useState<number>(0);
   const [latitude, setLatitude] = useState<number | null>(null);
@@ -64,9 +64,6 @@ export default function JobsList() {
           <p className="text-slate-400 mt-1">Encontre seu próximo desafio, {user?.email}</p>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline" onClick={logout} className="border-slate-800 hover:bg-slate-900 text-red-400 hover:text-red-300">
-            <LogOut className="mr-2 h-4 w-4" /> Sair
-          </Button>
         </div>
       </header>
 

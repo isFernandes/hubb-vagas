@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Button } from '../../components/ui/button';
 
 export default function AdminDisputes() {
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [statusFilter, setStatusFilter] = useState('');
 
   const { data, isLoading, refetch } = useQuery({
