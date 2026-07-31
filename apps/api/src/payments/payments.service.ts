@@ -16,28 +16,32 @@ export class PaymentsService {
     appId: string,
     price: number,
   ): Promise<string> {
-    const preference = new Preference(this.client);
-    const result = await preference.create({
-      body: {
-        items: [
-          {
-            id: `${jobId}:${appId}`,
-            title: 'Contratação de Candidato',
-            quantity: 1,
-            unit_price: price,
+    try {
+      const preference = new Preference(this.client);
+      const result = await preference.create({
+        body: {
+          items: [
+            {
+              id: `${jobId}:${appId}`,
+              title: 'Contratação de Candidato',
+              quantity: 1,
+              unit_price: price,
+            },
+          ],
+          payment_methods: { excluded_payment_types: [{ id: 'ticket' }] },
+          back_urls: {
+            success: `${process.env.FRONTEND_URL}/dashboard?payment=success`,
+            failure: `${process.env.FRONTEND_URL}/dashboard?payment=failure`,
           },
-        ],
-        marketplace_fee: 0.99,
-        payment_methods: { excluded_payment_types: [{ id: 'ticket' }] },
-        back_urls: {
-          success: `${process.env.FRONTEND_URL}/dashboard?payment=success`,
-          failure: `${process.env.FRONTEND_URL}/dashboard?payment=failure`,
+          auto_return: 'approved',
+          external_reference: `${jobId}:${appId}`,
         },
-        auto_return: 'approved',
-        external_reference: `${jobId}:${appId}`,
-      },
-    });
-    return result.init_point!;
+      });
+      return result.init_point!;
+    } catch (e: any) {
+      console.error('[MercadoPago] Error creating preference:', e.message || e);
+      throw new import('@nestjs/common').BadRequestException('Falha na integração com MercadoPago. Verifique as credenciais.');
+    }
   }
 
   async verifyPayment(
