@@ -36,6 +36,7 @@ describe('JobClosureWorker', () => {
         update: jest.fn(),
         updateMany: jest.fn(),
         findMany: jest.fn().mockResolvedValue([]),
+        findUnique: jest.fn().mockResolvedValue({ id: 'app-1', status: 'STANDBY', jobId: 'job-1' }),
       },
       job: {
         findUnique: jest.fn(),

@@ -33,7 +33,8 @@ export const ApplicationStatus = {
   SCREENING: 'SCREENING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
-  STANDBY: 'STANDBY'
+  STANDBY: 'STANDBY',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]

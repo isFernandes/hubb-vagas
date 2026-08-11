@@ -96,11 +96,11 @@
 - [x] 12.4 Feedback de Fechamento: E-mail para os não selecionados. (Fácil - Disparar evento no RabbitMQ)
 - [x] 12.5 Painel de configurações (Settings) para edição de perfil, senha e bio. (Fácil/Médio - Nova tela e endpoint de PATCH)
 - [x] 12.6 Suporte a avatar/foto de perfil em base64. (Médio - Ajuste no Prisma e componente de upload no Front)
-- [ ] 12.7 Vagas Múltiplas: Campo `positionsAvailable`. (Médio - Ajustar a lógica de fechamento da vaga por contagem)
+- [x] 12.7 Vagas Múltiplas: Campo `positionsAvailable`. (Médio - Ajustar a lógica de fechamento da vaga por contagem)
 - [x] 12.8 Sistema de Reputação: Avaliações (1 a 5 estrelas). (Médio - Criação de novas tabelas e rotas pós-serviço)
-- [ ] 12.9 Política de Cancelamento (No-Show) com punição. (Médio/Complexo - Lógica de desconto de estrelas baseado no tempo)
-- [ ] 12.10 Validador de conflito de agenda (mín. 1h entre bicos). (Complexo - Checagem de cruzamento de horários em aplicações ativas)
-- [ ] 12.11 Busca por geolocalização (Raio de atuação). (Muito Complexo - Conversão de endereço em Lat/Lng e buscas por distância - PostGIS/Haversine)
+- [x] 12.9 Política de Cancelamento (No-Show) com punição. (Médio/Complexo - Lógica de desconto de estrelas baseado no tempo)
+- [x] 12.10 Validador de conflito de agenda (mín. 1h entre bicos). (Complexo - Checagem de cruzamento de horários em aplicações ativas)
+- [x] 12.11 Busca por geolocalização (Raio de atuação). (Muito Complexo - Conversão de endereço em Lat/Lng e buscas por distância - PostGIS/Haversine)
 
 ## 13. Administração e Governança (A Fazer)
 
@@ -108,13 +108,13 @@
 - [x] 13.2 Listagem geral de usuários (Candidatos e Empresas) com paginação, busca e histórico.
 - [x] 13.3 Funcionalidade de banimento/suspensão de usuários com Log de Auditoria (quem baniu, quando e motivo).
 - [x] 13.4 Sistema de moderação de denúncias (Vagas falsas, no-show, assédio).
-- [ ] 13.5 Gestão Financeira e Disputas (Acompanhar fluxo de caixa, taxas retidas e resolução de conflitos de pagamento).
+- [x] 13.5 Gestão Financeira e Disputas (Acompanhar fluxo de caixa, taxas retidas e resolução de conflitos de pagamento).
 - [x] 13.6 Configurações Globais do Sistema (Ajustar taxa da plataforma %, valor mínimo de vaga, etc., sem hardcode).
 - [x] 13.7 Configurar e manter outros usuários admin e gerenciamento de acessos.
 
 ## 14. Algoritmos Avançados de Alocação (A Fazer)
 
-- [ ] 14.1 Fila de Espera / Reservas: Permitir que candidatos fiquem como "standby" em vagas concorridas. Caso um aprovado desista (No-Show), o sistema automaticamente aciona o próximo da fila.
+- [x] 14.1 Fila de Espera / Reservas: Permitir que candidatos fiquem como "standby" em vagas concorridas. Caso um aprovado desista (No-Show), o sistema automaticamente aciona o próximo da fila.
 
 ## Improvements (Melhorias Contínuas)
 

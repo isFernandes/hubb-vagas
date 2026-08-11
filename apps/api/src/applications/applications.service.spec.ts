@@ -5,6 +5,7 @@ import { JobsRepository } from '../repositories/jobs.repository';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { JobStatus } from '../infra/prisma/generated/client';
 import { PrismaService } from '../infra/prisma/prisma.service';
+import { StandbyPromotionService } from './standby-promotion.service';
 
 describe('ApplicationsService', () => {
   let service: ApplicationsService;
@@ -40,6 +41,18 @@ describe('ApplicationsService', () => {
           provide: 'RMQ_CLIENT',
           useValue: {
             emit: jest.fn(),
+          },
+        },
+        {
+          provide: 'REDIS_CLIENT',
+          useValue: {
+            del: jest.fn(),
+          },
+        },
+        {
+          provide: StandbyPromotionService,
+          useValue: {
+            promoteNextStandby: jest.fn(),
           },
         },
         {
