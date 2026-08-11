@@ -151,6 +151,7 @@ enum ApplicationStatus {
   APPROVED
   REJECTED
   STANDBY
+  CANCELLED
 }
 
 model JobStatusHistory {
