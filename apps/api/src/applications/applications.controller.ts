@@ -6,6 +6,7 @@ import {
   Request,
   Get,
   Param,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
@@ -45,5 +46,12 @@ export class ApplicationsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   checkConflicts(@Param('jobId') jobId: string, @Request() req) {
     return this.applicationsService.checkConflicts(jobId, req.user.profileId);
+  }
+
+  @Patch(':id/cancel')
+  @Roles(Role.User)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  cancel(@Param('id') id: string, @Request() req) {
+    return this.applicationsService.cancelApplication(id, req.user.profileId);
   }
 }

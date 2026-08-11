@@ -12,6 +12,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { hasTimeConflict } from '../utils/time-conflict.util';
 import { Redis } from 'ioredis';
+import { StandbyPromotionService } from './standby-promotion.service';
+import { ForbiddenException } from '@nestjs/common';
 
 @Injectable()
 export class ApplicationsService {
@@ -21,6 +23,7 @@ export class ApplicationsService {
     private readonly prisma: PrismaService,
     @Inject('RMQ_CLIENT') private readonly client: ClientProxy,
     @Inject('REDIS_CLIENT') private readonly redis: Redis,
+    private readonly standbyPromotionService: StandbyPromotionService,
   ) {}
 
   async apply(jobId: string, userId: string) {
@@ -152,5 +155,73 @@ export class ApplicationsService {
       },
       orderBy: { createdAt: 'desc' },
     });
+  }
+
+  async cancelApplication(applicationId: string, userId: string) {
+    const application = await this.prisma.application.findUnique({
+      where: { id: applicationId },
+      include: { job: true, user: true },
+    });
+
+    if (!application) {
+      throw new NotFoundException('Candidatura não encontrada');
+    }
+
+    if (application.userId !== userId) {
+      throw new ForbiddenException('Você não tem permissão para cancelar esta candidatura');
+    }
+
+    if (application.status === 'CANCELLED' || application.status === 'REJECTED') {
+      throw new BadRequestException('Esta candidatura já foi cancelada ou rejeitada');
+    }
+
+    const wasApproved = application.status === 'APPROVED';
+
+    // Penalty logic for APPROVED cancellations close to executionDate
+    if (wasApproved && application.job.executionDate) {
+      const now = Date.now();
+      const executionTime = application.job.executionDate.getTime();
+      const hoursDiff = (executionTime - now) / (1000 * 60 * 60);
+
+      let penalty = 0;
+      if (hoursDiff > 0) {
+        if (hoursDiff < 5) {
+          penalty = 1.5;
+        } else if (hoursDiff < 24) {
+          penalty = 1.0;
+        }
+      }
+
+      if (penalty > 0) {
+        const newRating = Math.max(0, application.user.averageRating - penalty);
+        await this.prisma.user.update({
+          where: { id: userId },
+          data: { averageRating: newRating },
+        });
+      }
+    }
+
+    const updated = await this.prisma.application.update({
+      where: { id: applicationId },
+      data: { status: 'CANCELLED' },
+    });
+
+    if (wasApproved) {
+      await this.standbyPromotionService.promoteNextStandby(application.jobId);
+    }
+
+    this.client.emit('application_cancelled', {
+      applicationId,
+      jobId: application.jobId,
+      userId,
+    });
+
+    try {
+      await this.redis.del(`job:detail:${application.jobId}`);
+    } catch (e) {
+      console.error(`[Redis Error] Failed to invalidate cache for job:detail:${application.jobId}`, e);
+    }
+
+    return updated;
   }
 }
