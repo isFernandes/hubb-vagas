@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
+import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,8 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function MyApplications() {
   const { user } = useAuth();
+
+  const queryClient = useQueryClient();
 
   const { data: applications, isLoading } = useQuery({
     queryKey: ['my-applications'],
@@ -18,10 +21,39 @@ export default function MyApplications() {
     enabled: !!user
   });
 
+  const cancelMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await api.patch(`/applications/${id}/cancel`);
+    },
+    onSuccess: () => {
+      toast.success('Candidatura cancelada com sucesso.');
+      queryClient.invalidateQueries({ queryKey: ['my-applications'] });
+    },
+    onError: (err: any) => {
+      const msg = err?.response?.data?.message || 'Erro ao cancelar.';
+      toast.error(msg);
+    }
+  });
+
+  const handleCancel = (app: any) => {
+    let warning = "Tem certeza que deseja cancelar esta candidatura?";
+    if (app.status === 'APPROVED' && app.job.executionDate) {
+      const hoursDiff = (new Date(app.job.executionDate).getTime() - Date.now()) / (1000 * 60 * 60);
+      if (hoursDiff < 24) {
+        warning = "Atenção: Como falta menos de 24h para o início deste bico, este cancelamento afetará negativamente sua reputação na plataforma.\n\nDeseja cancelar mesmo assim?";
+      }
+    }
+
+    if (window.confirm(warning)) {
+      cancelMutation.mutate(app.id);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'APPROVED': return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
       case 'REJECTED': return 'text-rose-400 bg-rose-500/10 border-rose-500/20';
+      case 'CANCELLED': return 'text-slate-400 bg-slate-500/10 border-slate-500/20';
       case 'STANDBY': return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
       default: return 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20';
     }
@@ -31,6 +63,7 @@ export default function MyApplications() {
     switch (status) {
       case 'APPROVED': return 'Aprovado';
       case 'REJECTED': return 'Recusado';
+      case 'CANCELLED': return 'Cancelado';
       case 'STANDBY': return 'Fila de Espera';
       case 'APPLIED': return 'Enviado';
       case 'SCREENING': return 'Em Análise';
@@ -88,12 +121,22 @@ export default function MyApplications() {
                     </div>
                   </div>
                   
-                  <div className="w-full md:w-auto">
+                  <div className="w-full md:w-auto flex flex-col gap-2">
                     <Link to={`/jobs/${app.jobId}`}>
                       <Button variant="outline" className="w-full md:w-auto border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white">
                         Ver Vaga <ChevronRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
+                    {['APPROVED', 'APPLIED', 'SCREENING', 'STANDBY'].includes(app.status) && (
+                      <Button 
+                        variant="destructive" 
+                        className="w-full md:w-auto bg-rose-600/20 text-rose-400 border border-rose-500/30 hover:bg-rose-600 hover:text-white"
+                        onClick={() => handleCancel(app)}
+                        disabled={cancelMutation.isPending}
+                      >
+                        Cancelar
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>
